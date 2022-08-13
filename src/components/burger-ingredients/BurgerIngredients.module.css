@@ -1,0 +1,24 @@
+.BurgerIngredientsFirstBun {
+  margin-bottom: 5px;
+}
+
+.BurgerIngredientsMainItems {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px 0;
+  height: calc(100vh - 450px);
+  overflow: auto;
+}
+
+.BurgerIngredientsLastBun {
+  margin-top: 5px;
+}
+
+.BurgerIngredientsTotal {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  margin-left: auto;
+  width: fit-content;
+}

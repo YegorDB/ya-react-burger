@@ -5,7 +5,8 @@ import AppHeader from '../app-header/AppHeader';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 
-import data from '../../utils/data';
+import ingredients from '../../utils/ingredients-data';
+import order from '../../utils/order-data';
 
 import styles from './App.module.css';
 
@@ -15,10 +16,10 @@ function App() {
       <AppHeader />
       <main className={cn('ml-5 mr-5', styles.AppMain)}>
         <div className={styles.AppMainHalf}>
-          <BurgerConstructor ingredients={data} />
+          <BurgerConstructor ingredients={ingredients} />
         </div>
         <div className={styles.AppMainHalf}>
-          <BurgerIngredients />
+          <BurgerIngredients ingredients={ingredients} bunId={order.bunId} otherIds={order.otherIds}/>
         </div>
       </main>
     </div>
