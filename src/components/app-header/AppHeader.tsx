@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import cn from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -15,10 +15,8 @@ function AppHeaderItem(props: {
   icon: Function,
   text: String,
 }) {
-  const className = classNames('mr-2 mb-3 mt-3 pl-5 pr-5 pb-4 pt-4', styles.AppHeaderItem);
-
   return (
-    <div className={className}>
+    <div className={cn('mr-2 mb-3 mt-3 pl-5 pr-5 pb-4 pt-4', styles.AppHeaderItem)}>
       <props.icon type="primary" />
       <p className="ml-2 text text_type_main-default">
         {props.text}

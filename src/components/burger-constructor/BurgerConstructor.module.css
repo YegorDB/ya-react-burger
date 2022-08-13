@@ -1,0 +1,27 @@
+.BurgerConstructorTabs {
+  display: flex;
+}
+
+.BurgerConstructorItems {
+  height: calc(100vh - 270px);
+  overflow: auto;
+}
+
+.BurgerConstructorItemsGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.BurgerConstructorItem {
+  position: relative;
+  width: fit-content;
+  text-align: center;
+}
+
+.BurgerConstructorItemPrise {
+  display: inline-flex;
+}
+
+.BurgerConstructorItemName {
+  height: 48;
+}
