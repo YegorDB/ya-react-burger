@@ -1,10 +1,12 @@
 import cn from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import { IngredientShape } from '../../prop-types/ingredient'
 import { Ingredient } from '../../types/ingredient'
 
 import styles from './BurgerIngredients.module.css';
@@ -27,7 +29,7 @@ function BurgerIngredients(props: {
   console.log('ingredientsById', ingredientsById);
 
   const bunIngredient = props.bunId && ingredientsById[props.bunId];
-  const otherIngredients = props.otherIds && props.otherIds.map(id => ingredientsById[id]);
+  const otherIngredients = props.otherIds && props.otherIds.map(id => ingredientsById[id]).filter(Boolean);
 
   let totalPrice = bunIngredient ? bunIngredient.price * 2 : 0;
   if (otherIngredients) {
@@ -36,8 +38,6 @@ function BurgerIngredients(props: {
       totalPrice
     );
   }
-
-  console.log('totalPrice', totalPrice);
 
   return (
     <div className="mt-25 pl-4 pr-4">
@@ -96,5 +96,11 @@ function BurgerIngredients(props: {
     </div>
   );
 }
+
+BurgerIngredients.propTypes = {
+  ingredients: PropTypes.arrayOf(IngredientShape),
+  bunId: PropTypes.string,
+  otherIds: PropTypes.arrayOf(PropTypes.string),
+};
 
 export default BurgerIngredients;
