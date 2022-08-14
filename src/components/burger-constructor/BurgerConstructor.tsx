@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import ModalWrapper from '../modal/Modal';
+import Modal from '../modal/Modal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
 import { IngredientShape } from '../../prop-types/ingredient'
 import { Ingredient, IngredientsByType } from '../../types/ingredient'
@@ -46,9 +46,9 @@ function BurgerConstructorItem(props: {ingredient: Ingredient}) {
         <Counter count={1} size="default" />
       </div>
       {isModalOpen && (
-        <ModalWrapper handleClose={handleCloseModal} title="Детали ингредиента">
+        <Modal handleClose={handleCloseModal} title="Детали ингредиента">
           <IngredientDetails ingredient={ingredient} />
-        </ModalWrapper>
+        </Modal>
       )}
     </div>
   );

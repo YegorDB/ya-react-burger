@@ -6,7 +6,7 @@ import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import ModalWrapper from '../modal/Modal';
+import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
 
 import { IngredientShape } from '../../prop-types/ingredient'
@@ -104,9 +104,9 @@ function BurgerIngredients(props: {
               Оформить заказ
             </Button>
             {isModalOpen && (
-              <ModalWrapper handleClose={handleCloseModal}>
+              <Modal handleClose={handleCloseModal}>
                 <OrderDetails orderId="034536" />
-              </ModalWrapper>
+              </Modal>
             )}
           </div>
         </div>

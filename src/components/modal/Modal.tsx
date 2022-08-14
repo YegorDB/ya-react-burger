@@ -5,21 +5,11 @@ import ReactDOM from 'react-dom';
 
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import ModalOverlay from '../modal-overlay/ModalOverlay';
+
 import styles from './Modal.module.css';
 
 const modalRoot = document.getElementById('modals');
-
-function ModalOverlay(props: {
-  closeHandler: React.MouseEventHandler,
-}) {
-  const {closeHandler} = props;
-
-  return <div onClick={closeHandler} className={styles.ModalOverlay}></div>;
-}
-
-ModalOverlay.propTypes = {
-  closeHandler: PropTypes.func.isRequired,
-};
 
 function ModalHeader(props: {
   closeHandler: React.MouseEventHandler,
@@ -43,27 +33,6 @@ ModalHeader.propTypes = {
 };
 
 function Modal(props: {
-  closeHandler: React.MouseEventHandler,
-  children: React.ReactNode,
-  title?: string,
-}) {
-  const {closeHandler, children, title} = props;
-
-  return (
-    <div className={cn('p-10', styles.Modal)}>
-      <ModalHeader closeHandler={closeHandler} title={title} />
-      {children}
-    </div>
-  );
-}
-
-Modal.propTypes = {
-  closeHandler: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-  title: PropTypes.string,
-};
-
-function ModalWrapper(props: {
   handleClose: Function,
   children: React.ReactNode,
   title?: string,
@@ -89,19 +58,20 @@ function ModalWrapper(props: {
     ReactDOM.createPortal(
       <>
         <ModalOverlay closeHandler={closeHandler} />
-        <Modal closeHandler={closeHandler} title={title}>
+        <div className={cn('p-10', styles.Modal)}>
+          <ModalHeader closeHandler={closeHandler} title={title} />
           {children}
-        </Modal>
+        </div>
       </>,
       modalRoot
     )
   ));
 }
 
-ModalWrapper.propTypes = {
+Modal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
   title: PropTypes.string,
 };
 
-export default ModalWrapper;
+export default Modal;
