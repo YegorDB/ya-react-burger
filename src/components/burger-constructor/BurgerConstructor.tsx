@@ -4,6 +4,8 @@ import React from 'react';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import ModalWrapper from '../modal/Modal';
+import IngredientDetails from '../ingredient-details/IngredientDetails';
 import { IngredientShape } from '../../prop-types/ingredient'
 import { Ingredient, IngredientsByType } from '../../types/ingredient'
 
@@ -18,17 +20,36 @@ function parseIngredients(ingredients: Ingredient[]) {
 }
 
 function BurgerConstructorItem(props: {ingredient: Ingredient}) {
+  const {ingredient} = props;
+
+  const [isModalOpen, setModalOpen] = React.useState(false);
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  }
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  }
+
   return (
-    <div className={cn('mt-4 mb-4 ml-3 mr-3', styles.BurgerConstructorItem)}>
-      <img className="ml-4 mr-4" src={props.ingredient.image} alt={props.ingredient.name} />
-      <div className={cn('mt-1 mb-1', styles.BurgerConstructorItemPrise)}>
-        <p className="mr-1 text text_type_digits-default">{props.ingredient.price}</p>
-        <CurrencyIcon type="primary" />
+    <div style={{overflow: 'hidden'}}>
+      <div className={cn('mt-4 mb-4 ml-3 mr-3', styles.BurgerConstructorItem)} onClick={handleOpenModal}>
+        <img className="ml-4 mr-4" src={ingredient.image} alt={ingredient.name} />
+        <div className={cn('mt-1 mb-1', styles.BurgerConstructorItemPrise)}>
+          <p className="mr-1 text text_type_digits-default">{ingredient.price}</p>
+          <CurrencyIcon type="primary" />
+        </div>
+        <div>
+          <p className={cn('text text_type_main-default', styles.BurgerConstructorItemName)}>{ingredient.name}</p>
+        </div>
+        <Counter count={1} size="default" />
       </div>
-      <div>
-        <p className={cn('text text_type_main-default', styles.BurgerConstructorItemName)}>{props.ingredient.name}</p>
-      </div>
-      <Counter count={1} size="default" />
+      {isModalOpen && (
+        <ModalWrapper handleClose={handleCloseModal} title="Детали ингредиента">
+          <IngredientDetails ingredient={ingredient} />
+        </ModalWrapper>
+      )}
     </div>
   );
 }

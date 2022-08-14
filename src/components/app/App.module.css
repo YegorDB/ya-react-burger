@@ -1,6 +1,7 @@
 .AppMain {
   padding: 0 5%;
   display: flex;
+  gap: 40px;
 }
 
 .AppMainHalf {
