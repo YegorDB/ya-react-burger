@@ -6,6 +6,7 @@ import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import ModalWrapper from '../modal/Modal';
 import { IngredientShape } from '../../prop-types/ingredient'
 import { Ingredient } from '../../types/ingredient'
 
@@ -24,9 +25,17 @@ function BurgerIngredients(props: {
   bunId?: string,
   otherIds?: string[],
 }) {
-  const ingredientsById = parseIngredients(props.ingredients);
+  const [isModalOpen, setModalOpen] = React.useState(false);
 
-  console.log('ingredientsById', ingredientsById);
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  }
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  }
+
+  const ingredientsById = parseIngredients(props.ingredients);
 
   const bunIngredient = props.bunId && ingredientsById[props.bunId];
   const otherIngredients = props.otherIds && props.otherIds.map(id => ingredientsById[id]).filter(Boolean);
@@ -88,9 +97,16 @@ function BurgerIngredients(props: {
           <div className="mr-10">
             <CurrencyIcon type="primary" />
           </div>
-          <Button type="primary" size="medium">
-            Оформить заказ
-          </Button>
+          <div style={{overflow: 'hidden'}}>
+            <Button type="primary" size="medium" onClick={handleOpenModal}>
+              Оформить заказ
+            </Button>
+            {isModalOpen && (
+              <ModalWrapper handleClose={handleCloseModal}>
+                Content
+              </ModalWrapper>
+            )}
+          </div>
         </div>
       </div>
     </div>
