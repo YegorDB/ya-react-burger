@@ -33,7 +33,7 @@ function BurgerConstructorItem(props: {ingredient: Ingredient}) {
   }
 
   return (
-    <div style={{overflow: 'hidden'}}>
+    <div className="hidden-overflow">
       <div className={cn('mt-4 mb-4 ml-3 mr-3', styles.BurgerConstructorItem)} onClick={handleOpenModal}>
         <img className="ml-4 mr-4" src={ingredient.image} alt={ingredient.name} />
         <div className={cn('mt-1 mb-1', styles.BurgerConstructorItemPrise)}>

@@ -8,3 +8,7 @@ body {
 }
 
 .custom-scroll::-webkit-scrollbar {}
+
+.hidden-overflow {
+  overflow: hidden;
+}

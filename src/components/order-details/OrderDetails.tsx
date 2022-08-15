@@ -11,7 +11,7 @@ function OrderDetails(props: {
   const {orderId} = props;
 
   return (
-    <div style={{textAlign: 'center'}}>
+    <div className={styles.OrderDetails}>
       <p className="mt-10 mb-8 text text_type_digits-large">{orderId}</p>
       <p className="text text_type_main-medium">идентификатор заказа</p>
       <div className={cn('mb-15 mt-15', styles.OrderDetailsCircle)}>

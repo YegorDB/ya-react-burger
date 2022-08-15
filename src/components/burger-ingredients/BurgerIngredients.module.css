@@ -11,6 +11,11 @@
   overflow: auto;
 }
 
+.BurgerIngredientsMainItemsItem {
+  display: flex;
+  align-items: center;
+}
+
 .BurgerIngredientsLastBun {
   margin-top: 5px;
 }

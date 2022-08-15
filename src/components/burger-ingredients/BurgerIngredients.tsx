@@ -69,7 +69,7 @@ function BurgerIngredients(props: {
           className={cn('custom-scroll', styles.BurgerIngredientsMainItems)}
         >
           {otherIngredients.map((ingredient, index) => (
-            <div style={{display: 'flex', alignItems: 'center'}} key={ingredient._id}>
+            <div className={styles.BurgerIngredientsMainItemsItem} key={ingredient._id}>
               <div className="mr-2">
                 <DragIcon type="primary" />
               </div>
@@ -99,7 +99,7 @@ function BurgerIngredients(props: {
           <div className="mr-10">
             <CurrencyIcon type="primary" />
           </div>
-          <div style={{overflow: 'hidden'}}>
+          <div className="hidden-overflow">
             <Button type="primary" size="medium" onClick={handleOpenModal}>
               Оформить заказ
             </Button>
