@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import React from 'react';
 
 import AppHeader from '../app-header/AppHeader';
@@ -34,7 +33,7 @@ function App() {
   return (
     <div>
       <AppHeader />
-      <main className={cn('ml-5 mr-5', styles.AppMain)}>
+      <main className={styles.AppMain}>
         <div className={styles.AppMainHalf}>
           <BurgerConstructor ingredients={ingredients} />
         </div>
