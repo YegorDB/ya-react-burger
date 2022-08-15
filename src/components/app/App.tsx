@@ -17,7 +17,10 @@ function App() {
 
   React.useEffect(() => {
     fetch(`${API_ROOT}/ingredients`)
-    .then(res => res.json())
+    .then(res => {
+      if (res.ok) return res.json();
+      throw Error(`Response status ${res.status}`);
+    })
     .then(res => {
       if (res.success) {
         setIngredients(res.data);
