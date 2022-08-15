@@ -18,7 +18,7 @@ function App() {
     fetch(`${API_ROOT}/ingredients`)
     .then(res => {
       if (res.ok) return res.json();
-      throw Error(`Response status ${res.status}`);
+      return Promise.reject(`Response status ${res.status}`);
     })
     .then(res => {
       if (res.success) {

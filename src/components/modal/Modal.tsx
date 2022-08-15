@@ -36,15 +36,15 @@ function Modal(props: {
   const closeHandler = React.useCallback(() => handleClose(), [handleClose]);
 
   React.useEffect(() => {
-    const handler = (e: {key: string}) => {
+    const handleEscape = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
       handleClose();
     };
 
-    document.addEventListener('keydown', handler);
+    document.addEventListener('keydown', handleEscape);
 
     return () => {
-      document.removeEventListener('keydown', handler);
+      document.removeEventListener('keydown', handleEscape);
     };
   }, [handleClose]);
 
