@@ -1,6 +1,5 @@
 import cn from 'classnames';
 
-import { IngredientShape } from '../../prop-types/ingredient'
 import { Ingredient } from '../../types/ingredient'
 
 import styles from './IngredientDetails.module.css';
@@ -35,9 +34,5 @@ function IngredientDetails(props: {
     </div>
   );
 }
-
-IngredientDetails.propTypes = {
-  ingredient: IngredientShape,
-};
 
 export default IngredientDetails

@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -26,11 +25,6 @@ function ModalHeader(props: {
     </div>
   );
 }
-
-ModalHeader.propTypes = {
-  closeHandler: PropTypes.func.isRequired,
-  title: PropTypes.string,
-};
 
 function Modal(props: {
   handleClose: Function,
@@ -67,11 +61,5 @@ function Modal(props: {
     )
   ));
 }
-
-Modal.propTypes = {
-  handleClose: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-  title: PropTypes.string,
-};
 
 export default Modal;

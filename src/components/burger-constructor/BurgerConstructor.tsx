@@ -1,12 +1,10 @@
 import cn from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import Modal from '../modal/Modal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
-import { IngredientShape } from '../../prop-types/ingredient'
 import { Ingredient, IngredientsByType } from '../../types/ingredient'
 
 import styles from './BurgerConstructor.module.css';
@@ -54,10 +52,6 @@ function BurgerConstructorItem(props: {ingredient: Ingredient}) {
   );
 }
 
-BurgerConstructorItem.propTypes = {
-  ingredient: IngredientShape,
-};
-
 function BurgerConstructorItemsGroup(props: {name: string, ingredients: Ingredient[]}) {
   return (
     <div>
@@ -72,11 +66,6 @@ function BurgerConstructorItemsGroup(props: {name: string, ingredients: Ingredie
     </div>
   );
 }
-
-BurgerConstructorItemsGroup.propTypes = {
-  name: PropTypes.string,
-  ingredients: PropTypes.arrayOf(IngredientShape),
-};
 
 function BurgerConstructor(props: {ingredients: Ingredient[]}) {
   const [currentTab, setCurrentTab] = React.useState('1');
@@ -111,9 +100,5 @@ function BurgerConstructor(props: {ingredients: Ingredient[]}) {
     </div>
   );
 }
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(IngredientShape),
-};
 
 export default BurgerConstructor;

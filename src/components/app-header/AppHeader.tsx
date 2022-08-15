@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import {
@@ -24,11 +23,6 @@ function AppHeaderItem(props: {
     </div>
   );
 }
-
-AppHeaderItem.propTypes = {
-  icon: PropTypes.func.isRequired,
-  text: PropTypes.string.isRequired
-};
 
 function AppHeader() {
   return (

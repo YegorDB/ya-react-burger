@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import PropTypes from 'prop-types';
 
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
@@ -26,9 +25,5 @@ function OrderDetails(props: {
     </div>
   );
 }
-
-OrderDetails.propTypes = {
-  orderId: PropTypes.string,
-};
 
 export default OrderDetails

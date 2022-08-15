@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import {
@@ -9,7 +8,6 @@ import {
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
 
-import { IngredientShape } from '../../prop-types/ingredient'
 import { Ingredient } from '../../types/ingredient'
 
 import styles from './BurgerIngredients.module.css';
@@ -114,11 +112,5 @@ function BurgerIngredients(props: {
     </div>
   );
 }
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(IngredientShape),
-  bunId: PropTypes.string,
-  otherIds: PropTypes.arrayOf(PropTypes.string),
-};
 
 export default BurgerIngredients;
