@@ -1,29 +1,28 @@
-.BurgerIngredientsFirstBun {
-  margin-bottom: 5px;
+.BurgerIngredientsTabs {
+  display: flex;
 }
 
-.BurgerIngredientsMainItems {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 10px 0;
-  height: calc(100vh - 450px);
+.BurgerIngredientsItems {
+  height: calc(100vh - 270px);
   overflow: auto;
 }
 
-.BurgerIngredientsMainItemsItem {
-  display: flex;
-  align-items: center;
+.BurgerIngredientsItemsGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
-.BurgerIngredientsLastBun {
-  margin-top: 5px;
-}
-
-.BurgerIngredientsTotal {
-  display: flex;
-  height: 40px;
-  align-items: center;
-  margin-left: auto;
+.BurgerIngredientsItem {
+  position: relative;
   width: fit-content;
+  text-align: center;
+  cursor: pointer;
+}
+
+.BurgerIngredientsItemPrise {
+  display: inline-flex;
+}
+
+.BurgerIngredientsItemName {
+  height: 48;
 }

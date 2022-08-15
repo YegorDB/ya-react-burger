@@ -1,25 +1,30 @@
 import cn from 'classnames';
 import React from 'react';
 
-import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
+import {
+  Button, ConstructorElement, CurrencyIcon, DragIcon,
+} from '@ya.praktikum/react-developer-burger-ui-components'
 
 import Modal from '../modal/Modal';
-import IngredientDetails from '../ingredient-details/IngredientDetails';
-import { Ingredient, IngredientsByType } from '../../types/ingredient'
+import OrderDetails from '../order-details/OrderDetails';
+
+import { Ingredient } from '../../types/ingredient'
 
 import styles from './BurgerConstructor.module.css';
 
 function parseIngredients(ingredients: Ingredient[]) {
-  const ingredientsByType: IngredientsByType = {bun: [], main: [], sauce: []};
+  const ingredientsById: Record<string, Ingredient> = {};
   for (const item of ingredients) {
-    ingredientsByType[item.type as keyof IngredientsByType].push(item);
+    ingredientsById[item._id] = item;
   }
-  return ingredientsByType;
+  return ingredientsById;
 }
 
-function BurgerConstructorItem(props: {ingredient: Ingredient}) {
-  const {ingredient} = props;
-
+function BurgerConstructor(props: {
+  ingredients: Ingredient[],
+  bunId?: string,
+  otherIds?: string[],
+}) {
   const [isModalOpen, setModalOpen] = React.useState(false);
 
   const handleOpenModal = () => {
@@ -30,72 +35,79 @@ function BurgerConstructorItem(props: {ingredient: Ingredient}) {
     setModalOpen(false);
   }
 
+  const ingredientsById = parseIngredients(props.ingredients);
+
+  const bunIngredient = props.bunId && ingredientsById[props.bunId];
+  const otherIngredients = props.otherIds && props.otherIds.map(id => ingredientsById[id]).filter(Boolean);
+
+  let totalPrice = bunIngredient ? bunIngredient.price * 2 : 0;
+  if (otherIngredients) {
+    totalPrice = otherIngredients.reduce(
+      (previousPrice, ingredient) => previousPrice + ingredient.price,
+      totalPrice
+    );
+  }
+
   return (
-    <div className="hidden-overflow">
-      <div className={cn('mt-4 mb-4 ml-3 mr-3', styles.BurgerConstructorItem)} onClick={handleOpenModal}>
-        <img className="ml-4 mr-4" src={ingredient.image} alt={ingredient.name} />
-        <div className={cn('mt-1 mb-1', styles.BurgerConstructorItemPrise)}>
-          <p className="mr-1 text text_type_digits-default">{ingredient.price}</p>
-          <CurrencyIcon type="primary" />
+    <div className="mt-25 pl-4 pr-4">
+      {bunIngredient && (
+        <div className={cn('ml-8', styles.BurgerConstructorFirstBun)}>
+          <ConstructorElement
+            type="top"
+            isLocked={true}
+            text={`${bunIngredient.name} (верх)`}
+            price={bunIngredient.price}
+            thumbnail={bunIngredient.image}
+          />
         </div>
-        <div>
-          <p className={cn('text text_type_main-default', styles.BurgerConstructorItemName)}>{ingredient.name}</p>
-        </div>
-        <Counter count={1} size="default" />
-      </div>
-      {isModalOpen && (
-        <Modal handleClose={handleCloseModal} title="Детали ингредиента">
-          <IngredientDetails ingredient={ingredient} />
-        </Modal>
       )}
-    </div>
-  );
-}
-
-function BurgerConstructorItemsGroup(props: {name: string, ingredients: Ingredient[]}) {
-  return (
-    <div>
-      <p className="text text_type_main-medium">
-        {props.name}
-      </p>
-      <div className={cn('pt-2 pb-6 pl-1 pr-1', styles.BurgerConstructorItemsGroup)}>
-        {props.ingredients.map(ingredient => (
-          <BurgerConstructorItem ingredient={ingredient} key={ingredient._id}/>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function BurgerConstructor(props: {ingredients: Ingredient[]}) {
-  const [currentTab, setCurrentTab] = React.useState('1');
-
-  const {
-    bun: bunIngredients,
-    sauce: sauceIngredients,
-    main: mainIngredients,
-  } = parseIngredients(props.ingredients);
-
-  return (
-    <div>
-      <p className="mt-10 mb-5 text text_type_main-large">
-        Соберите бургер
-      </p>
-      <div className={cn('mb-10', styles.BurgerConstructorTabs)}>
-        <Tab value="1" active={currentTab === '1'} onClick={setCurrentTab}>
-          Булки
-        </Tab>
-        <Tab value="2" active={currentTab === '2'} onClick={setCurrentTab}>
-          Соусы
-        </Tab>
-        <Tab value="3" active={currentTab === '3'} onClick={setCurrentTab}>
-          Начинки
-        </Tab>
+      {otherIngredients && (
+        <div
+          style={{maxHeight: 85 * otherIngredients.length}}
+          className={cn('custom-scroll', styles.BurgerConstructorMainItems)}
+        >
+          {otherIngredients.map((ingredient, index) => (
+            <div className={styles.BurgerConstructorMainItemsItem} key={ingredient._id}>
+              <div className="mr-2">
+                <DragIcon type="primary" />
+              </div>
+              <ConstructorElement
+                text={ingredient.name}
+                price={ingredient.price}
+                thumbnail={ingredient.image}
+              />
+            </div>
+          ))}
         </div>
-      <div className={cn('custom-scroll', styles.BurgerConstructorItems)}>
-        <BurgerConstructorItemsGroup name="Булки" ingredients={bunIngredients} />
-        <BurgerConstructorItemsGroup name="Соусы" ingredients={sauceIngredients} />
-        <BurgerConstructorItemsGroup name="Начинки" ingredients={mainIngredients} />
+      )}
+      {bunIngredient && (
+        <div className={cn('ml-8', styles.BurgerConstructorLastBun)}>
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={`${bunIngredient.name} (низ)`}
+            price={bunIngredient.price}
+            thumbnail={bunIngredient.image}
+          />
+        </div>
+      )}
+      <div className="mt-10">
+        <div className={styles.BurgerConstructorTotal}>
+          <p className="mr-1 text text_type_digits-medium">{totalPrice}</p>
+          <div className="mr-10">
+            <CurrencyIcon type="primary" />
+          </div>
+          <div className="hidden-overflow">
+            <Button type="primary" size="medium" onClick={handleOpenModal}>
+              Оформить заказ
+            </Button>
+            {isModalOpen && (
+              <Modal handleClose={handleCloseModal}>
+                <OrderDetails orderId="034536" />
+              </Modal>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

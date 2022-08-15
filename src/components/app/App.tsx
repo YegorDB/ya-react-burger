@@ -35,10 +35,10 @@ function App() {
       <AppHeader />
       <main className={styles.AppMain}>
         <div className={styles.AppMainHalf}>
-          <BurgerConstructor ingredients={ingredients} />
+          <BurgerIngredients ingredients={ingredients} />
         </div>
         <div className={styles.AppMainHalf}>
-          <BurgerIngredients ingredients={ingredients} bunId={order.bunId} otherIds={order.otherIds}/>
+          <BurgerConstructor ingredients={ingredients} bunId={order.bunId} otherIds={order.otherIds}/>
         </div>
       </main>
     </div>
