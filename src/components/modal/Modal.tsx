@@ -36,8 +36,8 @@ function Modal(props: {
   const closeHandler = React.useCallback(() => handleClose(), [handleClose]);
 
   React.useEffect(() => {
-    const handler = (e: {keyCode: number}) => {
-      if (e.keyCode !== 27) return;
+    const handler = (e: {key: string}) => {
+      if (e.key !== 'Escape') return;
       handleClose();
     };
 
