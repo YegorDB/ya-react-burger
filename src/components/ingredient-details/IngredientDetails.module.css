@@ -1,0 +1,9 @@
+.IngredientDetails {
+  text-align: center;
+}
+
+.IngredientDetailsData {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}

@@ -1,0 +1,21 @@
+.AppHeader {
+  position: relative;
+  text-align: center;
+}
+
+.AppHeaderItem {
+  display: flex;
+}
+
+.AppHeaderLinks {
+  position: absolute;
+  top: 0;
+  left: 3%;
+  display: flex;
+}
+
+.AppHeaderProfile {
+  position: absolute;
+  top: 0;
+  right: 3%;
+}
