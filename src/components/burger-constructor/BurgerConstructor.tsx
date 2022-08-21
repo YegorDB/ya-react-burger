@@ -7,7 +7,7 @@ import {
 
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
-import { IngredientsContext } from '../../context/ingredients';
+import { IngredientsContext, SelectedIngredientsContext } from '../../context/ingredients';
 import { Ingredient } from '../../types/ingredient'
 
 import styles from './BurgerConstructor.module.css';
@@ -20,14 +20,11 @@ function parseIngredients(ingredients: Ingredient[]) {
   return ingredientsById;
 }
 
-function BurgerConstructor(props: {
-  bunId?: string,
-  otherIds?: string[],
-}) {
-  const {bunId, otherIds} = props;
-
+function BurgerConstructor() {
   const [isModalOpen, setModalOpen] = React.useState(false);
   const ingredients = useContext(IngredientsContext);
+  const { selectedIngredientsState } = useContext(SelectedIngredientsContext);
+  const { bunId, otherIds } = selectedIngredientsState;
 
   const handleOpenModal = () => {
     setModalOpen(true);
