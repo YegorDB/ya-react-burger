@@ -7,6 +7,7 @@ import {
 
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
+import { API_ROOT } from '../../consts/api';
 import { IngredientsContext, SelectedIngredientsContext } from '../../context/ingredients';
 import { Ingredient } from '../../types/ingredient'
 
@@ -22,12 +23,37 @@ function parseIngredients(ingredients: Ingredient[]) {
 
 function BurgerConstructor() {
   const [isModalOpen, setModalOpen] = React.useState(false);
+  const [orderId, setOrderId] = React.useState('');
   const ingredients = useContext(IngredientsContext);
   const { selectedIngredientsState } = useContext(SelectedIngredientsContext);
   const { bunId, otherIds } = selectedIngredientsState;
 
-  const handleOpenModal = () => {
-    setModalOpen(true);
+  const handleOrderConfirmation = () => {
+    const ingredientsIds = [bunId, ...otherIds];
+    if (ingredientsIds.length === 0) return;
+
+    fetch(`${API_ROOT}/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ingredients: ingredientsIds,
+      })
+    })
+    .then(res => {
+      if (res.ok) return res.json();
+      return Promise.reject(`Post order response status ${res.status}`);
+    })
+    .then(res => {
+      if (res.success) {
+        setOrderId(res.order.number.toString());
+        setModalOpen(true);
+      } else {
+        console.log('Post order without success response', res);
+      }
+    })
+    .catch(err => console.log('Post order error', err));
   }
 
   const handleCloseModal = () => {
@@ -97,12 +123,12 @@ function BurgerConstructor() {
             <CurrencyIcon type="primary" />
           </div>
           <div className="hidden-overflow">
-            <Button type="primary" size="medium" onClick={handleOpenModal}>
+            <Button type="primary" size="medium" onClick={handleOrderConfirmation}>
               Оформить заказ
             </Button>
             {isModalOpen && (
               <Modal handleClose={handleCloseModal}>
-                <OrderDetails orderId="034536" />
+                <OrderDetails orderId={orderId} />
               </Modal>
             )}
           </div>

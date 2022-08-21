@@ -3,6 +3,7 @@ import React, {useState, useReducer, useEffect} from 'react';
 import AppHeader from '../app-header/AppHeader';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
+import { API_ROOT } from '../../consts/api';
 import { IngredientsContext, SelectedIngredientsContext } from '../../context/ingredients';
 import { SelectedIngredientsState, SelectedIngredientsAction } from '../../types/ingredient';
 
@@ -10,8 +11,6 @@ import { SelectedIngredientsState, SelectedIngredientsAction } from '../../types
 import order from '../../utils/order-data';
 
 import styles from './App.module.css';
-
-const API_ROOT = 'https://norma.nomoreparties.space/api';
 
 const selectedIngredientsInitialState = {bunId: null, otherIds: []};
 
@@ -78,7 +77,7 @@ function App() {
     fetch(`${API_ROOT}/ingredients`)
     .then(res => {
       if (res.ok) return res.json();
-      return Promise.reject(`Response status ${res.status}`);
+      return Promise.reject(`Get ingredients response status ${res.status}`);
     })
     .then(res => {
       if (res.success) {
