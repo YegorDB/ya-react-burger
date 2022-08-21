@@ -4,6 +4,8 @@ import AppHeader from '../app-header/AppHeader';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 
+import {IngredientsContext} from '../../context/ingredients';
+
 // import ingredients from '../../utils/ingredients-data';
 import order from '../../utils/order-data';
 
@@ -31,17 +33,17 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <IngredientsContext.Provider value={ingredients}>
       <AppHeader />
       <main className={styles.AppMain}>
         <div className={styles.AppMainHalf}>
-          <BurgerIngredients ingredients={ingredients} />
+          <BurgerIngredients />
         </div>
         <div className={styles.AppMainHalf}>
-          <BurgerConstructor ingredients={ingredients} bunId={order.bunId} otherIds={order.otherIds}/>
+          <BurgerConstructor bunId={order.bunId} otherIds={order.otherIds}/>
         </div>
       </main>
-    </div>
+    </IngredientsContext.Provider>
   );
 }
 

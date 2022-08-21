@@ -1,10 +1,11 @@
 import cn from 'classnames';
-import React from 'react';
+import React, {useContext} from 'react';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import Modal from '../modal/Modal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
+import { IngredientsContext } from '../../context/ingredients';
 import { Ingredient, IngredientsByType } from '../../types/ingredient'
 
 import styles from './BurgerIngredients.module.css';
@@ -67,14 +68,16 @@ function BurgerIngredientsItemsGroup(props: {name: string, ingredients: Ingredie
   );
 }
 
-function BurgerIngredients(props: {ingredients: Ingredient[]}) {
+function BurgerIngredients() {
   const [currentTab, setCurrentTab] = React.useState('1');
+
+  const ingredients = useContext(IngredientsContext);
 
   const {
     bun: bunIngredients,
     sauce: sauceIngredients,
     main: mainIngredients,
-  } = parseIngredients(props.ingredients);
+  } = parseIngredients(ingredients);
 
   return (
     <div>

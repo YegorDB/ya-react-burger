@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React from 'react';
+import React, {useContext} from 'react';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
@@ -7,7 +7,7 @@ import {
 
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
-
+import { IngredientsContext } from '../../context/ingredients';
 import { Ingredient } from '../../types/ingredient'
 
 import styles from './BurgerConstructor.module.css';
@@ -21,11 +21,13 @@ function parseIngredients(ingredients: Ingredient[]) {
 }
 
 function BurgerConstructor(props: {
-  ingredients: Ingredient[],
   bunId?: string,
   otherIds?: string[],
 }) {
+  const {bunId, otherIds} = props;
+
   const [isModalOpen, setModalOpen] = React.useState(false);
+  const ingredients = useContext(IngredientsContext);
 
   const handleOpenModal = () => {
     setModalOpen(true);
@@ -35,10 +37,10 @@ function BurgerConstructor(props: {
     setModalOpen(false);
   }
 
-  const ingredientsById = parseIngredients(props.ingredients);
+  const ingredientsById = parseIngredients(ingredients);
 
-  const bunIngredient = props.bunId && ingredientsById[props.bunId];
-  const otherIngredients = props.otherIds && props.otherIds.map(id => ingredientsById[id]).filter(Boolean);
+  const bunIngredient = bunId && ingredientsById[bunId];
+  const otherIngredients = otherIds && otherIds.map(id => ingredientsById[id]).filter(Boolean);
 
   let totalPrice = bunIngredient ? bunIngredient.price * 2 : 0;
   if (otherIngredients) {
