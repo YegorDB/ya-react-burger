@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, {useContext} from 'react';
+import React, {useContext, useMemo, useRef} from 'react';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
@@ -53,23 +53,49 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
   );
 }
 
-function BurgerIngredientsItemsGroup(props: {name: string, ingredients: Ingredient[]}) {
-  return (
-    <div>
-      <p className="text text_type_main-medium">
-        {props.name}
-      </p>
-      <div className={cn('pt-2 pb-6 pl-1 pr-1', styles.BurgerIngredientsItemsGroup)}>
-        {props.ingredients.map(ingredient => (
-          <BurgerIngredientsItem ingredient={ingredient} key={ingredient._id}/>
-        ))}
-      </div>
+const BurgerIngredientsItemsGroup = React.forwardRef((
+  props: {name: string, ingredients: Ingredient[]},
+  ref: React.ForwardedRef<HTMLParagraphElement>,
+) => (
+  <div>
+    <p ref={ref} className="text text_type_main-medium">
+      {props.name}
+    </p>
+    <div className={cn('pt-2 pb-6 pl-1 pr-1', styles.BurgerIngredientsItemsGroup)}>
+      {props.ingredients.map(ingredient => (
+        <BurgerIngredientsItem ingredient={ingredient} key={ingredient._id}/>
+      ))}
     </div>
-  );
+  </div>
+));
+
+function getBurgerIngredientsTabClickHandler(ref: React.RefObject<HTMLElement>, setCurrentTab: Function) {
+  return (value: string) => {
+    setCurrentTab(value);
+    if (ref.current === null) return;
+    ref.current.scrollIntoView({behavior: 'smooth'});
+  }
 }
 
 function BurgerIngredients() {
   const [currentTab, setCurrentTab] = React.useState('1');
+
+  const bunRef = useRef(null);
+  const sauceRef = useRef(null);
+  const mainRef = useRef(null);
+
+  const bunTabClickHandler = useMemo(
+    () => getBurgerIngredientsTabClickHandler(bunRef, setCurrentTab),
+    [bunRef, setCurrentTab]
+  );
+  const sauceTabClickHandler = useMemo(
+    () => getBurgerIngredientsTabClickHandler(sauceRef, setCurrentTab),
+    [sauceRef, setCurrentTab]
+  );
+  const mainTabClickHandler = useMemo(
+    () => getBurgerIngredientsTabClickHandler(mainRef, setCurrentTab),
+    [mainRef, setCurrentTab]
+  );
 
   const ingredients = useContext(IngredientsContext);
 
@@ -85,20 +111,20 @@ function BurgerIngredients() {
         Соберите бургер
       </p>
       <div className={cn('mb-10', styles.BurgerIngredientsTabs)}>
-        <Tab value="1" active={currentTab === '1'} onClick={setCurrentTab}>
+        <Tab value="1" active={currentTab === '1'} onClick={bunTabClickHandler}>
           Булки
         </Tab>
-        <Tab value="2" active={currentTab === '2'} onClick={setCurrentTab}>
+        <Tab value="2" active={currentTab === '2'} onClick={sauceTabClickHandler}>
           Соусы
         </Tab>
-        <Tab value="3" active={currentTab === '3'} onClick={setCurrentTab}>
+        <Tab value="3" active={currentTab === '3'} onClick={mainTabClickHandler}>
           Начинки
         </Tab>
         </div>
       <div className={cn('custom-scroll', styles.BurgerIngredientsItems)}>
-        <BurgerIngredientsItemsGroup name="Булки" ingredients={bunIngredients} />
-        <BurgerIngredientsItemsGroup name="Соусы" ingredients={sauceIngredients} />
-        <BurgerIngredientsItemsGroup name="Начинки" ingredients={mainIngredients} />
+        <BurgerIngredientsItemsGroup ref={bunRef} name="Булки" ingredients={bunIngredients} />
+        <BurgerIngredientsItemsGroup ref={sauceRef} name="Соусы" ingredients={sauceIngredients} />
+        <BurgerIngredientsItemsGroup ref={mainRef} name="Начинки" ingredients={mainIngredients} />
       </div>
     </div>
   );
