@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, {useContext} from 'react';
+import React, {useContext, useMemo} from 'react';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
@@ -57,15 +57,20 @@ function BurgerConstructor() {
   const ingredientsById = parseIngredients(ingredients);
 
   const bunIngredient = bunId && ingredientsById[bunId];
-  const otherIngredients = otherIds && otherIds.map(id => ingredientsById[id]).filter(Boolean);
+  const otherIngredients = useMemo(() => {
+    return otherIds && otherIds.map(id => ingredientsById[id]).filter(Boolean);
+  }, [otherIds, ingredientsById]);
 
-  let totalPrice = bunIngredient ? bunIngredient.price * 2 : 0;
-  if (otherIngredients) {
-    totalPrice = otherIngredients.reduce(
-      (previousPrice, ingredient) => previousPrice + ingredient.price,
-      totalPrice
-    );
-  }
+  const totalPrice = useMemo(() => {
+    let value = bunIngredient ? bunIngredient.price * 2 : 0;
+    if (otherIngredients) {
+      value = otherIngredients.reduce(
+        (previousPrice, ingredient) => previousPrice + ingredient.price,
+        value
+      );
+    }
+    return value;
+  }, [bunIngredient, otherIngredients]);
 
   return (
     <div className="mt-25 pl-4 pr-4">
