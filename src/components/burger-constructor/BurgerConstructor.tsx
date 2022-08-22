@@ -10,6 +10,7 @@ import OrderDetails from '../order-details/OrderDetails';
 import { API_ROOT } from '../../consts/api';
 import { IngredientsContext, SelectedIngredientsContext } from '../../context/ingredients';
 import { Ingredient } from '../../types/ingredient'
+import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
 import styles from './BurgerConstructor.module.css';
 
@@ -41,19 +42,12 @@ function BurgerConstructor() {
         ingredients: ingredientsIds,
       })
     })
-    .then(res => {
-      if (res.ok) return res.json();
-      return Promise.reject(`Post order response status ${res.status}`);
-    })
-    .then(res => {
-      if (res.success) {
-        setOrderId(res.order.number.toString());
-        setModalOpen(true);
-      } else {
-        console.log('Post order without success response', res);
-      }
-    })
-    .catch(err => console.log('Post order error', err));
+    .then(checkResponse)
+    .then(handleResponse<{success: boolean, order: {number: number}}>(res => {
+      setOrderId(res.order.number.toString());
+      setModalOpen(true);
+    }))
+    .catch(handleResponseError('Post order'));
   }
 
   const handleCloseModal = () => {

@@ -5,8 +5,10 @@ import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import { API_ROOT } from '../../consts/api';
 import { IngredientsContext, SelectedIngredientsContext } from '../../context/ingredients';
-import { SelectedIngredientsState, SelectedIngredientsAction } from '../../types/ingredient';
-
+import {
+  Ingredient, SelectedIngredientsState, SelectedIngredientsAction
+} from '../../types/ingredient';
+import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 // import ingredients from '../../utils/ingredients-data';
 import order from '../../utils/order-data';
 
@@ -62,7 +64,7 @@ function selectedIngredientsReducer(
 }
 
 function App() {
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState(new Array<Ingredient>());
   const [selectedIngredientsState, selectedIngredientsDispatch] = useReducer(
     selectedIngredientsReducer, selectedIngredientsInitialState);
 
@@ -75,18 +77,9 @@ function App() {
 
   useEffect(() => {
     fetch(`${API_ROOT}/ingredients`)
-    .then(res => {
-      if (res.ok) return res.json();
-      return Promise.reject(`Get ingredients response status ${res.status}`);
-    })
-    .then(res => {
-      if (res.success) {
-        setIngredients(res.data);
-      } else {
-        console.log('Get ingredients without success response', res);
-      }
-    })
-    .catch(err => console.log('Get ingredients error', err));
+    .then(checkResponse)
+    .then(handleResponse<{success: boolean, data: Ingredient[]}>(res => setIngredients(res.data)))
+    .catch(handleResponseError('Get ingredients'));
   }, []);
 
   return (

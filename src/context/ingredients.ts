@@ -1,13 +1,10 @@
 import React from 'react';
 
-import { SelectedIngredientsState } from '../types/ingredient'
+import { Ingredient, SelectedIngredientsContextValue } from '../types/ingredient'
 
-export const IngredientsContext = React.createContext([]);
+export const IngredientsContext = React.createContext(new Array<Ingredient>());
 
-const selectedIngredientsContextValue: {
-  selectedIngredientsState: SelectedIngredientsState,
-  selectedIngredientsDispatch: Function,
-} = {
+const selectedIngredientsContextValue: SelectedIngredientsContextValue = {
   selectedIngredientsState: {bunId: null, otherIds: []},
   selectedIngredientsDispatch: () => {},
 };

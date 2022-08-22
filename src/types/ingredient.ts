@@ -30,3 +30,8 @@ export type SelectedIngredientsAction = {
   ingredientIsABun: boolean,
   ingredientId: Ingredient['_id'],
 }
+
+export type SelectedIngredientsContextValue = {
+  selectedIngredientsState: SelectedIngredientsState,
+  selectedIngredientsDispatch: Function,
+}
