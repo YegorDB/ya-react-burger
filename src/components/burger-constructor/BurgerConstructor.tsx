@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React from 'react';
+import React, {useContext, useMemo} from 'react';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
@@ -7,8 +7,10 @@ import {
 
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
-
+import { API_ROOT } from '../../consts/api';
+import { IngredientsContext, SelectedIngredientsContext } from '../../context/ingredients';
 import { Ingredient } from '../../types/ingredient'
+import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
 import styles from './BurgerConstructor.module.css';
 
@@ -20,33 +22,55 @@ function parseIngredients(ingredients: Ingredient[]) {
   return ingredientsById;
 }
 
-function BurgerConstructor(props: {
-  ingredients: Ingredient[],
-  bunId?: string,
-  otherIds?: string[],
-}) {
+function BurgerConstructor() {
   const [isModalOpen, setModalOpen] = React.useState(false);
+  const [orderId, setOrderId] = React.useState('');
+  const ingredients = useContext(IngredientsContext);
+  const { selectedIngredientsState } = useContext(SelectedIngredientsContext);
+  const { bunId, otherIds } = selectedIngredientsState;
 
-  const handleOpenModal = () => {
-    setModalOpen(true);
+  const handleOrderConfirmation = () => {
+    const ingredientsIds = [bunId, ...otherIds];
+    if (ingredientsIds.length === 0) return;
+
+    fetch(`${API_ROOT}/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ingredients: ingredientsIds,
+      })
+    })
+    .then(checkResponse)
+    .then(handleResponse<{success: boolean, order: {number: number}}>(res => {
+      setOrderId(res.order.number.toString());
+      setModalOpen(true);
+    }))
+    .catch(handleResponseError('Post order'));
   }
 
   const handleCloseModal = () => {
     setModalOpen(false);
   }
 
-  const ingredientsById = parseIngredients(props.ingredients);
+  const ingredientsById = parseIngredients(ingredients);
 
-  const bunIngredient = props.bunId && ingredientsById[props.bunId];
-  const otherIngredients = props.otherIds && props.otherIds.map(id => ingredientsById[id]).filter(Boolean);
+  const bunIngredient = bunId && ingredientsById[bunId];
+  const otherIngredients = useMemo(() => {
+    return otherIds && otherIds.map(id => ingredientsById[id]).filter(Boolean);
+  }, [otherIds, ingredientsById]);
 
-  let totalPrice = bunIngredient ? bunIngredient.price * 2 : 0;
-  if (otherIngredients) {
-    totalPrice = otherIngredients.reduce(
-      (previousPrice, ingredient) => previousPrice + ingredient.price,
-      totalPrice
-    );
-  }
+  const totalPrice = useMemo(() => {
+    let value = bunIngredient ? bunIngredient.price * 2 : 0;
+    if (otherIngredients) {
+      value = otherIngredients.reduce(
+        (previousPrice, ingredient) => previousPrice + ingredient.price,
+        value
+      );
+    }
+    return value;
+  }, [bunIngredient, otherIngredients]);
 
   return (
     <div className="mt-25 pl-4 pr-4">
@@ -98,12 +122,12 @@ function BurgerConstructor(props: {
             <CurrencyIcon type="primary" />
           </div>
           <div className="hidden-overflow">
-            <Button type="primary" size="medium" onClick={handleOpenModal}>
+            <Button type="primary" size="medium" onClick={handleOrderConfirmation}>
               Оформить заказ
             </Button>
             {isModalOpen && (
               <Modal handleClose={handleCloseModal}>
-                <OrderDetails orderId="034536" />
+                <OrderDetails orderId={orderId} />
               </Modal>
             )}
           </div>
