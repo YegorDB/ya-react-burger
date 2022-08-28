@@ -1,10 +1,15 @@
 import React, {useState, useReducer, useEffect} from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
 import AppHeader from '../app-header/AppHeader';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import { API_ROOT } from '../../consts/api';
 import { IngredientsContext, SelectedIngredientsContext } from '../../context/ingredients';
+
+import rootReducer from '../../services/reducers';
+
 import {
   Ingredient, SelectedIngredientsState, SelectedIngredientsAction
 } from '../../types/ingredient';
@@ -13,6 +18,8 @@ import { checkResponse, handleResponse, handleResponseError } from '../../utils/
 import order from '../../utils/order-data';
 
 import styles from './App.module.css';
+
+const store = createStore(rootReducer);
 
 const selectedIngredientsInitialState = {bunId: null, otherIds: []};
 
@@ -83,21 +90,23 @@ function App() {
   }, []);
 
   return (
-    <IngredientsContext.Provider value={ingredients}>
-      <SelectedIngredientsContext.Provider value={{
-        selectedIngredientsState, selectedIngredientsDispatch
-      }}>
-        <AppHeader />
-        <main className={styles.AppMain}>
-          <div className={styles.AppMainHalf}>
-            <BurgerIngredients />
-          </div>
-          <div className={styles.AppMainHalf}>
-            <BurgerConstructor />
-          </div>
-        </main>
-      </SelectedIngredientsContext.Provider>
-    </IngredientsContext.Provider>
+    <Provider store={store}>
+      <IngredientsContext.Provider value={ingredients}>
+        <SelectedIngredientsContext.Provider value={{
+          selectedIngredientsState, selectedIngredientsDispatch
+        }}>
+          <AppHeader />
+          <main className={styles.AppMain}>
+            <div className={styles.AppMainHalf}>
+              <BurgerIngredients />
+            </div>
+            <div className={styles.AppMainHalf}>
+              <BurgerConstructor />
+            </div>
+          </main>
+        </SelectedIngredientsContext.Provider>
+      </IngredientsContext.Provider>
+    </Provider>
   );
 }
 
