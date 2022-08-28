@@ -1,5 +1,6 @@
 import cn from 'classnames';
-import React, {useContext, useMemo} from 'react';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
@@ -8,8 +9,8 @@ import {
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
 import { API_ROOT } from '../../consts/api';
-import { IngredientsContext, SelectedIngredientsContext } from '../../context/ingredients';
 import { Ingredient } from '../../types/ingredient'
+import { State } from '../../types/states';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
 import styles from './BurgerConstructor.module.css';
@@ -25,9 +26,11 @@ function parseIngredients(ingredients: Ingredient[]) {
 function BurgerConstructor() {
   const [isModalOpen, setModalOpen] = React.useState(false);
   const [orderId, setOrderId] = React.useState('');
-  const ingredients = useContext(IngredientsContext);
-  const { selectedIngredientsState } = useContext(SelectedIngredientsContext);
-  const { bunId, otherIds } = selectedIngredientsState;
+  const { ingredients, bunId, otherIds } = useSelector((state: State) => ({
+    ingredients: state.ingredients.items,
+    bunId: state.selectedIngredients.bunId,
+    otherIds: state.selectedIngredients.otherIds,
+  }));
 
   const handleOrderConfirmation = () => {
     const ingredientsIds = [bunId, ...otherIds];

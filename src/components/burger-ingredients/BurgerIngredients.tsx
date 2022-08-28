@@ -1,12 +1,13 @@
 import cn from 'classnames';
-import React, {useContext, useMemo, useRef} from 'react';
+import React, { useMemo, useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import Modal from '../modal/Modal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
-import { IngredientsContext } from '../../context/ingredients';
 import { Ingredient, IngredientsByType } from '../../types/ingredient'
+import { State } from '../../types/states';
 
 import styles from './BurgerIngredients.module.css';
 
@@ -97,7 +98,7 @@ function BurgerIngredients() {
     [mainRef, setCurrentTab]
   );
 
-  const ingredients = useContext(IngredientsContext);
+  const ingredients = useSelector((state: State) => state.ingredients.items);
 
   const {
     bun: bunIngredients,

@@ -16,3 +16,10 @@ export type SelectedIngredientsState = {
   bunId: Ingredient['_id'] | null,
   otherIds: Ingredient['_id'][],
 }
+
+export type State = {
+  currentIngredient: CurrentIngredientState,
+  currentOrder: CurrentOrderState,
+  ingredients: IngredientsState,
+  selectedIngredients: SelectedIngredientsState,
+}
