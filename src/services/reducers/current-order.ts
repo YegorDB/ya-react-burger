@@ -3,7 +3,7 @@ import { CurrentOrderAction } from '../../types/actions';
 import { CurrentOrderState } from '../../types/states';
 
 const initialState = {
-  order: null,
+  orderId: '',
 };
 
 const currentOrder = (
@@ -14,7 +14,7 @@ const currentOrder = (
     case SET_CURRENT_ORDER:
       return {
         ...state,
-        order: action.order,
+        orderId: action.orderId,
       };
     default:
       return state;

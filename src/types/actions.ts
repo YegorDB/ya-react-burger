@@ -7,7 +7,7 @@ export type CurrentIngredientAction = {
 
 export type CurrentOrderAction = {
   type: 'SET_CURRENT_ORDER',
-  order: string,
+  orderId: string,
 }
 
 export type IngredientsAction = {

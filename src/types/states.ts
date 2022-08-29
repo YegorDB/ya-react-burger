@@ -5,7 +5,7 @@ export type CurrentIngredientState = {
 }
 
 export type CurrentOrderState = {
-  order: string | null,
+  orderId: string,
 }
 
 export type IngredientsState = {

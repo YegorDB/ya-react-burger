@@ -25,3 +25,26 @@ export function getIngredients() {
     .catch(handleResponseError('Get ingredients'));
   };
 }
+
+export function postOrder(ingredientsIds: Ingredient['_id'][], setModalOpen: Function) {
+  return function(dispatch: Function) {
+    fetch(`${API_ROOT}/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ingredients: ingredientsIds,
+      })
+    })
+    .then(checkResponse)
+    .then(handleResponse<{success: boolean, order: {number: number}}>(res => {
+      dispatch({
+        type: SET_CURRENT_ORDER,
+        orderId: res.order.number.toString()
+      })
+      setModalOpen(true);
+    }))
+    .catch(handleResponseError('Post order'));
+  };
+}

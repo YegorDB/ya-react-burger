@@ -1,11 +1,12 @@
 import cn from 'classnames';
 import React, { useMemo, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import Modal from '../modal/Modal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
+import { SET_CURRENT_INGREDIENT } from '../../services/actions';
 import { Ingredient, IngredientsByType } from '../../types/ingredient'
 import { State } from '../../types/states';
 
@@ -20,15 +21,24 @@ function parseIngredients(ingredients: Ingredient[]) {
 }
 
 function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
-  const {ingredient} = props;
+  const { ingredient } = props;
 
+  const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = React.useState(false);
 
   const handleOpenModal = () => {
+    dispatch({
+      type: SET_CURRENT_INGREDIENT,
+      ingredient: ingredient,
+    });
     setModalOpen(true);
   }
 
   const handleCloseModal = () => {
+    dispatch({
+      type: SET_CURRENT_INGREDIENT,
+      ingredient: null,
+    });
     setModalOpen(false);
   }
 
@@ -47,7 +57,7 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
       </div>
       {isModalOpen && (
         <Modal handleClose={handleCloseModal} title="Детали ингредиента">
-          <IngredientDetails ingredient={ingredient} />
+          <IngredientDetails />
         </Modal>
       )}
     </div>

@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
@@ -8,10 +8,9 @@ import {
 
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
-import { API_ROOT } from '../../consts/api';
+import { postOrder } from '../../services/actions';
 import { Ingredient } from '../../types/ingredient'
 import { State } from '../../types/states';
-import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
 import styles from './BurgerConstructor.module.css';
 
@@ -24,33 +23,21 @@ function parseIngredients(ingredients: Ingredient[]) {
 }
 
 function BurgerConstructor() {
+  const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = React.useState(false);
-  const [orderId, setOrderId] = React.useState('');
-  const { ingredients, bunId, otherIds } = useSelector((state: State) => ({
+  const { ingredients, bunId, otherIds, orderId } = useSelector((state: State) => ({
     ingredients: state.ingredients.items,
     bunId: state.selectedIngredients.bunId,
     otherIds: state.selectedIngredients.otherIds,
+    orderId: state.currentOrder.orderId,
   }));
 
   const handleOrderConfirmation = () => {
     const ingredientsIds = [bunId, ...otherIds];
     if (ingredientsIds.length === 0) return;
 
-    fetch(`${API_ROOT}/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ingredients: ingredientsIds,
-      })
-    })
-    .then(checkResponse)
-    .then(handleResponse<{success: boolean, order: {number: number}}>(res => {
-      setOrderId(res.order.number.toString());
-      setModalOpen(true);
-    }))
-    .catch(handleResponseError('Post order'));
+    // @ts-ignore
+    dispatch(postOrder(ingredientsIds, setModalOpen));
   }
 
   const handleCloseModal = () => {
