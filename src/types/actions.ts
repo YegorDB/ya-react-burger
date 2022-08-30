@@ -15,8 +15,16 @@ export type IngredientsAction = {
   items: Ingredient[],
 }
 
-export type SelectedIngredientsAction = {
-  type: 'ADD_INGREDIENT_TO_CONSTRUCTOR' | 'REMOVE_INGREDIENT_FROM_CONSTRUCTOR' | 'CLEAR_CONSTRUCTOR_INGREDIENTS',
+type SelectedIngredientsBaseAction = {
+  type: 'ADD_INGREDIENT_TO_CONSTRUCTOR' | 'REMOVE_INGREDIENT_FROM_CONSTRUCTOR',
   ingredientIsABun: boolean,
   ingredientId: Ingredient['_id'],
 }
+
+type SelectedIngredientsOrderAction = {
+  type: 'CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER',
+  from: number,
+  to: number,
+}
+
+export type SelectedIngredientsAction = SelectedIngredientsBaseAction | SelectedIngredientsOrderAction;

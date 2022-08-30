@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import React, { useMemo } from 'react';
-import { useDrop } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
@@ -12,6 +12,7 @@ import OrderDetails from '../order-details/OrderDetails';
 import {
   ADD_INGREDIENT_TO_CONSTRUCTOR,
   REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
+  CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER,
   postOrder,
 } from '../../services/actions';
 import { Ingredient } from '../../types/ingredient'
@@ -25,6 +26,55 @@ function parseIngredients(ingredients: Ingredient[]) {
     ingredientsById[item._id] = item;
   }
   return ingredientsById;
+}
+
+function BurgerConstructorMainItemsItem(props: {
+  ingredient: Ingredient,
+  index: number,
+}) {
+  const { ingredient, index } = props;
+
+  const dispatch = useDispatch();
+
+  const [, dragRef] = useDrag({
+    type: 'constructor-item',
+    item: {index},
+  });
+
+  const [, dropTarget] = useDrop({
+      accept: 'constructor-item',
+      drop(item: {index: number}) {
+        dispatch({
+          type: CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER,
+          from: item.index,
+          to: index
+        });
+      },
+  });
+
+  const handleRemove = () => {
+    dispatch({
+      type: REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
+      ingredientIsABun: ingredient.type === 'bun',
+      ingredientId: ingredient._id
+    });
+  };
+
+  return (
+    <div ref={dragRef}>
+      <div ref={dropTarget} className={styles.BurgerConstructorMainItemsItem}>
+        <div className="mr-2">
+          <DragIcon type="primary" />
+        </div>
+        <ConstructorElement
+          text={ingredient.name}
+          price={ingredient.price}
+          thumbnail={ingredient.image}
+          handleClose={handleRemove}
+        />
+      </div>
+    </div>
+  )
 }
 
 function BurgerConstructor() {
@@ -78,16 +128,6 @@ function BurgerConstructor() {
     return value;
   }, [bunIngredient, otherIngredients]);
 
-  const handleRemove = (ingredient: Ingredient) => {
-    return () => {
-      dispatch({
-        type: REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
-        ingredientIsABun: ingredient.type === 'bun',
-        ingredientId: ingredient._id
-      });
-    };
-  };
-
   return (
     <div ref={dropTarget} className="mt-25 pl-4 pr-4">
       {bunIngredient && (
@@ -107,17 +147,11 @@ function BurgerConstructor() {
           className={cn('custom-scroll', styles.BurgerConstructorMainItems)}
         >
           {otherIngredients.map((ingredient, index) => (
-            <div className={styles.BurgerConstructorMainItemsItem} key={ingredient._id}>
-              <div className="mr-2">
-                <DragIcon type="primary" />
-              </div>
-              <ConstructorElement
-                text={ingredient.name}
-                price={ingredient.price}
-                thumbnail={ingredient.image}
-                handleClose={handleRemove(ingredient)}
-              />
-            </div>
+            <BurgerConstructorMainItemsItem
+              ingredient={ingredient}
+              index={index}
+              key={`${ingredient._id}_${index}`}
+            />
           ))}
         </div>
       )}

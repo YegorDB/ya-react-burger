@@ -28,7 +28,7 @@ function App() {
       dispatch({
         type: ADD_INGREDIENT_TO_CONSTRUCTOR,
         ingredientIsABun: false,
-        ingredientId:ingredientId
+        ingredientId: ingredientId
       });
     }
   }, [dispatch]);
