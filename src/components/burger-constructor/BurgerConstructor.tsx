@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import React, { useMemo } from 'react';
+import { useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
@@ -8,7 +9,11 @@ import {
 
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
-import { postOrder } from '../../services/actions';
+import {
+  ADD_INGREDIENT_TO_CONSTRUCTOR,
+  REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
+  postOrder,
+} from '../../services/actions';
 import { Ingredient } from '../../types/ingredient'
 import { State } from '../../types/states';
 
@@ -31,6 +36,17 @@ function BurgerConstructor() {
     otherIds: state.selectedIngredients.otherIds,
     orderId: state.currentOrder.orderId,
   }));
+
+  const [, dropTarget] = useDrop({
+      accept: 'ingredients-item',
+      drop(ingredient: Ingredient) {
+        dispatch({
+          type: ADD_INGREDIENT_TO_CONSTRUCTOR,
+          ingredientIsABun: ingredient.type === 'bun',
+          ingredientId: ingredient._id
+        });
+      },
+  });
 
   const handleOrderConfirmation = () => {
     const ingredientsIds = [bunId, ...otherIds];
@@ -62,8 +78,18 @@ function BurgerConstructor() {
     return value;
   }, [bunIngredient, otherIngredients]);
 
+  const handleRemove = (ingredient: Ingredient) => {
+    return () => {
+      dispatch({
+        type: REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
+        ingredientIsABun: ingredient.type === 'bun',
+        ingredientId: ingredient._id
+      });
+    };
+  };
+
   return (
-    <div className="mt-25 pl-4 pr-4">
+    <div ref={dropTarget} className="mt-25 pl-4 pr-4">
       {bunIngredient && (
         <div className={cn('ml-8', styles.BurgerConstructorFirstBun)}>
           <ConstructorElement
@@ -89,6 +115,7 @@ function BurgerConstructor() {
                 text={ingredient.name}
                 price={ingredient.price}
                 thumbnail={ingredient.image}
+                handleClose={handleRemove(ingredient)}
               />
             </div>
           ))}

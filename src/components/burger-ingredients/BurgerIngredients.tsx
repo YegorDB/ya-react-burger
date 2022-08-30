@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import React, { useMemo, useRef } from 'react';
+import { useDrag } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -25,6 +26,18 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
 
   const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = React.useState(false);
+  const { bunId, otherIds } = useSelector((state: State) => ({
+    bunId: state.selectedIngredients.bunId,
+    otherIds: state.selectedIngredients.otherIds,
+  }));
+  const [, dragRef] = useDrag({
+    type: 'ingredients-item',
+    item: ingredient,
+  });
+
+  const count = useMemo(() => {
+    return [bunId, ...otherIds].filter(id => id === ingredient._id).length;
+  }, [bunId, otherIds, ingredient._id])
 
   const handleOpenModal = () => {
     dispatch({
@@ -43,7 +56,7 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
   }
 
   return (
-    <div className="hidden-overflow">
+    <div ref={dragRef} className="hidden-overflow">
       <div className={cn('mt-4 mb-4 ml-3 mr-3', styles.BurgerIngredientsItem)} onClick={handleOpenModal}>
         <img className="ml-4 mr-4" src={ingredient.image} alt={ingredient.name} />
         <div className={cn('mt-1 mb-1', styles.BurgerIngredientsItemPrise)}>
@@ -53,7 +66,9 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
         <div>
           <p className={cn('text text_type_main-default', styles.BurgerIngredientsItemName)}>{ingredient.name}</p>
         </div>
-        <Counter count={1} size="default" />
+        {count > 0 && (
+          <Counter count={count} size="default" />
+        )}
       </div>
       {isModalOpen && (
         <Modal handleClose={handleCloseModal} title="Детали ингредиента">

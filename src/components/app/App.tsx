@@ -1,4 +1,6 @@
 import React, {useEffect} from 'react';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch } from 'react-redux';
 
 import AppHeader from '../app-header/AppHeader';
@@ -34,14 +36,16 @@ function App() {
   return (
     <>
       <AppHeader />
-      <main className={styles.AppMain}>
-        <div className={styles.AppMainHalf}>
-          <BurgerIngredients />
-        </div>
-        <div className={styles.AppMainHalf}>
-          <BurgerConstructor />
-        </div>
-      </main>
+      <DndProvider backend={HTML5Backend}>
+        <main className={styles.AppMain}>
+          <div className={styles.AppMainHalf}>
+            <BurgerIngredients />
+          </div>
+          <div className={styles.AppMainHalf}>
+            <BurgerConstructor />
+          </div>
+        </main>
+      </DndProvider>
     </>
   );
 }

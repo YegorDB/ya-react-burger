@@ -18,10 +18,6 @@ const selectedIngredients = (
   switch (action.type) {
     case ADD_INGREDIENT_TO_CONSTRUCTOR:
       if (action.ingredientIsABun) {
-        if (state.bunId) {
-          console.log('There is a bun ingredient in order already.');
-          return state;
-        }
         return {
           ...state,
           bunId: action.ingredientId,
@@ -33,23 +29,19 @@ const selectedIngredients = (
       };
     case REMOVE_INGREDIENT_FROM_CONSTRUCTOR:
       if (action.ingredientIsABun) {
-        if (state.bunId !== action.ingredientId) {
-          console.log('Wrong bun ingredient id.');
-          return state;
-        }
-        return {
-          ...state,
-          bunId: null,
-        };
+        console.log('Bun ingredient is undeletable.');
+        return state;
       }
-      const index = state.otherIds.indexOf(action.ingredientId);
+      const otherIdsCopy = [...state.otherIds];
+      const index = otherIdsCopy.indexOf(action.ingredientId);
       if (index === -1) {
         console.log(`There is no an ingredient witn id ${action.ingredientId} in order.`);
         return state;
       }
+      otherIdsCopy.splice(index, 1);
       return {
         ...state,
-        otherIds: state.otherIds.splice(index, 1),
+        otherIds: otherIdsCopy,
       };
     case CLEAR_CONSTRUCTOR_INGREDIENTS:
       return initialState;
