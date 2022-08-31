@@ -26,9 +26,9 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
 
   const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = React.useState(false);
-  const { bunId, otherIds } = useSelector((state: State) => ({
+  const { bunId, itemsData } = useSelector((state: State) => ({
     bunId: state.selectedIngredients.bunId,
-    otherIds: state.selectedIngredients.otherIds,
+    itemsData: state.selectedIngredients.itemsData,
   }));
   const [, dragRef] = useDrag({
     type: 'ingredients-item',
@@ -36,9 +36,9 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
   });
 
   const count = useMemo(() => {
-    const value = [bunId, ...otherIds].filter(id => id === ingredient._id).length;
-    return ingredient.type === 'bun' ? 2 * value : value;
-  }, [bunId, otherIds, ingredient._id, ingredient.type])
+    const otherIds = itemsData.map(i => i.id);
+    return [bunId, ...otherIds, bunId].filter(id => id === ingredient._id).length;;
+  }, [bunId, itemsData, ingredient._id])
 
   const handleOpenModal = () => {
     dispatch({

@@ -12,9 +12,14 @@ export type IngredientsState = {
   items: Ingredient[],
 }
 
+type SelectedIngredientsItemData = {
+  id: Ingredient['_id'],
+  key: string,
+}
+
 export type SelectedIngredientsState = {
   bunId: Ingredient['_id'] | null,
-  otherIds: Ingredient['_id'][],
+  itemsData: SelectedIngredientsItemData[],
 }
 
 export type State = {

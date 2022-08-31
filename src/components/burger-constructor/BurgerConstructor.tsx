@@ -80,10 +80,10 @@ function BurgerConstructorMainItemsItem(props: {
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = React.useState(false);
-  const { ingredients, bunId, otherIds, orderId } = useSelector((state: State) => ({
+  const { ingredients, bunId, itemsData, orderId } = useSelector((state: State) => ({
     ingredients: state.ingredients.items,
     bunId: state.selectedIngredients.bunId,
-    otherIds: state.selectedIngredients.otherIds,
+    itemsData: state.selectedIngredients.itemsData,
     orderId: state.currentOrder.orderId,
   }));
 
@@ -99,6 +99,7 @@ function BurgerConstructor() {
   });
 
   const handleOrderConfirmation = () => {
+    const otherIds = itemsData.map(i => i.id);
     const ingredientsIds = [bunId, ...otherIds, bunId];
     if (ingredientsIds.length === 0) return;
 
@@ -113,20 +114,24 @@ function BurgerConstructor() {
   const ingredientsById = parseIngredients(ingredients);
 
   const bunIngredient = bunId && ingredientsById[bunId];
-  const otherIngredients = useMemo(() => {
-    return otherIds && otherIds.map(id => ingredientsById[id]).filter(Boolean);
-  }, [otherIds, ingredientsById]);
+  const otherIngredientsData = useMemo(() => {
+    return itemsData && (
+      itemsData
+      .filter(({id}) => id in ingredientsById)
+      .map(({id, key}) => ({ingredient: ingredientsById[id], key}))
+    );
+  }, [itemsData, ingredientsById]);
 
   const totalPrice = useMemo(() => {
     let value = bunIngredient ? bunIngredient.price * 2 : 0;
-    if (otherIngredients) {
-      value = otherIngredients.reduce(
+    if (otherIngredientsData) {
+      value = otherIngredientsData.map(({ingredient}) => ingredient).reduce(
         (previousPrice, ingredient) => previousPrice + ingredient.price,
         value
       );
     }
     return value;
-  }, [bunIngredient, otherIngredients]);
+  }, [bunIngredient, otherIngredientsData]);
 
   return (
     <div ref={dropTarget} className="mt-25 pl-4 pr-4">
@@ -141,16 +146,16 @@ function BurgerConstructor() {
           />
         </div>
       )}
-      {otherIngredients && (
+      {otherIngredientsData && (
         <div
-          style={{maxHeight: 85 * otherIngredients.length}}
+          style={{maxHeight: 85 * otherIngredientsData.length}}
           className={cn('custom-scroll', styles.BurgerConstructorMainItems)}
         >
-          {otherIngredients.map((ingredient, index) => (
+          {otherIngredientsData.map(({ingredient, key}, index) => (
             <BurgerConstructorMainItemsItem
               ingredient={ingredient}
               index={index}
-              key={`${ingredient._id}_${index}`}
+              key={key}
             />
           ))}
         </div>

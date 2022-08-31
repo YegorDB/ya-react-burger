@@ -1,3 +1,5 @@
+import uuid from 'uuidv4';
+
 import {
   ADD_INGREDIENT_TO_CONSTRUCTOR,
   REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
@@ -8,14 +10,14 @@ import { SelectedIngredientsState } from '../../types/states';
 
 const initialState = {
   bunId: null,
-  otherIds: [],
+  itemsData: [],
 };
 
 const selectedIngredients = (
   state: SelectedIngredientsState = initialState,
   action: SelectedIngredientsAction
 ) => {
-  const otherIdsCopy = [...state.otherIds];
+  const itemsDataCopy = [...state.itemsData];
   switch (action.type) {
     case ADD_INGREDIENT_TO_CONSTRUCTOR:
       if (action.ingredientIsABun) {
@@ -26,35 +28,41 @@ const selectedIngredients = (
       }
       return {
         ...state,
-        otherIds: [...state.otherIds, action.ingredientId],
+        itemsData: [
+          ...state.itemsData,
+          {
+            id: action.ingredientId,
+            key: uuid(),
+          },
+        ],
       };
     case REMOVE_INGREDIENT_FROM_CONSTRUCTOR:
       if (action.ingredientIsABun) {
         console.log('Bun ingredient is undeletable.');
         return state;
       }
-      const index = otherIdsCopy.indexOf(action.ingredientId);
+      const index = itemsDataCopy.map(i => i.id).indexOf(action.ingredientId);
       if (index === -1) {
         console.log(`There is no an ingredient witn id ${action.ingredientId} in order.`);
         return state;
       }
-      otherIdsCopy.splice(index, 1);
+      itemsDataCopy.splice(index, 1);
       return {
         ...state,
-        otherIds: otherIdsCopy,
+        itemsData: itemsDataCopy,
       };
     case CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER:
       if (action.from === action.to) return state;
       if (action.from < action.to) {
-        otherIdsCopy.splice(action.to + 1, 0, otherIdsCopy[action.from]);
-        otherIdsCopy.splice(action.from, 1);
+        itemsDataCopy.splice(action.to + 1, 0, itemsDataCopy[action.from]);
+        itemsDataCopy.splice(action.from, 1);
       } else {
-        otherIdsCopy.splice(action.to, 0, otherIdsCopy[action.from]);
-        otherIdsCopy.splice(action.from + 1, 1);
+        itemsDataCopy.splice(action.to, 0, itemsDataCopy[action.from]);
+        itemsDataCopy.splice(action.from + 1, 1);
       }
       return {
         ...state,
-        otherIds: otherIdsCopy,
+        itemsData: itemsDataCopy,
       };
     default:
       return state
