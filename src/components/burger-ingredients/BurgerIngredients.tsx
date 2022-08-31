@@ -36,8 +36,9 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
   });
 
   const count = useMemo(() => {
-    return [bunId, ...otherIds].filter(id => id === ingredient._id).length;
-  }, [bunId, otherIds, ingredient._id])
+    const value = [bunId, ...otherIds].filter(id => id === ingredient._id).length;
+    return ingredient.type === 'bun' ? 2 * value : value;
+  }, [bunId, otherIds, ingredient._id, ingredient.type])
 
   const handleOpenModal = () => {
     dispatch({
