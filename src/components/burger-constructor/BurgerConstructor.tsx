@@ -99,7 +99,7 @@ function BurgerConstructor() {
   });
 
   const handleOrderConfirmation = () => {
-    const ingredientsIds = [bunId, ...otherIds];
+    const ingredientsIds = [bunId, ...otherIds, bunId];
     if (ingredientsIds.length === 0) return;
 
     // @ts-ignore
