@@ -1,4 +1,8 @@
-import { SET_CURRENT_ORDER } from '../actions';
+import {
+  POST_ORDER_REQUEST_PENDING,
+  POST_ORDER_REQUEST_FAILED,
+  POST_ORDER_REQUEST_SUCCESS,
+} from '../actions';
 import { CurrentOrderAction } from '../../types/actions';
 import { CurrentOrderState } from '../../types/states';
 
@@ -11,10 +15,20 @@ const currentOrder = (
   action: CurrentOrderAction
 ) => {
   switch (action.type) {
-    case SET_CURRENT_ORDER:
+    case POST_ORDER_REQUEST_PENDING:
+      return {
+        ...state,
+        orderId: initialState.orderId,
+      };
+    case POST_ORDER_REQUEST_SUCCESS:
       return {
         ...state,
         orderId: action.orderId,
+      };
+    case POST_ORDER_REQUEST_FAILED:
+      return {
+        ...state,
+        orderId: initialState.orderId,
       };
     default:
       return state;

@@ -5,15 +5,27 @@ export type CurrentIngredientAction = {
   ingredient: Ingredient,
 }
 
-export type CurrentOrderAction = {
-  type: 'SET_CURRENT_ORDER',
+type CurrentOrderBaseAction = {
+  type: 'POST_ORDER_REQUEST_PENDING' | 'POST_ORDER_REQUEST_FAILED',
+}
+
+type CurrentOrderSuccessAction = {
+  type: 'POST_ORDER_REQUEST_SUCCESS',
   orderId: string,
 }
 
-export type IngredientsAction = {
-  type: 'SET_INGREDIENTS',
+export type CurrentOrderAction = CurrentOrderBaseAction | CurrentOrderSuccessAction;
+
+type IngredientsBaseAction = {
+  type: 'GET_INGREDIENTS_REQUEST_PENDING' | 'GET_INGREDIENTS_REQUEST_FAILED',
+}
+
+type IngredientsSuccessAction = {
+  type: 'GET_INGREDIENTS_REQUEST_SUCCESS',
   items: Ingredient[],
 }
+
+export type IngredientsAction = IngredientsBaseAction | IngredientsSuccessAction;
 
 type SelectedIngredientsBaseAction = {
   type: 'ADD_INGREDIENT_TO_CONSTRUCTOR' | 'REMOVE_INGREDIENT_FROM_CONSTRUCTOR',
