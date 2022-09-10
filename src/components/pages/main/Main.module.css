@@ -1,4 +1,4 @@
-.AppMain {
+.Main {
   padding: 0 5%;
   display: flex;
   gap: 40px;
@@ -6,6 +6,6 @@
   margin: 0 auto;
 }
 
-.AppMainHalf {
+.MainHalf {
   flex: 1;
 }

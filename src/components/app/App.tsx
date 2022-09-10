@@ -1,51 +1,42 @@
-import React, {useEffect} from 'react';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { useDispatch } from 'react-redux';
+import React from 'react';
+// @ts-ignore
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import AppHeader from '../app-header/AppHeader';
-import BurgerConstructor from '../burger-constructor/BurgerConstructor';
-import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
-import { ADD_INGREDIENT_TO_CONSTRUCTOR, getIngredients } from '../../services/actions';
-// import ingredients from '../../utils/ingredients-data';
-import order from '../../utils/order-data';
-
-import styles from './App.module.css';
+import { MainPage } from '../pages/main/Main';
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(()=> {
-    // @ts-ignore
-    dispatch(getIngredients());
-
-    dispatch({
-      type: ADD_INGREDIENT_TO_CONSTRUCTOR,
-      ingredientIsABun: true,
-      ingredientId: order.bunId
-    });
-    for (const ingredientId of order.otherIds) {
-      dispatch({
-        type: ADD_INGREDIENT_TO_CONSTRUCTOR,
-        ingredientIsABun: false,
-        ingredientId: ingredientId
-      });
-    }
-  }, [dispatch]);
-
   return (
     <>
       <AppHeader />
-      <DndProvider backend={HTML5Backend}>
-        <main className={styles.AppMain}>
-          <div className={styles.AppMainHalf}>
-            <BurgerIngredients />
-          </div>
-          <div className={styles.AppMainHalf}>
-            <BurgerConstructor />
-          </div>
-        </main>
-      </DndProvider>
+      <Router>
+        <Switch>
+          <Route path="/" exact={true}>
+            <MainPage/>
+          </Route>
+          <Route path="/login" exact={true}>
+            <div>страница авторизации</div>
+          </Route>
+          <Route path="/register" exact={true}>
+            <div>страница регистрации</div>
+          </Route>
+          <Route path="/forgot-password" exact={true}>
+            <div>страница восстановления пароля</div>
+          </Route>
+          <Route path="/reset-password" exact={true}>
+            <div>страница сброса пароля</div>
+          </Route>
+          <Route path="/profile" exact={true}>
+            <div>страница с настройками профиля пользователя</div>
+          </Route>
+          <Route path="/ingredients/:id" exact={true}>
+            <div>страница ингредиента</div>
+          </Route>
+          <Route>
+            <div>404</div>
+          </Route>
+        </Switch>
+      </Router>
     </>
   );
 }
