@@ -1,12 +1,15 @@
 import cn from 'classnames';
-import React, {useContext, useMemo, useRef} from 'react';
+import React, { useMemo, useRef } from 'react';
+import { useDrag } from 'react-dnd';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import Modal from '../modal/Modal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
-import { IngredientsContext } from '../../context/ingredients';
+import { SET_CURRENT_INGREDIENT } from '../../services/actions';
 import { Ingredient, IngredientsByType } from '../../types/ingredient'
+import { State } from '../../types/states';
 
 import styles from './BurgerIngredients.module.css';
 
@@ -19,20 +22,42 @@ function parseIngredients(ingredients: Ingredient[]) {
 }
 
 function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
-  const {ingredient} = props;
+  const { ingredient } = props;
 
+  const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = React.useState(false);
+  const { bunId, itemsData } = useSelector((state: State) => ({
+    bunId: state.selectedIngredients.bunId,
+    itemsData: state.selectedIngredients.itemsData,
+  }));
+  const [, dragRef] = useDrag({
+    type: 'ingredients-item',
+    item: ingredient,
+  });
+
+  const count = useMemo(() => {
+    const otherIds = itemsData.map(i => i.id);
+    return [bunId, ...otherIds, bunId].filter(id => id === ingredient._id).length;;
+  }, [bunId, itemsData, ingredient._id])
 
   const handleOpenModal = () => {
+    dispatch({
+      type: SET_CURRENT_INGREDIENT,
+      ingredient: ingredient,
+    });
     setModalOpen(true);
   }
 
   const handleCloseModal = () => {
+    dispatch({
+      type: SET_CURRENT_INGREDIENT,
+      ingredient: null,
+    });
     setModalOpen(false);
   }
 
   return (
-    <div className="hidden-overflow">
+    <div ref={dragRef} className="hidden-overflow">
       <div className={cn('mt-4 mb-4 ml-3 mr-3', styles.BurgerIngredientsItem)} onClick={handleOpenModal}>
         <img className="ml-4 mr-4" src={ingredient.image} alt={ingredient.name} />
         <div className={cn('mt-1 mb-1', styles.BurgerIngredientsItemPrise)}>
@@ -42,11 +67,13 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
         <div>
           <p className={cn('text text_type_main-default', styles.BurgerIngredientsItemName)}>{ingredient.name}</p>
         </div>
-        <Counter count={1} size="default" />
+        {count > 0 && (
+          <Counter count={count} size="default" />
+        )}
       </div>
       {isModalOpen && (
         <Modal handleClose={handleCloseModal} title="Детали ингредиента">
-          <IngredientDetails ingredient={ingredient} />
+          <IngredientDetails />
         </Modal>
       )}
     </div>
@@ -97,7 +124,7 @@ function BurgerIngredients() {
     [mainRef, setCurrentTab]
   );
 
-  const ingredients = useContext(IngredientsContext);
+  const ingredients = useSelector((state: State) => state.ingredients.items);
 
   const {
     bun: bunIngredients,

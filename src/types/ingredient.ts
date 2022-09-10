@@ -19,19 +19,3 @@ export type IngredientsByType = {
   bun: Ingredient[],
   sauce: Ingredient[],
 }
-
-export type SelectedIngredientsState = {
-  bunId: Ingredient['_id'] | null,
-  otherIds: Ingredient['_id'][],
-}
-
-export type SelectedIngredientsAction = {
-  type: string,
-  ingredientIsABun: boolean,
-  ingredientId: Ingredient['_id'],
-}
-
-export type SelectedIngredientsContextValue = {
-  selectedIngredientsState: SelectedIngredientsState,
-  selectedIngredientsDispatch: Function,
-}

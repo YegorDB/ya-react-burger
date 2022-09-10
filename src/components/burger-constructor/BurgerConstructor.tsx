@@ -1,5 +1,7 @@
 import cn from 'classnames';
-import React, {useContext, useMemo} from 'react';
+import React, { useMemo } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
@@ -7,10 +9,14 @@ import {
 
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
-import { API_ROOT } from '../../consts/api';
-import { IngredientsContext, SelectedIngredientsContext } from '../../context/ingredients';
+import {
+  ADD_INGREDIENT_TO_CONSTRUCTOR,
+  REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
+  CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER,
+  postOrder,
+} from '../../services/actions';
 import { Ingredient } from '../../types/ingredient'
-import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
+import { State } from '../../types/states';
 
 import styles from './BurgerConstructor.module.css';
 
@@ -22,32 +28,83 @@ function parseIngredients(ingredients: Ingredient[]) {
   return ingredientsById;
 }
 
+function BurgerConstructorMainItemsItem(props: {
+  ingredient: Ingredient,
+  index: number,
+}) {
+  const { ingredient, index } = props;
+
+  const dispatch = useDispatch();
+
+  const [, dragRef] = useDrag({
+    type: 'constructor-item',
+    item: {index},
+  });
+
+  const [, dropTarget] = useDrop({
+      accept: 'constructor-item',
+      drop(item: {index: number}) {
+        dispatch({
+          type: CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER,
+          from: item.index,
+          to: index
+        });
+      },
+  });
+
+  const handleRemove = () => {
+    dispatch({
+      type: REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
+      ingredientIsABun: ingredient.type === 'bun',
+      ingredientId: ingredient._id
+    });
+  };
+
+  return (
+    <div ref={dragRef}>
+      <div ref={dropTarget} className={styles.BurgerConstructorMainItemsItem}>
+        <div className="mr-2">
+          <DragIcon type="primary" />
+        </div>
+        <ConstructorElement
+          text={ingredient.name}
+          price={ingredient.price}
+          thumbnail={ingredient.image}
+          handleClose={handleRemove}
+        />
+      </div>
+    </div>
+  )
+}
+
 function BurgerConstructor() {
+  const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = React.useState(false);
-  const [orderId, setOrderId] = React.useState('');
-  const ingredients = useContext(IngredientsContext);
-  const { selectedIngredientsState } = useContext(SelectedIngredientsContext);
-  const { bunId, otherIds } = selectedIngredientsState;
+  const { ingredients, bunId, itemsData, orderId } = useSelector((state: State) => ({
+    ingredients: state.ingredients.items,
+    bunId: state.selectedIngredients.bunId,
+    itemsData: state.selectedIngredients.itemsData,
+    orderId: state.currentOrder.orderId,
+  }));
+
+  const [, dropTarget] = useDrop({
+      accept: 'ingredients-item',
+      drop(ingredient: Ingredient) {
+        dispatch({
+          type: ADD_INGREDIENT_TO_CONSTRUCTOR,
+          ingredientIsABun: ingredient.type === 'bun',
+          ingredientId: ingredient._id
+        });
+      },
+  });
 
   const handleOrderConfirmation = () => {
-    const ingredientsIds = [bunId, ...otherIds];
+    const otherIds = itemsData.map(i => i.id);
+    const ingredientsIds = [bunId, ...otherIds, bunId];
     if (ingredientsIds.length === 0) return;
 
-    fetch(`${API_ROOT}/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ingredients: ingredientsIds,
-      })
-    })
-    .then(checkResponse)
-    .then(handleResponse<{success: boolean, order: {number: number}}>(res => {
-      setOrderId(res.order.number.toString());
-      setModalOpen(true);
-    }))
-    .catch(handleResponseError('Post order'));
+    // @ts-ignore
+    dispatch(postOrder(ingredientsIds, setModalOpen));
   }
 
   const handleCloseModal = () => {
@@ -57,23 +114,27 @@ function BurgerConstructor() {
   const ingredientsById = parseIngredients(ingredients);
 
   const bunIngredient = bunId && ingredientsById[bunId];
-  const otherIngredients = useMemo(() => {
-    return otherIds && otherIds.map(id => ingredientsById[id]).filter(Boolean);
-  }, [otherIds, ingredientsById]);
+  const otherIngredientsData = useMemo(() => {
+    return itemsData && (
+      itemsData
+      .filter(({id}) => id in ingredientsById)
+      .map(({id, key}) => ({ingredient: ingredientsById[id], key}))
+    );
+  }, [itemsData, ingredientsById]);
 
   const totalPrice = useMemo(() => {
     let value = bunIngredient ? bunIngredient.price * 2 : 0;
-    if (otherIngredients) {
-      value = otherIngredients.reduce(
+    if (otherIngredientsData) {
+      value = otherIngredientsData.map(({ingredient}) => ingredient).reduce(
         (previousPrice, ingredient) => previousPrice + ingredient.price,
         value
       );
     }
     return value;
-  }, [bunIngredient, otherIngredients]);
+  }, [bunIngredient, otherIngredientsData]);
 
   return (
-    <div className="mt-25 pl-4 pr-4">
+    <div ref={dropTarget} className="mt-25 pl-4 pr-4">
       {bunIngredient && (
         <div className={cn('ml-8', styles.BurgerConstructorFirstBun)}>
           <ConstructorElement
@@ -85,22 +146,17 @@ function BurgerConstructor() {
           />
         </div>
       )}
-      {otherIngredients && (
+      {otherIngredientsData && (
         <div
-          style={{maxHeight: 85 * otherIngredients.length}}
+          style={{maxHeight: 85 * otherIngredientsData.length}}
           className={cn('custom-scroll', styles.BurgerConstructorMainItems)}
         >
-          {otherIngredients.map((ingredient, index) => (
-            <div className={styles.BurgerConstructorMainItemsItem} key={ingredient._id}>
-              <div className="mr-2">
-                <DragIcon type="primary" />
-              </div>
-              <ConstructorElement
-                text={ingredient.name}
-                price={ingredient.price}
-                thumbnail={ingredient.image}
-              />
-            </div>
+          {otherIngredientsData.map(({ingredient, key}, index) => (
+            <BurgerConstructorMainItemsItem
+              ingredient={ingredient}
+              index={index}
+              key={key}
+            />
           ))}
         </div>
       )}

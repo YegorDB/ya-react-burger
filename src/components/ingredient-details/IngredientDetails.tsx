@@ -1,15 +1,14 @@
 import cn from 'classnames';
+import { useSelector } from 'react-redux';
 
-import { Ingredient } from '../../types/ingredient'
+import { State } from '../../types/states';
 
 import styles from './IngredientDetails.module.css';
 
-function IngredientDetails(props: {
-  ingredient: Ingredient,
-}) {
-  const {ingredient} = props;
+function IngredientDetails() {
+  const ingredient = useSelector((state: State) => state.currentIngredient.ingredient);
 
-  return (
+  return ingredient && (
     <div className={styles.IngredientDetails}>
       <img className="mb-4" src={ingredient.image_large} alt={ingredient.name} />
       <p className="mb-8 text text_type_main-medium">{ingredient.name}</p>

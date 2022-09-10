@@ -1,93 +1,42 @@
-import React, {useState, useReducer, useEffect} from 'react';
+import React, {useEffect} from 'react';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useDispatch } from 'react-redux';
 
 import AppHeader from '../app-header/AppHeader';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
-import { API_ROOT } from '../../consts/api';
-import { IngredientsContext, SelectedIngredientsContext } from '../../context/ingredients';
-import {
-  Ingredient, SelectedIngredientsState, SelectedIngredientsAction
-} from '../../types/ingredient';
-import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
+import { ADD_INGREDIENT_TO_CONSTRUCTOR, getIngredients } from '../../services/actions';
 // import ingredients from '../../utils/ingredients-data';
 import order from '../../utils/order-data';
 
 import styles from './App.module.css';
 
-const selectedIngredientsInitialState = {bunId: null, otherIds: []};
-
-function selectedIngredientsReducer(
-  state: SelectedIngredientsState,
-  action: SelectedIngredientsAction,
-) {
-  switch (action.type) {
-    case 'add':
-      if (action.ingredientIsABun) {
-        if (state.bunId) {
-          console.log('There is a bun ingredient in order already.');
-          return state;
-        }
-        return {
-          ...state,
-          bunId: action.ingredientId,
-        };
-      }
-      return {
-        ...state,
-        otherIds: [...state.otherIds, action.ingredientId],
-      };
-    case 'remove':
-      if (action.ingredientIsABun) {
-        if (state.bunId !== action.ingredientId) {
-          console.log('Wrong bun ingredient id.');
-          return state;
-        }
-        return {
-          ...state,
-          bunId: null,
-        };
-      }
-      const index = state.otherIds.indexOf(action.ingredientId);
-      if (index === -1) {
-        console.log(`There is no an ingredient witn id ${action.ingredientId} in order.`);
-        return state;
-      }
-      return {
-        ...state,
-        otherIds: state.otherIds.splice(index, 1),
-      };
-    case 'clear':
-      return selectedIngredientsInitialState;
-    default:
-      throw new Error(`Wrong type of action: ${action.type}`);
-  }
-}
-
 function App() {
-  const [ingredients, setIngredients] = useState(new Array<Ingredient>());
-  const [selectedIngredientsState, selectedIngredientsDispatch] = useReducer(
-    selectedIngredientsReducer, selectedIngredientsInitialState);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    selectedIngredientsDispatch({ type: 'add', ingredientIsABun: true, ingredientId: order.bunId });
+  useEffect(()=> {
+    // @ts-ignore
+    dispatch(getIngredients());
+
+    dispatch({
+      type: ADD_INGREDIENT_TO_CONSTRUCTOR,
+      ingredientIsABun: true,
+      ingredientId: order.bunId
+    });
     for (const ingredientId of order.otherIds) {
-      selectedIngredientsDispatch({ type: 'add', ingredientIsABun: false, ingredientId: ingredientId });
+      dispatch({
+        type: ADD_INGREDIENT_TO_CONSTRUCTOR,
+        ingredientIsABun: false,
+        ingredientId: ingredientId
+      });
     }
-  }, []);
-
-  useEffect(() => {
-    fetch(`${API_ROOT}/ingredients`)
-    .then(checkResponse)
-    .then(handleResponse<{success: boolean, data: Ingredient[]}>(res => setIngredients(res.data)))
-    .catch(handleResponseError('Get ingredients'));
-  }, []);
+  }, [dispatch]);
 
   return (
-    <IngredientsContext.Provider value={ingredients}>
-      <SelectedIngredientsContext.Provider value={{
-        selectedIngredientsState, selectedIngredientsDispatch
-      }}>
-        <AppHeader />
+    <>
+      <AppHeader />
+      <DndProvider backend={HTML5Backend}>
         <main className={styles.AppMain}>
           <div className={styles.AppMainHalf}>
             <BurgerIngredients />
@@ -96,8 +45,8 @@ function App() {
             <BurgerConstructor />
           </div>
         </main>
-      </SelectedIngredientsContext.Provider>
-    </IngredientsContext.Provider>
+      </DndProvider>
+    </>
   );
 }
 
