@@ -3,7 +3,9 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import AppHeader from '../app-header/AppHeader';
+import { LoginPage } from '../pages/login/Login';
 import { MainPage } from '../pages/main/Main';
+import { RegisterPage } from '../pages/register/Register';
 
 function App() {
   return (
@@ -12,13 +14,13 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact={true}>
-            <MainPage/>
+            <MainPage />
           </Route>
           <Route path="/login" exact={true}>
-            <div>страница авторизации</div>
+            <LoginPage />
           </Route>
           <Route path="/register" exact={true}>
-            <div>страница регистрации</div>
+            <RegisterPage />
           </Route>
           <Route path="/forgot-password" exact={true}>
             <div>страница восстановления пароля</div>
