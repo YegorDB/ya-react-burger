@@ -3,9 +3,11 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import AppHeader from '../app-header/AppHeader';
+import { ForgotPasswordPage } from '../pages/forgot-password/ForgotPassword';
 import { LoginPage } from '../pages/login/Login';
 import { MainPage } from '../pages/main/Main';
 import { RegisterPage } from '../pages/register/Register';
+import { ResetPasswordPage } from '../pages/reset-password/ResetPassword';
 
 function App() {
   return (
@@ -23,10 +25,10 @@ function App() {
             <RegisterPage />
           </Route>
           <Route path="/forgot-password" exact={true}>
-            <div>страница восстановления пароля</div>
+            <ForgotPasswordPage />
           </Route>
           <Route path="/reset-password" exact={true}>
-            <div>страница сброса пароля</div>
+            <ResetPasswordPage />
           </Route>
           <Route path="/profile" exact={true}>
             <div>страница с настройками профиля пользователя</div>
