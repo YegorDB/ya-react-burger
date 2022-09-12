@@ -12,7 +12,7 @@ import { checkResponse, handleResponse, handleResponseError } from '../../../uti
 import styles from './ResetPassword.module.css';
 
 export function ResetPasswordPage() {
-  const [password, setPassword] = React.useState('')
+  const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
 
   const changePassword = useCallback(

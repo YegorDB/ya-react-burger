@@ -10,7 +10,7 @@ import styles from './Login.module.css';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = React.useState('')
+  const [password, setPassword] = useState('');
 
   const changeEmail = useCallback(
     e => setEmail(e.target.value),

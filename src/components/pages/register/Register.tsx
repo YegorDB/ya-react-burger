@@ -11,7 +11,7 @@ import styles from './Register.module.css';
 export function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = React.useState('')
+  const [password, setPassword] = useState('');
 
   const changeName = useCallback(
     e => setName(e.target.value),

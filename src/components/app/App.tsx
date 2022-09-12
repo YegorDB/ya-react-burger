@@ -6,14 +6,15 @@ import AppHeader from '../app-header/AppHeader';
 import { ForgotPasswordPage } from '../pages/forgot-password/ForgotPassword';
 import { LoginPage } from '../pages/login/Login';
 import { MainPage } from '../pages/main/Main';
+import { ProfilePage } from '../pages/profile/Profile';
 import { RegisterPage } from '../pages/register/Register';
 import { ResetPasswordPage } from '../pages/reset-password/ResetPassword';
 
 function App() {
   return (
     <>
-      <AppHeader />
       <Router>
+        <AppHeader />
         <Switch>
           <Route path="/" exact={true}>
             <MainPage />
@@ -30,8 +31,8 @@ function App() {
           <Route path="/reset-password" exact={true}>
             <ResetPasswordPage />
           </Route>
-          <Route path="/profile" exact={true}>
-            <div>страница с настройками профиля пользователя</div>
+          <Route path="/profile">
+            <ProfilePage />
           </Route>
           <Route path="/ingredients/:id" exact={true}>
             <div>страница ингредиента</div>
