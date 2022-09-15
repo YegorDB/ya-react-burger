@@ -1,5 +1,6 @@
 import { API_ROOT } from '../../consts/api';
 import { Ingredient } from '../../types/ingredient';
+import { User } from '../../types/user';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
 export const ADD_INGREDIENT_TO_CONSTRUCTOR = 'ADD_INGREDIENT_TO_CONSTRUCTOR';
@@ -15,6 +16,22 @@ export const SET_CURRENT_INGREDIENT = 'SET_CURRENT_INGREDIENT';
 export const POST_ORDER_REQUEST_PENDING = 'POST_ORDER_REQUEST_PENDING';
 export const POST_ORDER_REQUEST_FAILED = 'POST_ORDER_REQUEST_FAILED';
 export const POST_ORDER_REQUEST_SUCCESS = 'POST_ORDER_REQUEST_SUCCESS';
+
+export const POST_REGISTER_REQUEST_PENDING = 'POST_REGISTER_REQUEST_PENDING';
+export const POST_REGISTER_REQUEST_FAILED = 'POST_REGISTER_REQUEST_FAILED';
+export const POST_REGISTER_REQUEST_SUCCESS = 'POST_REGISTER_REQUEST_SUCCESS';
+
+export const POST_LOGIN_REQUEST_PENDING = 'POST_LOGIN_REQUEST_PENDING';
+export const POST_LOGIN_REQUEST_FAILED = 'POST_LOGIN_REQUEST_FAILED';
+export const POST_LOGIN_REQUEST_SUCCESS = 'POST_LOGIN_REQUEST_SUCCESS';
+
+export const POST_LOGOUT_REQUEST_PENDING = 'POST_LOGOUT_REQUEST_PENDING';
+export const POST_LOGOUT_REQUEST_FAILED = 'POST_LOGOUT_REQUEST_FAILED';
+export const POST_LOGOUT_REQUEST_SUCCESS = 'POST_LOGOUT_REQUEST_SUCCESS';
+
+export const POST_TOKEN_REQUEST_PENDING = 'POST_TOKEN_REQUEST_PENDING';
+export const POST_TOKEN_REQUEST_FAILED = 'POST_TOKEN_REQUEST_FAILED';
+export const POST_TOKEN_REQUEST_SUCCESS = 'POST_TOKEN_REQUEST_SUCCESS';
 
 export function getIngredients() {
   return function(dispatch: Function) {
@@ -64,6 +81,136 @@ export function postOrder(ingredientsIds: Ingredient['_id'][], setModalOpen: Fun
     .catch(handleResponseError('Post order', () => {
       dispatch({
         type: POST_ORDER_REQUEST_FAILED,
+      });
+    }));
+  };
+}
+
+export function postRegister(email: string, password: string, name: string) {
+  return function(dispatch: Function) {
+    dispatch({
+      type: POST_REGISTER_REQUEST_PENDING,
+    });
+
+    fetch(`${API_ROOT}/auth/register `, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        name: name,
+      })
+    })
+    .then(checkResponse)
+    .then(handleResponse<{success: boolean, user: User, accessToken: string, refreshToken: string}>(res => {
+      dispatch({
+        type: POST_REGISTER_REQUEST_SUCCESS,
+        accessToken: res.accessToken.substring(7),
+        user: res.user,
+      });
+      localStorage.setItem('refreshToken', res.refreshToken);
+      // redirect to /
+    }))
+    .catch(handleResponseError('Post register', () => {
+      dispatch({
+        type: POST_REGISTER_REQUEST_FAILED,
+      });
+    }));
+  };
+}
+
+export function postLogin(email: string, password: string) {
+  return function(dispatch: Function) {
+    dispatch({
+      type: POST_LOGIN_REQUEST_PENDING,
+    });
+
+    fetch(`${API_ROOT}/auth/login `, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      })
+    })
+    .then(checkResponse)
+    .then(handleResponse<{success: boolean, user: User, accessToken: string, refreshToken: string}>(res => {
+      dispatch({
+        type: POST_LOGIN_REQUEST_SUCCESS,
+        accessToken: res.accessToken.substring(7),
+        user: res.user,
+      });
+      localStorage.setItem('refreshToken', res.refreshToken);
+      // redirect to /
+    }))
+    .catch(handleResponseError('Post login', () => {
+      dispatch({
+        type: POST_LOGIN_REQUEST_FAILED,
+      });
+    }));
+  };
+}
+
+export function postLogout() {
+  return function(dispatch: Function) {
+    dispatch({
+      type: POST_LOGOUT_REQUEST_PENDING,
+    });
+
+    fetch(`${API_ROOT}/auth/logout `, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token: localStorage.getItem('refreshToken'),
+      })
+    })
+    .then(checkResponse)
+    .then(handleResponse<{success: boolean}>(res => {
+      dispatch({
+        type: POST_LOGOUT_REQUEST_SUCCESS,
+      });
+      localStorage.removeItem('refreshToken');
+    }))
+    .catch(handleResponseError('Post logout', () => {
+      dispatch({
+        type: POST_LOGOUT_REQUEST_FAILED,
+      });
+    }));
+  };
+}
+
+export function postRefreshToken() {
+  return function(dispatch: Function) {
+    dispatch({
+      type: POST_TOKEN_REQUEST_PENDING,
+    });
+
+    fetch(`${API_ROOT}/auth/token `, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token: localStorage.getItem('refreshToken'),
+      })
+    })
+    .then(checkResponse)
+    .then(handleResponse<{success: boolean, accessToken: string, refreshToken: string}>(res => {
+      dispatch({
+        type: POST_TOKEN_REQUEST_SUCCESS,
+        accessToken: res.accessToken.substring(7),
+      });
+      localStorage.setItem('refreshToken', res.refreshToken);
+    }))
+    .catch(handleResponseError('Post token', () => {
+      dispatch({
+        type: POST_TOKEN_REQUEST_FAILED,
       });
     }));
   };

@@ -1,4 +1,5 @@
 import { Ingredient } from './ingredient';
+import { User } from './user';
 
 export type CurrentIngredientState = {
   ingredient: Ingredient | null,
@@ -22,9 +23,15 @@ export type SelectedIngredientsState = {
   itemsData: SelectedIngredientsItemData[],
 }
 
+export type UserState = {
+  accessToken: string | null,
+  user: User | null,
+}
+
 export type State = {
   currentIngredient: CurrentIngredientState,
   currentOrder: CurrentOrderState,
   ingredients: IngredientsState,
   selectedIngredients: SelectedIngredientsState,
+  user: UserState,
 }
