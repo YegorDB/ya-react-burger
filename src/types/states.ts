@@ -24,7 +24,6 @@ export type SelectedIngredientsState = {
 }
 
 export type UserState = {
-  accessToken: string | null,
   user: User | null,
 }
 

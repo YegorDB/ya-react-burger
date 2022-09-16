@@ -1,17 +1,24 @@
 import cn from 'classnames';
 import React, { useCallback, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import {
-  Input,
+  Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
+
+import { patchUser } from '../../../services/actions';
+import { State } from '../../../types/states';
 
 import styles from './Profile.module.css';
 
 export function ProfilePage() {
   const matchRoot = useRouteMatch('/profile');
   const matchOrders = useRouteMatch('/profile/orders');
+
+  const dispatch = useDispatch();
+  const user = useSelector((state: State) => state.user.user);
 
   const [name, setName] = useState('');
   const [login, setLogin] = useState('');
@@ -28,6 +35,21 @@ export function ProfilePage() {
   const changePassword = useCallback(
     e => setPassword(e.target.value),
     []
+  );
+
+  const changeUserData = useCallback(
+    // @ts-ignore
+    e => dispatch(patchUser(name, login, password)),
+    [dispatch, name, login, password]
+  );
+
+  const resetUserData = useCallback(
+    e => {
+      setName(user ? user.name : '');
+      setLogin(user ? user.email : '');
+      setPassword('');
+    },
+    [user]
   );
 
   return (
@@ -68,6 +90,14 @@ export function ProfilePage() {
                   size="default"
                   icon="EditIcon"
                 />
+              </div>
+              <div className={ styles.ProfileButtons }>
+                <Button type="primary" size="medium" onClick={ changeUserData }>
+                  Сохранить
+                </Button>
+                <Button type="primary" size="medium" onClick={ resetUserData }>
+                  Отмена
+                </Button>
               </div>
             </Route>
             <Route path="/profile/orders">

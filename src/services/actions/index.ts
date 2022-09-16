@@ -33,6 +33,14 @@ export const POST_TOKEN_REQUEST_PENDING = 'POST_TOKEN_REQUEST_PENDING';
 export const POST_TOKEN_REQUEST_FAILED = 'POST_TOKEN_REQUEST_FAILED';
 export const POST_TOKEN_REQUEST_SUCCESS = 'POST_TOKEN_REQUEST_SUCCESS';
 
+export const GET_USER_REQUEST_PENDING = 'GET_USER_REQUEST_PENDING';
+export const GET_USER_REQUEST_FAILED = 'GET_USER_REQUEST_FAILED';
+export const GET_USER_REQUEST_SUCCESS = 'GET_USER_REQUEST_SUCCESS';
+
+export const PATCH_USER_REQUEST_PENDING = 'PATCH_USER_REQUEST_PENDING';
+export const PATCH_USER_REQUEST_FAILED = 'PATCH_USER_REQUEST_FAILED';
+export const PATCH_USER_REQUEST_SUCCESS = 'PATCH_USER_REQUEST_SUCCESS';
+
 export function getIngredients() {
   return function(dispatch: Function) {
     dispatch({
@@ -107,9 +115,9 @@ export function postRegister(email: string, password: string, name: string) {
     .then(handleResponse<{success: boolean, user: User, accessToken: string, refreshToken: string}>(res => {
       dispatch({
         type: POST_REGISTER_REQUEST_SUCCESS,
-        accessToken: res.accessToken.substring(7),
         user: res.user,
       });
+      localStorage.setItem('accessToken', res.accessToken.substring(7));
       localStorage.setItem('refreshToken', res.refreshToken);
       // redirect to /
     }))
@@ -141,9 +149,9 @@ export function postLogin(email: string, password: string) {
     .then(handleResponse<{success: boolean, user: User, accessToken: string, refreshToken: string}>(res => {
       dispatch({
         type: POST_LOGIN_REQUEST_SUCCESS,
-        accessToken: res.accessToken.substring(7),
         user: res.user,
       });
+      localStorage.setItem('accessToken', res.accessToken.substring(7));
       localStorage.setItem('refreshToken', res.refreshToken);
       // redirect to /
     }))
@@ -175,6 +183,7 @@ export function postLogout() {
       dispatch({
         type: POST_LOGOUT_REQUEST_SUCCESS,
       });
+      localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
     }))
     .catch(handleResponseError('Post logout', () => {
@@ -204,13 +213,70 @@ export function postRefreshToken() {
     .then(handleResponse<{success: boolean, accessToken: string, refreshToken: string}>(res => {
       dispatch({
         type: POST_TOKEN_REQUEST_SUCCESS,
-        accessToken: res.accessToken.substring(7),
       });
+      localStorage.setItem('accessToken', res.accessToken.substring(7));
       localStorage.setItem('refreshToken', res.refreshToken);
     }))
     .catch(handleResponseError('Post token', () => {
       dispatch({
         type: POST_TOKEN_REQUEST_FAILED,
+      });
+    }));
+  };
+}
+
+export function getUser() {
+  return function(dispatch: Function) {
+    dispatch({
+      type: GET_USER_REQUEST_PENDING,
+    });
+
+    const accessToken = localStorage.getItem('accessToken');
+
+    fetch(`${API_ROOT}/auth/user?authorization=${accessToken}`)
+    .then(checkResponse)
+    .then(handleResponse<{success: boolean, user: User}>(res => {
+      dispatch({
+        type: GET_USER_REQUEST_SUCCESS,
+        user: res.user
+      });
+    }))
+    .catch(handleResponseError('Get user', () => {
+      dispatch({
+        type: GET_USER_REQUEST_FAILED,
+      });
+    }));
+  };
+}
+
+export function patchUser(name: string, email: string, password: string) {
+  return function(dispatch: Function) {
+    dispatch({
+      type: PATCH_USER_REQUEST_PENDING,
+    });
+
+    fetch(`${API_ROOT}/auth/user`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password,
+        authorization: localStorage.getItem('accessToken'),
+      })
+    })
+    .then(checkResponse)
+    .then(handleResponse<{success: boolean, user: User}>(res => {
+      dispatch({
+        type: PATCH_USER_REQUEST_SUCCESS,
+        user: res.user
+      });
+    }))
+    .catch(handleResponseError('Patch user', () => {
+      dispatch({
+        type: PATCH_USER_REQUEST_FAILED,
       });
     }));
   };
