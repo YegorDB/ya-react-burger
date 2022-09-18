@@ -8,7 +8,7 @@ import {
   Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { patchUser } from '../../../services/actions';
+import { postLogout, patchUser } from '../../../services/actions';
 import { State } from '../../../types/states';
 
 import styles from './Profile.module.css';
@@ -50,6 +50,12 @@ export function ProfilePage() {
       setPassword('');
     },
     [user]
+  );
+
+  const logout = useCallback(
+    // @ts-ignore
+    e => dispatch(postLogout()),
+    [dispatch]
   );
 
   return (
@@ -116,7 +122,7 @@ export function ProfilePage() {
               История заказов
             </p>
           </Link>
-          <p className="text text_type_main-medium text_color_inactive">
+          <p className="text text_type_main-medium text_color_inactive" onClick={ logout }>
             Выход
           </p>
           <p className="text text_type_main-default text_color_inactive mt-20">
