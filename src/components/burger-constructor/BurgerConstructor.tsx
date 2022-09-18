@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -14,6 +14,7 @@ import {
   REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
   CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER,
   postOrder,
+  getUser,
 } from '../../services/actions';
 import { Ingredient } from '../../types/ingredient'
 import { State } from '../../types/states';
@@ -71,7 +72,20 @@ function BurgerConstructorMainItemsItem(props: {
 }
 
 function BurgerConstructor() {
+  const [isUserLoaded, setUserLoaded] = useState(false);
+
+  const init = async () => {
+    await getUser();
+    setUserLoaded(true);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
   const dispatch = useDispatch();
+  const user = useSelector((state: State) => state.user.user);
+
   const [isModalOpen, setModalOpen] = React.useState(false);
   const { ingredients, bunId, itemsData, orderId } = useSelector((state: State) => ({
     ingredients: state.ingredients.items,
@@ -92,6 +106,10 @@ function BurgerConstructor() {
   });
 
   const handleOrderConfirmation = () => {
+    if (!user) {
+      window.location.replace('/login');
+    }
+
     const otherIds = itemsData.map(i => i.id);
     const ingredientsIds = [bunId, ...otherIds, bunId];
     if (ingredientsIds.length === 0) return;
@@ -125,6 +143,10 @@ function BurgerConstructor() {
     }
     return value;
   }, [bunIngredient, otherIngredientsData]);
+
+  if (!isUserLoaded) {
+    return null;
+  }
 
   return (
     <div ref={dropTarget} className="mt-25 pl-4 pr-4">

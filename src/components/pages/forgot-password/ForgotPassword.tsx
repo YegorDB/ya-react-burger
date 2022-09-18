@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 // @ts-ignore
 import { Link, Redirect } from 'react-router-dom';
@@ -10,11 +10,23 @@ import {
 import { State } from '../../../types/states';
 
 import { API_ROOT } from '../../../consts/api';
+import { getUser } from '../../../services/actions';
 import { checkResponse, handleResponse, handleResponseError } from '../../../utils/fetch';
 
 import styles from './ForgotPassword.module.css';
 
 export function ForgotPasswordPage() {
+  const [isUserLoaded, setUserLoaded] = useState(false);
+
+  const init = async () => {
+    await getUser();
+    setUserLoaded(true);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
   const user = useSelector((state: State) => state.user.user);
 
   const [email, setEmail] = useState('');
@@ -43,6 +55,10 @@ export function ForgotPasswordPage() {
     },
     [email]
   );
+
+  if (!isUserLoaded) {
+    return null;
+  }
 
   if (user) {
     return (

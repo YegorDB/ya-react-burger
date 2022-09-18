@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 // @ts-ignore
 import { Link, Redirect } from 'react-router-dom';
@@ -8,12 +8,24 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { API_ROOT } from '../../../consts/api';
+import { getUser } from '../../../services/actions';
 import { State } from '../../../types/states';
 import { checkResponse, handleResponse, handleResponseError } from '../../../utils/fetch';
 
 import styles from './ResetPassword.module.css';
 
 export function ResetPasswordPage() {
+  const [isUserLoaded, setUserLoaded] = useState(false);
+
+  const init = async () => {
+    await getUser();
+    setUserLoaded(true);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
   const user = useSelector((state: State) => state.user.user);
 
   const [password, setPassword] = useState('');
@@ -48,6 +60,10 @@ export function ResetPasswordPage() {
     },
     [password, token]
   );
+
+  if (!isUserLoaded) {
+    return null;
+  }
 
   if (user) {
     return (

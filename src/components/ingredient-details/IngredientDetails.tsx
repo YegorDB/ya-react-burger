@@ -11,7 +11,9 @@ export function IngredientDetails(props: {
 }) {
   const { ingredient } = props;
 
-  if (!ingredient) return null;
+  if (!ingredient) {
+    return null;
+  }
 
   return (
     <div className={styles.IngredientDetails}>

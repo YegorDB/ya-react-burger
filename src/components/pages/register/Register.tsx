@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
 import { Link, Redirect } from 'react-router-dom';
@@ -7,12 +7,23 @@ import {
   Button, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { postRegister } from '../../../services/actions';
+import { getUser, postRegister } from '../../../services/actions';
 import { State } from '../../../types/states';
 
 import styles from './Register.module.css';
 
 export function RegisterPage() {
+  const [isUserLoaded, setUserLoaded] = useState(false);
+
+  const init = async () => {
+    await getUser();
+    setUserLoaded(true);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
   const dispatch = useDispatch();
   const user = useSelector((state: State) => state.user.user);
 
@@ -37,6 +48,10 @@ export function RegisterPage() {
     e => dispatch(postRegister(email, password, name)),
     [dispatch, name, email, password]
   );
+
+  if (!isUserLoaded) {
+    return null;
+  }
 
   if (user) {
     return (

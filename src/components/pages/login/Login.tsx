@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
 import { Link, Redirect, useLocation } from 'react-router-dom';
@@ -7,12 +7,23 @@ import {
   Button, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { postLogin } from '../../../services/actions';
+import { getUser, postLogin } from '../../../services/actions';
 import { State } from '../../../types/states';
 
 import styles from './Login.module.css';
 
 export function LoginPage() {
+  const [isUserLoaded, setUserLoaded] = useState(false);
+
+  const init = async () => {
+    await getUser();
+    setUserLoaded(true);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
   const location = useLocation();
   const dispatch = useDispatch();
   const user = useSelector((state: State) => state.user.user);
@@ -33,6 +44,10 @@ export function LoginPage() {
     e => dispatch(postLogin(email, password)),
     [dispatch, email, password]
   );
+
+  if (!isUserLoaded) {
+    return null;
+  }
 
   if (user) {
     return (
