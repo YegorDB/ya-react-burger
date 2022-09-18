@@ -17,16 +17,9 @@ import {
 } from '../../services/actions';
 import { Ingredient } from '../../types/ingredient'
 import { State } from '../../types/states';
+import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './BurgerConstructor.module.css';
-
-function parseIngredients(ingredients: Ingredient[]) {
-  const ingredientsById: Record<string, Ingredient> = {};
-  for (const item of ingredients) {
-    ingredientsById[item._id] = item;
-  }
-  return ingredientsById;
-}
 
 function BurgerConstructorMainItemsItem(props: {
   ingredient: Ingredient,
@@ -111,7 +104,7 @@ function BurgerConstructor() {
     setModalOpen(false);
   }
 
-  const ingredientsById = parseIngredients(ingredients);
+  const ingredientsById = parseIngredientsById(ingredients);
 
   const bunIngredient = bunId && ingredientsById[bunId];
   const otherIngredientsData = useMemo(() => {

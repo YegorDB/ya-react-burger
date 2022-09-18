@@ -2,6 +2,7 @@ import { API_ROOT } from '../../consts/api';
 import { Ingredient } from '../../types/ingredient';
 import { User } from '../../types/user';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
+// import ingredients from '../../utils/ingredients-data';
 
 export const ADD_INGREDIENT_TO_CONSTRUCTOR = 'ADD_INGREDIENT_TO_CONSTRUCTOR';
 export const REMOVE_INGREDIENT_FROM_CONSTRUCTOR = 'REMOVE_INGREDIENT_FROM_CONSTRUCTOR';

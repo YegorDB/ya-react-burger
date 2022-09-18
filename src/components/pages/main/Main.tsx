@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import BurgerConstructor from '../../burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../../burger-ingredients/BurgerIngredients';
 import { ADD_INGREDIENT_TO_CONSTRUCTOR, getIngredients } from '../../../services/actions';
-// import ingredients from '../../../utils/ingredients-data';
 import order from '../../../utils/order-data';
 
 import styles from './Main.module.css';

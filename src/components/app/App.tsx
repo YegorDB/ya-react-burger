@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import AppHeader from '../app-header/AppHeader';
 import { ForgotPasswordPage } from '../pages/forgot-password/ForgotPassword';
+import { IngredientPage } from '../pages/ingredient/Ingredient';
 import { LoginPage } from '../pages/login/Login';
 import { MainPage } from '../pages/main/Main';
 import { ProfilePage } from '../pages/profile/Profile';
@@ -36,7 +37,7 @@ function App() {
             <ProfilePage />
           </ProtectedRoute>
           <Route path="/ingredients/:id" exact={true}>
-            <div>страница ингредиента</div>
+            <IngredientPage />
           </Route>
           <Route>
             <div>404</div>

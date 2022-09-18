@@ -6,20 +6,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import Modal from '../modal/Modal';
-import IngredientDetails from '../ingredient-details/IngredientDetails';
+import { CurrentIngredientDetails } from '../ingredient-details/IngredientDetails';
 import { SET_CURRENT_INGREDIENT } from '../../services/actions';
-import { Ingredient, IngredientsByType } from '../../types/ingredient'
+import { Ingredient } from '../../types/ingredient';
 import { State } from '../../types/states';
+import { parseIngredientsByType } from '../../utils/parseIngredients';
 
 import styles from './BurgerIngredients.module.css';
-
-function parseIngredients(ingredients: Ingredient[]) {
-  const ingredientsByType: IngredientsByType = {bun: [], main: [], sauce: []};
-  for (const item of ingredients) {
-    ingredientsByType[item.type as keyof IngredientsByType].push(item);
-  }
-  return ingredientsByType;
-}
 
 function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
   const { ingredient } = props;
@@ -46,6 +39,7 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
       ingredient: ingredient,
     });
     setModalOpen(true);
+    window.history.replaceState(null, 'Open ingredient modal', `/ingredients/${ingredient._id}`);
   }
 
   const handleCloseModal = () => {
@@ -54,6 +48,7 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
       ingredient: null,
     });
     setModalOpen(false);
+    window.history.replaceState(null, 'Close ingredient modal', '/');
   }
 
   return (
@@ -73,7 +68,7 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
       </div>
       {isModalOpen && (
         <Modal handleClose={handleCloseModal} title="Детали ингредиента">
-          <IngredientDetails />
+          <CurrentIngredientDetails />
         </Modal>
       )}
     </div>
@@ -130,7 +125,7 @@ function BurgerIngredients() {
     bun: bunIngredients,
     sauce: sauceIngredients,
     main: mainIngredients,
-  } = parseIngredients(ingredients);
+  } = parseIngredientsByType(ingredients);
 
   return (
     <div>
