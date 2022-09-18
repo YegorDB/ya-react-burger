@@ -1,10 +1,13 @@
 import React, { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 // @ts-ignore
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import {
   Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
+
+import { State } from '../../../types/states';
 
 import { API_ROOT } from '../../../consts/api';
 import { checkResponse, handleResponse, handleResponseError } from '../../../utils/fetch';
@@ -12,6 +15,8 @@ import { checkResponse, handleResponse, handleResponseError } from '../../../uti
 import styles from './ForgotPassword.module.css';
 
 export function ForgotPasswordPage() {
+  const user = useSelector((state: State) => state.user.user);
+
   const [email, setEmail] = useState('');
 
   const changeEmail = useCallback(
@@ -31,12 +36,19 @@ export function ForgotPasswordPage() {
       })
       .then(checkResponse)
       .then(handleResponse<{success: boolean, message: string}>(res => {
-        console.log('move to /reset-password');
+        localStorage.setItem('forgotPasswordUsed', '1');
+        // redirect to /reset-password'
       }))
       .catch(handleResponseError('Forgot password', () => {}));
     },
     [email]
   );
+
+  if (user) {
+    return (
+      <Redirect to='/' />
+    );
+  }
 
   return (
     <main>

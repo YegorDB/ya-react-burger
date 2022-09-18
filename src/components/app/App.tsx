@@ -9,6 +9,7 @@ import { MainPage } from '../pages/main/Main';
 import { ProfilePage } from '../pages/profile/Profile';
 import { RegisterPage } from '../pages/register/Register';
 import { ResetPasswordPage } from '../pages/reset-password/ResetPassword';
+import { ProtectedRoute } from '../protected-route/ProtectedRoute';
 
 function App() {
   return (
@@ -31,9 +32,9 @@ function App() {
           <Route path="/reset-password" exact={true}>
             <ResetPasswordPage />
           </Route>
-          <Route path="/profile">
+          <ProtectedRoute path="/profile">
             <ProfilePage />
-          </Route>
+          </ProtectedRoute>
           <Route path="/ingredients/:id" exact={true}>
             <div>страница ингредиента</div>
           </Route>

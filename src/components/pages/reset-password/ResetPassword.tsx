@@ -1,17 +1,21 @@
 import React, { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 // @ts-ignore
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import {
   Button, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { API_ROOT } from '../../../consts/api';
+import { State } from '../../../types/states';
 import { checkResponse, handleResponse, handleResponseError } from '../../../utils/fetch';
 
 import styles from './ResetPassword.module.css';
 
 export function ResetPasswordPage() {
+  const user = useSelector((state: State) => state.user.user);
+
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
 
@@ -37,12 +41,26 @@ export function ResetPasswordPage() {
       })
       .then(checkResponse)
       .then(handleResponse<{success: boolean, message: string}>(res => {
-        console.log('move to /login ?');
+        localStorage.removeItem('forgotPasswordUsed');
+        // redirect to /login
       }))
-      .catch(handleResponseError('Forgot password', () => {}));
+      .catch(handleResponseError('Reset password', () => {}));
     },
     [password, token]
   );
+
+  if (user) {
+    return (
+      <Redirect to='/' />
+    );
+  }
+
+  const forgotPasswordUsed = localStorage.getItem('forgotPasswordUsed') === '1';
+  if (!forgotPasswordUsed) {
+    return (
+      <Redirect to='/forgot-password' />
+    );
+  }
 
   return (
     <main>

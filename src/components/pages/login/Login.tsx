@@ -1,14 +1,20 @@
 import React, { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 // @ts-ignore
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 
 import {
   Button, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import { State } from '../../../types/states';
+
 import styles from './Login.module.css';
 
 export function LoginPage() {
+  const location = useLocation();
+  const user = useSelector((state: State) => state.user.user);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -27,6 +33,14 @@ export function LoginPage() {
     },
     [email, password]
   );
+
+  if (user) {
+    return (
+      <Redirect
+        to={ location.state?.from || '/' }
+      />
+    );
+  }
 
   return (
     <main>

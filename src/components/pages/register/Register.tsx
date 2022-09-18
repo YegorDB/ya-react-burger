@@ -1,14 +1,19 @@
 import React, { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 // @ts-ignore
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import {
   Button, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import { State } from '../../../types/states';
+
 import styles from './Register.module.css';
 
 export function RegisterPage() {
+  const user = useSelector((state: State) => state.user.user);
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,6 +38,12 @@ export function RegisterPage() {
     },
     [name, email, password]
   );
+
+  if (user) {
+    return (
+      <Redirect to='/' />
+    );
+  }
 
   return (
     <main>
