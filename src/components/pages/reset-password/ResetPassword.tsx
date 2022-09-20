@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 
 import {
   Button, Input, PasswordInput,
@@ -15,21 +15,16 @@ import { checkResponse, handleResponse, handleResponseError } from '../../../uti
 import styles from './ResetPassword.module.css';
 
 export function ResetPasswordPage() {
-  const [isUserLoaded, setUserLoaded] = useState(false);
-
-  const init = async () => {
-    await getUser();
-    setUserLoaded(true);
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
-
-  const user = useSelector((state: State) => state.user.user);
-
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { user, userLoaded } = useSelector((state: State) => state.user);
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(getUser());
+  }, [dispatch]);
 
   const changePassword = useCallback(
     e => setPassword(e.target.value),
@@ -54,14 +49,14 @@ export function ResetPasswordPage() {
       .then(checkResponse)
       .then(handleResponse<{success: boolean, message: string}>(res => {
         localStorage.removeItem('forgotPasswordUsed');
-        // redirect to /login
+        history.push('/login');
       }))
       .catch(handleResponseError('Reset password', () => {}));
     },
-    [password, token]
+    [password, token, history]
   );
 
-  if (!isUserLoaded) {
+  if (!userLoaded) {
     return null;
   }
 

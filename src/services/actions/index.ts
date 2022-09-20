@@ -73,7 +73,8 @@ export function postOrder(ingredientsIds: Ingredient['_id'][], setModalOpen: Fun
     fetch(`${API_ROOT}/orders`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('accessToken') || '',
       },
       body: JSON.stringify({
         ingredients: ingredientsIds,
@@ -87,10 +88,17 @@ export function postOrder(ingredientsIds: Ingredient['_id'][], setModalOpen: Fun
       });
       setModalOpen(true);
     }))
-    .catch(handleResponseError('Post order', () => {
-      dispatch({
-        type: POST_ORDER_REQUEST_FAILED,
-      });
+    .catch(handleResponseError('Post order', err => {
+      if (err.message === 'jwt expired') {
+        setTimeout(() => {
+          const callback = postOrder(ingredientsIds, setModalOpen);
+          postRefreshToken(callback)(dispatch);
+        }, 1000);
+      } else {
+        dispatch({
+          type: POST_ORDER_REQUEST_FAILED,
+        });
+      }
     }));
   };
 }
@@ -118,9 +126,8 @@ export function postRegister(email: string, password: string, name: string) {
         type: POST_REGISTER_REQUEST_SUCCESS,
         user: res.user,
       });
-      localStorage.setItem('accessToken', res.accessToken.substring(7));
+      localStorage.setItem('accessToken', res.accessToken);
       localStorage.setItem('refreshToken', res.refreshToken);
-      // redirect to /
     }))
     .catch(handleResponseError('Post register', () => {
       dispatch({
@@ -152,9 +159,8 @@ export function postLogin(email: string, password: string) {
         type: POST_LOGIN_REQUEST_SUCCESS,
         user: res.user,
       });
-      localStorage.setItem('accessToken', res.accessToken.substring(7));
+      localStorage.setItem('accessToken', res.accessToken);
       localStorage.setItem('refreshToken', res.refreshToken);
-      // redirect to /
     }))
     .catch(handleResponseError('Post login', () => {
       dispatch({
@@ -195,7 +201,7 @@ export function postLogout() {
   };
 }
 
-export function postRefreshToken() {
+export function postRefreshToken(callback: Function) {
   return function(dispatch: Function) {
     dispatch({
       type: POST_TOKEN_REQUEST_PENDING,
@@ -215,13 +221,17 @@ export function postRefreshToken() {
       dispatch({
         type: POST_TOKEN_REQUEST_SUCCESS,
       });
-      localStorage.setItem('accessToken', res.accessToken.substring(7));
+      localStorage.setItem('accessToken', res.accessToken);
       localStorage.setItem('refreshToken', res.refreshToken);
+      callback(dispatch);
     }))
     .catch(handleResponseError('Post token', () => {
       dispatch({
         type: POST_TOKEN_REQUEST_FAILED,
       });
+      setTimeout(() => {
+        postRefreshToken(callback)(dispatch);
+      }, 1000);
     }));
   };
 }
@@ -232,9 +242,11 @@ export function getUser() {
       type: GET_USER_REQUEST_PENDING,
     });
 
-    const accessToken = localStorage.getItem('accessToken');
-
-    fetch(`${API_ROOT}/auth/user?authorization=${accessToken}`)
+    fetch(`${API_ROOT}/auth/user`, {
+      headers: {
+        'Authorization': localStorage.getItem('accessToken') || '',
+      },
+    })
     .then(checkResponse)
     .then(handleResponse<{success: boolean, user: User}>(res => {
       dispatch({
@@ -242,10 +254,17 @@ export function getUser() {
         user: res.user
       });
     }))
-    .catch(handleResponseError('Get user', () => {
-      dispatch({
-        type: GET_USER_REQUEST_FAILED,
-      });
+    .catch(handleResponseError('Get user', err => {
+      if (err.message === 'jwt expired') {
+        setTimeout(() => {
+          const callback = getUser();
+          postRefreshToken(callback)(dispatch);
+        }, 1000);
+      } else {
+        dispatch({
+          type: GET_USER_REQUEST_FAILED,
+        });
+      }
     }));
   };
 }
@@ -259,13 +278,13 @@ export function patchUser(name: string, email: string, password: string) {
     fetch(`${API_ROOT}/auth/user`, {
       method: 'PATCH',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('accessToken') || '',
       },
       body: JSON.stringify({
         name: name,
         email: email,
         password: password,
-        authorization: localStorage.getItem('accessToken'),
       })
     })
     .then(checkResponse)
@@ -275,10 +294,17 @@ export function patchUser(name: string, email: string, password: string) {
         user: res.user
       });
     }))
-    .catch(handleResponseError('Patch user', () => {
-      dispatch({
-        type: PATCH_USER_REQUEST_FAILED,
-      });
+    .catch(handleResponseError('Patch user', err => {
+      if (err.message === 'jwt expired') {
+        setTimeout(() => {
+          const callback = patchUser(name, email, password);
+          postRefreshToken(callback)(dispatch);
+        }, 1000);
+      } else {
+        dispatch({
+          type: PATCH_USER_REQUEST_FAILED,
+        });
+      }
     }));
   };
 }

@@ -12,9 +12,9 @@ export function handleResponse<T extends {success: boolean}>(handler: (res: T) =
   };
 }
 
-export function handleResponseError(requestName: string, handler: () => void) {
+export function handleResponseError(requestName: string, handler: (err: Error) => void) {
   return (err: Error) => {
     console.log(`${requestName} error`, err);
-    handler();
+    handler(err);
   };
 }

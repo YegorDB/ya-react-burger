@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 
 import {
   Button, Input,
@@ -16,20 +16,15 @@ import { checkResponse, handleResponse, handleResponseError } from '../../../uti
 import styles from './ForgotPassword.module.css';
 
 export function ForgotPasswordPage() {
-  const [isUserLoaded, setUserLoaded] = useState(false);
-
-  const init = async () => {
-    await getUser();
-    setUserLoaded(true);
-  };
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { user, userLoaded } = useSelector((state: State) => state.user);
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
-    init();
-  }, []);
-
-  const user = useSelector((state: State) => state.user.user);
-
-  const [email, setEmail] = useState('');
+    // @ts-ignore
+    dispatch(getUser());
+  }, [dispatch]);
 
   const changeEmail = useCallback(
     e => setEmail(e.target.value),
@@ -49,14 +44,14 @@ export function ForgotPasswordPage() {
       .then(checkResponse)
       .then(handleResponse<{success: boolean, message: string}>(res => {
         localStorage.setItem('forgotPasswordUsed', '1');
-        // redirect to /reset-password'
+        history.push('/reset-password');
       }))
       .catch(handleResponseError('Forgot password', () => {}));
     },
-    [email]
+    [email, history]
   );
 
-  if (!isUserLoaded) {
+  if (!userLoaded) {
     return null;
   }
 

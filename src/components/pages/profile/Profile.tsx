@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
@@ -8,7 +8,7 @@ import {
   Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { postLogout, patchUser } from '../../../services/actions';
+import { getUser, postLogout, patchUser } from '../../../services/actions';
 import { State } from '../../../types/states';
 
 import styles from './Profile.module.css';
@@ -18,11 +18,15 @@ export function ProfilePage() {
   const matchOrders = useRouteMatch('/profile/orders');
 
   const dispatch = useDispatch();
-  const user = useSelector((state: State) => state.user.user);
-
-  const [name, setName] = useState('');
-  const [login, setLogin] = useState('');
+  const { user, userLoaded } = useSelector((state: State) => state.user);
+  const [name, setName] = useState(user ? user.name : '');
+  const [login, setLogin] = useState(user ? user.email : '');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(getUser());
+  }, [dispatch]);
 
   const changeName = useCallback(
     e => setName(e.target.value),
@@ -57,6 +61,10 @@ export function ProfilePage() {
     e => dispatch(postLogout()),
     [dispatch]
   );
+
+  if (!userLoaded) {
+    return null;
+  }
 
   return (
     <main>
@@ -122,7 +130,7 @@ export function ProfilePage() {
               История заказов
             </p>
           </Link>
-          <p className="text text_type_main-medium text_color_inactive" onClick={ logout }>
+          <p className={cn('text text_type_main-medium text_color_inactive', styles.ProfileLogout)} onClick={ logout }>
             Выход
           </p>
           <p className="text text_type_main-default text_color_inactive mt-20">

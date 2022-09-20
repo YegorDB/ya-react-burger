@@ -13,23 +13,16 @@ import { State } from '../../../types/states';
 import styles from './Register.module.css';
 
 export function RegisterPage() {
-  const [isUserLoaded, setUserLoaded] = useState(false);
-
-  const init = async () => {
-    await getUser();
-    setUserLoaded(true);
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
-
   const dispatch = useDispatch();
-  const user = useSelector((state: State) => state.user.user);
-
+  const { user, userLoaded } = useSelector((state: State) => state.user);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(getUser());
+  }, [dispatch]);
 
   const changeName = useCallback(
     e => setName(e.target.value),
@@ -49,7 +42,7 @@ export function RegisterPage() {
     [dispatch, name, email, password]
   );
 
-  if (!isUserLoaded) {
+  if (!userLoaded) {
     return null;
   }
 

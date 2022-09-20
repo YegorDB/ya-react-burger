@@ -13,23 +13,16 @@ import { State } from '../../../types/states';
 import styles from './Login.module.css';
 
 export function LoginPage() {
-  const [isUserLoaded, setUserLoaded] = useState(false);
-
-  const init = async () => {
-    await getUser();
-    setUserLoaded(true);
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
-
   const location = useLocation();
   const dispatch = useDispatch();
-  const user = useSelector((state: State) => state.user.user);
-
+  const { user, userLoaded } = useSelector((state: State) => state.user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(getUser());
+  }, [dispatch]);
 
   const changeEmail = useCallback(
     e => setEmail(e.target.value),
@@ -40,12 +33,12 @@ export function LoginPage() {
     []
   );
   const loginHandle = useCallback(
-    // @ts-ignorelogin
+    // @ts-ignore
     e => dispatch(postLogin(email, password)),
     [dispatch, email, password]
   );
 
-  if (!isUserLoaded) {
+  if (!userLoaded) {
     return null;
   }
 

@@ -1,7 +1,9 @@
 import cn from 'classnames';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
+// @ts-ignore
+import { useHistory } from 'react-router-dom';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
@@ -72,20 +74,9 @@ function BurgerConstructorMainItemsItem(props: {
 }
 
 function BurgerConstructor() {
-  const [isUserLoaded, setUserLoaded] = useState(false);
-
-  const init = async () => {
-    await getUser();
-    setUserLoaded(true);
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
-
+  const history = useHistory();
   const dispatch = useDispatch();
-  const user = useSelector((state: State) => state.user.user);
-
+  const { user, userLoaded } = useSelector((state: State) => state.user);
   const [isModalOpen, setModalOpen] = React.useState(false);
   const { ingredients, bunId, itemsData, orderId } = useSelector((state: State) => ({
     ingredients: state.ingredients.items,
@@ -93,6 +84,11 @@ function BurgerConstructor() {
     itemsData: state.selectedIngredients.itemsData,
     orderId: state.currentOrder.orderId,
   }));
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(getUser());
+  }, [dispatch]);
 
   const [, dropTarget] = useDrop({
       accept: 'ingredients-item',
@@ -107,7 +103,7 @@ function BurgerConstructor() {
 
   const handleOrderConfirmation = () => {
     if (!user) {
-      window.location.replace('/login');
+      history.push('/login');
     }
 
     const otherIds = itemsData.map(i => i.id);
@@ -144,7 +140,7 @@ function BurgerConstructor() {
     return value;
   }, [bunIngredient, otherIngredientsData]);
 
-  if (!isUserLoaded) {
+  if (!userLoaded) {
     return null;
   }
 

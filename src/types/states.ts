@@ -25,6 +25,7 @@ export type SelectedIngredientsState = {
 
 export type UserState = {
   user: User | null,
+  userLoaded: boolean,
 }
 
 export type State = {

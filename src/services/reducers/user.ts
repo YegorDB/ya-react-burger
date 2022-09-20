@@ -23,6 +23,7 @@ import { UserState } from '../../types/states';
 
 const initialState = {
   user: null,
+  userLoaded: false,
 };
 
 const user = (
@@ -31,24 +32,38 @@ const user = (
 ) => {
   switch (action.type) {
     case POST_REGISTER_REQUEST_PENDING:
-      return initialState;
+      return {
+        ...state,
+        user: initialState.user,
+      };
     case POST_REGISTER_REQUEST_SUCCESS:
       return {
         ...state,
         user: action.user,
+        userLoaded: true,
       };
     case POST_REGISTER_REQUEST_FAILED:
-      return initialState;
+      return {
+        ...state,
+        user: initialState.user,
+      };
 
     case POST_LOGIN_REQUEST_PENDING:
-      return initialState;
+      return {
+        ...state,
+        user: initialState.user,
+      };
     case POST_LOGIN_REQUEST_SUCCESS:
       return {
         ...state,
         user: action.user,
+        userLoaded: true,
       };
     case POST_LOGIN_REQUEST_FAILED:
-      return initialState;
+      return {
+        ...state,
+        user: initialState.user,
+      };
 
     case POST_LOGOUT_REQUEST_PENDING:
       return state;
@@ -62,7 +77,7 @@ const user = (
     case POST_TOKEN_REQUEST_SUCCESS:
       return state;
     case POST_TOKEN_REQUEST_FAILED:
-      return initialState;
+      return state;
 
     case GET_USER_REQUEST_PENDING:
       return state;
@@ -70,9 +85,14 @@ const user = (
       return {
         ...state,
         user: action.user,
+        userLoaded: true,
       };
     case GET_USER_REQUEST_FAILED:
-      return state;
+      return {
+        ...state,
+        user: initialState.user,
+        userLoaded: true,
+      };
 
     case PATCH_USER_REQUEST_PENDING:
       return state;
@@ -80,6 +100,7 @@ const user = (
       return {
         ...state,
         user: action.user,
+        userLoaded: true,
       };
     case PATCH_USER_REQUEST_FAILED:
       return state;
