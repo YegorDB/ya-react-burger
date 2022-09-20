@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 // @ts-ignore
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -11,8 +12,16 @@ import { ProfilePage } from '../pages/profile/Profile';
 import { RegisterPage } from '../pages/register/Register';
 import { ResetPasswordPage } from '../pages/reset-password/ResetPassword';
 import { ProtectedRoute } from '../protected-route/ProtectedRoute';
+import { getIngredients } from '../../services/actions';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(()=> {
+    // @ts-ignore
+    dispatch(getIngredients());
+  }, [dispatch]);
+
   return (
     <>
       <Router>
