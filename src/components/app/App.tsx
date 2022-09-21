@@ -23,37 +23,35 @@ function App() {
   }, [dispatch]);
 
   return (
-    <>
-      <Router>
-        <AppHeader />
-        <Switch>
-          <Route path="/" exact={true}>
-            <MainPage />
-          </Route>
-          <Route path="/login" exact={true}>
-            <LoginPage />
-          </Route>
-          <Route path="/register" exact={true}>
-            <RegisterPage />
-          </Route>
-          <Route path="/forgot-password" exact={true}>
-            <ForgotPasswordPage />
-          </Route>
-          <Route path="/reset-password" exact={true}>
-            <ResetPasswordPage />
-          </Route>
-          <ProtectedRoute path="/profile">
-            <ProfilePage />
-          </ProtectedRoute>
-          <Route path="/ingredients/:id" exact={true}>
-            <IngredientPage />
-          </Route>
-          <Route>
-            <div>404</div>
-          </Route>
-        </Switch>
-      </Router>
-    </>
+    <Router>
+      <AppHeader />
+      <Switch>
+        <Route path="/" exact={true}>
+          <MainPage />
+        </Route>
+        <Route path="/login" exact={true}>
+          <LoginPage />
+        </Route>
+        <Route path="/register" exact={true}>
+          <RegisterPage />
+        </Route>
+        <Route path="/forgot-password" exact={true}>
+          <ForgotPasswordPage />
+        </Route>
+        <Route path="/reset-password" exact={true}>
+          <ResetPasswordPage />
+        </Route>
+        <ProtectedRoute path="/profile">
+          <ProfilePage />
+        </ProtectedRoute>
+        <Route path="/ingredients/:id" exact={true}>
+          <IngredientPage />
+        </Route>
+        <Route>
+          <div>404</div>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
