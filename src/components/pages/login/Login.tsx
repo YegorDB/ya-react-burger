@@ -33,8 +33,11 @@ export function LoginPage() {
     []
   );
   const loginHandle = useCallback(
-    // @ts-ignore
-    e => dispatch(postLogin(email, password)),
+    e => {
+      e.preventDefault();
+      // @ts-ignore
+      dispatch(postLogin(email, password));
+    },
     [dispatch, email, password]
   );
 
@@ -56,28 +59,33 @@ export function LoginPage() {
         <p className="text text_type_main-medium mb-6">
           Вход
         </p>
-        <div className={ styles.LoginInputWrapper }>
-          <Input
-            type="email"
-            placeholder="E-mail"
-            onChange={ changeEmail }
-            value={ email }
-            name="email"
-            size="default"
-          />
-        </div>
-        <div className={ styles.LoginInputWrapper }>
-          <PasswordInput
-            onChange={ changePassword }
-            value={ password }
-            name="password"
-          />
-        </div>
-        <div className="mb-20">
-          <Button type="primary" size="medium" onClick={ loginHandle }>
-            Войти
-          </Button>
-        </div>
+        <form onSubmit={ loginHandle }>
+          <div className={ styles.LoginInputWrapper }>
+            <Input
+              type="email"
+              placeholder="E-mail"
+              onChange={ changeEmail }
+              value={ email }
+              name="email"
+              size="default"
+            />
+          </div>
+          <div className={ styles.LoginInputWrapper }>
+            <PasswordInput
+              onChange={ changePassword }
+              value={ password }
+              name="password"
+            />
+          </div>
+          <input type="submit" id="submit-form" className={ styles.LoginFormSubmit }/>
+          <div className="mb-20">
+            <label htmlFor="submit-form">
+              <Button type="primary" size="medium">
+                Войти
+              </Button>
+            </label>
+          </div>
+        </form>
         <p className="text text_type_main-default mb-4">
           Вы - новый пользователь?
           <Link to='/register' className="ml-2">

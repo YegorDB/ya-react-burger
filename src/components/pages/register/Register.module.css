@@ -5,3 +5,7 @@
 .RegisterInputWrapper {
   composes: CentralizedContentInputWrapper from "../Pages.module.css"
 }
+
+.RegisterFormSubmit {
+  composes: FormSubmit from "../Pages.module.css"
+}

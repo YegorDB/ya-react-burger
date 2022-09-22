@@ -42,8 +42,11 @@ export function ProfilePage() {
   );
 
   const changeUserData = useCallback(
-    // @ts-ignore
-    e => dispatch(patchUser(name, login, password)),
+    e => {
+      e.preventDefault();
+      // @ts-ignore
+      dispatch(patchUser(name, login, password));
+    },
     [dispatch, name, login, password]
   );
 
@@ -72,47 +75,52 @@ export function ProfilePage() {
         <div className={ styles.ProfileMain }>
           <Switch>
             <Route path="/profile" exact={true}>
-              <div className={ styles.ProfileInputWrapper }>
-                <Input
-                  type="text"
-                  placeholder="Имя"
-                  onChange={ changeName }
-                  value={ name }
-                  name="name"
-                  size="default"
-                  icon="EditIcon"
-                />
-              </div>
-              <div className={ styles.ProfileInputWrapper }>
-                <Input
-                  type="text"
-                  placeholder="Логин"
-                  onChange={ changeLogin }
-                  value={ login }
-                  name="login"
-                  size="default"
-                  icon="EditIcon"
-                />
-              </div>
-              <div className={ styles.ProfileInputWrapper }>
-                <Input
-                  type="text"
-                  placeholder="Пароль"
-                  onChange={ changePassword }
-                  value={ password }
-                  name="password"
-                  size="default"
-                  icon="EditIcon"
-                />
-              </div>
-              <div className={ styles.ProfileButtons }>
-                <Button type="primary" size="medium" onClick={ changeUserData }>
-                  Сохранить
-                </Button>
-                <Button type="primary" size="medium" onClick={ resetUserData }>
-                  Отмена
-                </Button>
-              </div>
+              <form onSubmit={ changeUserData }>
+                <div className={ styles.ProfileInputWrapper }>
+                  <Input
+                    type="text"
+                    placeholder="Имя"
+                    onChange={ changeName }
+                    value={ name }
+                    name="name"
+                    size="default"
+                    icon="EditIcon"
+                  />
+                </div>
+                <div className={ styles.ProfileInputWrapper }>
+                  <Input
+                    type="text"
+                    placeholder="Логин"
+                    onChange={ changeLogin }
+                    value={ login }
+                    name="login"
+                    size="default"
+                    icon="EditIcon"
+                  />
+                </div>
+                <div className={ styles.ProfileInputWrapper }>
+                  <Input
+                    type="text"
+                    placeholder="Пароль"
+                    onChange={ changePassword }
+                    value={ password }
+                    name="password"
+                    size="default"
+                    icon="EditIcon"
+                  />
+                </div>
+                <input type="submit" id="submit-form" className={ styles.ProfileFormSubmit }/>
+                <div className={ styles.ProfileButtons }>
+                  <label htmlFor="submit-form">
+                    <Button type="primary" size="medium">
+                      Сохранить
+                    </Button>
+                  </label>
+                  <Button type="primary" size="medium" onClick={ resetUserData }>
+                    Отмена
+                  </Button>
+                </div>
+              </form>
             </Route>
             <Route path="/profile/orders">
               ORDERS

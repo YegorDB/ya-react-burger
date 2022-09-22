@@ -32,6 +32,7 @@ export function ForgotPasswordPage() {
   );
   const repareHandle = useCallback(
     e => {
+      e.preventDefault();
       fetch(`${API_ROOT}/password-reset`, {
         method: 'POST',
         headers: {
@@ -67,21 +68,26 @@ export function ForgotPasswordPage() {
         <p className="text text_type_main-medium mb-6">
           Восстановление пароля
         </p>
-        <div className={ styles.ForgotPasswordInputWrapper }>
-          <Input
-            type="email"
-            placeholder="Укажите e-mail"
-            onChange={ changeEmail }
-            value={ email }
-            name="email"
-            size="default"
-          />
-        </div>
-        <div className="mb-20">
-          <Button type="primary" size="medium" onClick={ repareHandle }>
-            Восстановить
-          </Button>
-        </div>
+        <form onSubmit={ repareHandle }>
+          <div className={ styles.ForgotPasswordInputWrapper }>
+            <Input
+              type="email"
+              placeholder="Укажите e-mail"
+              onChange={ changeEmail }
+              value={ email }
+              name="email"
+              size="default"
+            />
+          </div>
+          <input type="submit" id="submit-form" className={ styles.ForgotPasswordFormSubmit }/>
+          <div className="mb-20">
+            <label htmlFor="submit-form">
+              <Button type="primary" size="medium">
+                Восстановить
+              </Button>
+            </label>
+          </div>
+        </form>
         <p className="text text_type_main-default">
           Вспомнили пароль?
           <Link to='/login' className="ml-2">

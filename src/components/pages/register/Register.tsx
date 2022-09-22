@@ -37,8 +37,11 @@ export function RegisterPage() {
     []
   );
   const registerHandle = useCallback(
-    // @ts-ignorelogin
-    e => dispatch(postRegister(email, password, name)),
+    e => {
+      e.preventDefault();
+      // @ts-ignore
+      dispatch(postRegister(email, password, name));
+    },
     [dispatch, name, email, password]
   );
 
@@ -58,38 +61,43 @@ export function RegisterPage() {
         <p className="text text_type_main-medium mb-6">
           Регистрация
         </p>
-        <div className={ styles.RegisterInputWrapper }>
-          <Input
-            type="text"
-            placeholder="Name"
-            onChange={ changeName }
-            value={ name }
-            name="name"
-            size="default"
-          />
-        </div>
-        <div className={ styles.RegisterInputWrapper }>
-          <Input
-            type="email"
-            placeholder="E-mail"
-            onChange={ changeEmail }
-            value={ email }
-            name="email"
-            size="default"
-          />
-        </div>
-        <div className={ styles.RegisterInputWrapper }>
-          <PasswordInput
-            onChange={ changePassword }
-            value={ password }
-            name="password"
-          />
-        </div>
-        <div className="mb-20">
-          <Button type="primary" size="medium" onClick={ registerHandle }>
-            Зарегистрироваться
-          </Button>
-        </div>
+        <form onSubmit={ registerHandle }>
+          <div className={ styles.RegisterInputWrapper }>
+            <Input
+              type="text"
+              placeholder="Name"
+              onChange={ changeName }
+              value={ name }
+              name="name"
+              size="default"
+            />
+          </div>
+          <div className={ styles.RegisterInputWrapper }>
+            <Input
+              type="email"
+              placeholder="E-mail"
+              onChange={ changeEmail }
+              value={ email }
+              name="email"
+              size="default"
+            />
+          </div>
+          <div className={ styles.RegisterInputWrapper }>
+            <PasswordInput
+              onChange={ changePassword }
+              value={ password }
+              name="password"
+            />
+          </div>
+          <input type="submit" id="submit-form" className={ styles.RegisterFormSubmit }/>
+          <div className="mb-20">
+            <label htmlFor="submit-form">
+              <Button type="primary" size="medium">
+                Зарегистрироваться
+              </Button>
+            </label>
+          </div>
+        </form>
         <p className="text text_type_main-default">
           Уже зарегистрированы?
           <Link to='/login' className="ml-2">

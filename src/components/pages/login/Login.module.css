@@ -5,3 +5,7 @@
 .LoginInputWrapper {
   composes: CentralizedContentInputWrapper from "../Pages.module.css"
 }
+
+.LoginFormSubmit {
+  composes: FormSubmit from "../Pages.module.css"
+}

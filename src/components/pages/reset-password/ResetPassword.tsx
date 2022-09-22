@@ -36,6 +36,7 @@ export function ResetPasswordPage() {
   );
   const resetHandle = useCallback(
     e => {
+      e.preventDefault();
       fetch(`${API_ROOT}/password-reset/reset`, {
         method: 'POST',
         headers: {
@@ -79,28 +80,33 @@ export function ResetPasswordPage() {
         <p className="text text_type_main-medium mb-6">
           Восстановление пароля
         </p>
-        <div className={ styles.ResetPasswordInputWrapper }>
-          <PasswordInput
-            onChange={ changePassword }
-            value={ password }
-            name="password"
-          />
-        </div>
-        <div className={ styles.ResetPasswordInputWrapper }>
-          <Input
-            type="text"
-            placeholder="Введите код из письма"
-            onChange={ changeToken }
-            value={ token }
-            name="token"
-            size="default"
-          />
-        </div>
-        <div className="mb-20">
-          <Button type="primary" size="medium" onClick={ resetHandle }>
-            Сохранить
-          </Button>
-        </div>
+        <form onSubmit={ resetHandle }>
+          <div className={ styles.ResetPasswordInputWrapper }>
+            <PasswordInput
+              onChange={ changePassword }
+              value={ password }
+              name="password"
+            />
+          </div>
+          <div className={ styles.ResetPasswordInputWrapper }>
+            <Input
+              type="text"
+              placeholder="Введите код из письма"
+              onChange={ changeToken }
+              value={ token }
+              name="token"
+              size="default"
+            />
+          </div>
+          <input type="submit" id="submit-form" className={ styles.ResetPasswordFormSubmit }/>
+          <div className="mb-20">
+            <label htmlFor="submit-form">
+              <Button type="primary" size="medium">
+                Сохранить
+              </Button>
+            </label>
+          </div>
+        </form>
         <p className="text text_type_main-default">
           Вспомнили пароль?
           <Link to='/login' className="ml-2">
