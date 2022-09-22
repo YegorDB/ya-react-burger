@@ -28,10 +28,15 @@ export type UserState = {
   userLoaded: boolean,
 }
 
+export type ForgotPasswordState = {
+  forgotPasswordUsed: boolean,
+}
+
 export type State = {
   currentIngredient: CurrentIngredientState,
   currentOrder: CurrentOrderState,
   ingredients: IngredientsState,
   selectedIngredients: SelectedIngredientsState,
   user: UserState,
+  forgotPassword: ForgotPasswordState,
 }

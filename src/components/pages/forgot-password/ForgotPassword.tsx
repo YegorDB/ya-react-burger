@@ -9,9 +9,7 @@ import {
 
 import { State } from '../../../types/states';
 
-import { API_ROOT } from '../../../consts/api';
-import { getUser } from '../../../services/actions';
-import { checkResponse, handleResponse, handleResponseError } from '../../../utils/fetch';
+import { getUser, forgotPassword } from '../../../services/actions';
 
 import styles from './ForgotPassword.module.css';
 
@@ -33,23 +31,12 @@ export function ForgotPasswordPage() {
   const repareHandle = useCallback(
     e => {
       e.preventDefault();
-      fetch(`${API_ROOT}/password-reset`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "email": email,
-        })
-      })
-      .then(checkResponse)
-      .then(handleResponse<{success: boolean, message: string}>(res => {
-        localStorage.setItem('forgotPasswordUsed', '1');
+      // @ts-ignore
+      dispatch(forgotPassword(email, () => {
         history.push('/reset-password');
-      }))
-      .catch(handleResponseError('Forgot password', () => {}));
+      }));
     },
-    [email, history]
+    [email, history, dispatch]
   );
 
   if (!userLoaded) {

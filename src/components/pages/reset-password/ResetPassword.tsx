@@ -7,17 +7,19 @@ import {
   Button, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { API_ROOT } from '../../../consts/api';
-import { getUser } from '../../../services/actions';
+import { getUser, passwordReset } from '../../../services/actions';
 import { State } from '../../../types/states';
-import { checkResponse, handleResponse, handleResponseError } from '../../../utils/fetch';
 
 import styles from './ResetPassword.module.css';
 
 export function ResetPasswordPage() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: State) => state.user);
+  const { user, userLoaded, forgotPasswordUsed } = useSelector((state: State) => ({
+    user: state.user.user,
+    userLoaded: state.user.userLoaded,
+    forgotPasswordUsed: state.forgotPassword.forgotPasswordUsed,
+  }));
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
 
@@ -37,24 +39,12 @@ export function ResetPasswordPage() {
   const resetHandle = useCallback(
     e => {
       e.preventDefault();
-      fetch(`${API_ROOT}/password-reset/reset`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "password": password,
-          "token": token,
-        })
-      })
-      .then(checkResponse)
-      .then(handleResponse<{success: boolean, message: string}>(res => {
-        localStorage.removeItem('forgotPasswordUsed');
+      // @ts-ignore
+      dispatch(passwordReset(password, token, () => {
         history.push('/login');
-      }))
-      .catch(handleResponseError('Reset password', () => {}));
+      }));
     },
-    [password, token, history]
+    [password, token, history, dispatch]
   );
 
   if (!userLoaded) {
@@ -67,7 +57,6 @@ export function ResetPasswordPage() {
     );
   }
 
-  const forgotPasswordUsed = localStorage.getItem('forgotPasswordUsed') === '1';
   if (!forgotPasswordUsed) {
     return (
       <Redirect to='/forgot-password' />

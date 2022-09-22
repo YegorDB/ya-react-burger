@@ -59,3 +59,10 @@ type UserSuccessAction = {
 }
 
 export type UserAction = UserBaseAction | UserSuccessAction;
+
+export type ForgotPasswordAction = {
+  type: (
+    'FORGOT_PASSWORD_REQUEST_PENDING' | 'FORGOT_PASSWORD_REQUEST_FAILED' | 'FORGOT_PASSWORD_REQUEST_SUCCESS' |
+    'PASSWORD_RESET_REQUEST_PENDING' | 'PASSWORD_RESET_REQUEST_FAILED' | 'PASSWORD_RESET_REQUEST_SUCCESS'
+  ),
+}
