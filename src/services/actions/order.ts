@@ -1,4 +1,5 @@
 import { postRefreshToken } from './refresh-token';
+import { CLEAR_CONSTRUCTOR } from './selected-ingredients';
 import { API_ROOT } from '../../consts/api';
 import { Ingredient } from '../../types/ingredient';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
@@ -12,6 +13,8 @@ export function postOrder(ingredientsIds: Ingredient['_id'][], setModalOpen: Fun
     dispatch({
       type: POST_ORDER_REQUEST_PENDING,
     });
+
+    setModalOpen(true);
 
     fetch(`${API_ROOT}/orders`, {
       method: 'POST',
@@ -29,7 +32,9 @@ export function postOrder(ingredientsIds: Ingredient['_id'][], setModalOpen: Fun
         type: POST_ORDER_REQUEST_SUCCESS,
         orderId: res.order.number.toString()
       });
-      setModalOpen(true);
+      dispatch({
+        type: CLEAR_CONSTRUCTOR,
+      });
     }))
     .catch(handleResponseError('Post order', err => {
       if (err.message === 'jwt expired') {

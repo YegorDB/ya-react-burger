@@ -5,9 +5,18 @@ import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-component
 import styles from './OrderDetails.module.css';
 
 function OrderDetails(props: {
-  orderId: string,
+  orderId: string | null,
 }) {
   const {orderId} = props;
+
+  if (!orderId) {
+    return (
+      <>
+        <p className="text text_type_main-medium">Оформление заказа началось.</p>
+        <p className="text text_type_main-medium">Пожалуйста, подождите.</p>
+      </>
+    );
+  }
 
   return (
     <div className={styles.OrderDetails}>

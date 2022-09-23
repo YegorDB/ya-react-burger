@@ -106,6 +106,3 @@ export function ResetPasswordPage() {
     </main>
   );
 }
-// test-qwerty
-// qwerty@test.com
-// Ljdy&382Snej&

@@ -106,6 +106,8 @@ function BurgerConstructor() {
       history.push('/login');
     }
 
+    if (!bunId) return;
+
     const otherIds = itemsData.map(i => i.id);
     const ingredientsIds = [bunId, ...otherIds, bunId];
     if (ingredientsIds.length === 0) return;

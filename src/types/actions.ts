@@ -40,7 +40,11 @@ type SelectedIngredientsOrderAction = {
   to: number,
 }
 
-export type SelectedIngredientsAction = SelectedIngredientsBaseAction | SelectedIngredientsOrderAction;
+type SelectedIngredientsClearAction = {
+  type: 'CLEAR_CONSTRUCTOR',
+}
+
+export type SelectedIngredientsAction = SelectedIngredientsBaseAction | SelectedIngredientsOrderAction | SelectedIngredientsClearAction;
 
 type UserBaseAction = {
   type: (

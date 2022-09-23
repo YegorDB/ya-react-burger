@@ -40,7 +40,9 @@ function AppHeader() {
         <AppHeaderItem icon={ListIcon} text="Лента заказов"/>
       </div>
       <div className="pt-4">
-        <Logo />
+        <Link to='/' className="undecorated-link">
+          <Logo />
+        </Link>
       </div>
       <div className={styles.AppHeaderProfile}>
         <Link to='/profile' className="undecorated-link">
