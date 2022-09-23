@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { Ingredient } from '../../types/ingredient'
 import { State } from '../../types/states';
+import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './IngredientDetails.module.css';
 
@@ -41,8 +42,20 @@ export function IngredientDetails(props: {
   );
 }
 
-export function CurrentIngredientDetails() {
-  const ingredient = useSelector((state: State) => state.currentIngredient.ingredient);
+export function CurrentIngredientDetails(props: {
+  ingredientId?: string,
+}) {
+  const { ingredientId } = props;
+
+  let { ingredient, ingredients } = useSelector((state: State) => ({
+    ingredient: state.currentIngredient.ingredient,
+    ingredients: state.ingredients.items,
+  }));
+
+  if (!ingredient && ingredientId) {
+    const parsedIngredients = parseIngredientsById(ingredients);
+    ingredient = parsedIngredients[ingredientId] || null;
+  }
 
   return (
     <IngredientDetails ingredient={ ingredient } />

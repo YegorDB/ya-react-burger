@@ -2,6 +2,8 @@ import cn from 'classnames';
 import React, { useMemo, useRef } from 'react';
 import { useDrag } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
+// @ts-ignore
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
@@ -14,11 +16,31 @@ import { parseIngredientsByType } from '../../utils/parseIngredients';
 
 import styles from './BurgerIngredients.module.css';
 
+export function BurgerIngredientsItemModal() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { id: ingredientId } = useParams();
+
+  const handleCloseModal = () => {
+    dispatch({
+      type: SET_CURRENT_INGREDIENT,
+      ingredient: null,
+    });
+    history.goBack();
+  }
+
+  return (
+    <Modal handleClose={handleCloseModal} title="Детали ингредиента">
+      <CurrentIngredientDetails ingredientId={ingredientId}/>
+    </Modal>
+  )
+}
+
 function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
   const { ingredient } = props;
 
+  const location = useLocation();
   const dispatch = useDispatch();
-  const [isModalOpen, setModalOpen] = React.useState(false);
   const { bunId, itemsData } = useSelector((state: State) => ({
     bunId: state.selectedIngredients.bunId,
     itemsData: state.selectedIngredients.itemsData,
@@ -38,39 +60,31 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
       type: SET_CURRENT_INGREDIENT,
       ingredient: ingredient,
     });
-    setModalOpen(true);
-    window.history.replaceState(null, 'Open ingredient modal', `/ingredients/${ingredient._id}`);
-  }
-
-  const handleCloseModal = () => {
-    dispatch({
-      type: SET_CURRENT_INGREDIENT,
-      ingredient: null,
-    });
-    setModalOpen(false);
-    window.history.replaceState(null, 'Close ingredient modal', '/');
   }
 
   return (
     <div ref={dragRef} className="hidden-overflow">
-      <div className={cn('mt-4 mb-4 ml-3 mr-3', styles.BurgerIngredientsItem)} onClick={handleOpenModal}>
-        <img className="ml-4 mr-4" src={ingredient.image} alt={ingredient.name} />
-        <div className={cn('mt-1 mb-1', styles.BurgerIngredientsItemPrise)}>
-          <p className="mr-1 text text_type_digits-default">{ingredient.price}</p>
-          <CurrencyIcon type="primary" />
+      <Link
+        to={{
+          pathname: `/ingredients/${ingredient._id}`,
+          state: { ingredientLocation: location }
+        }}
+        className="undecorated-link"
+      >
+        <div className={cn('mt-4 mb-4 ml-3 mr-3', styles.BurgerIngredientsItem)} onClick={handleOpenModal}>
+          <img className="ml-4 mr-4" src={ingredient.image} alt={ingredient.name} />
+          <div className={cn('mt-1 mb-1', styles.BurgerIngredientsItemPrise)}>
+            <p className="mr-1 text text_type_digits-default">{ingredient.price}</p>
+            <CurrencyIcon type="primary" />
+          </div>
+          <div>
+            <p className={cn('text text_type_main-default', styles.BurgerIngredientsItemName)}>{ingredient.name}</p>
+          </div>
+          {count > 0 && (
+            <Counter count={count} size="default" />
+          )}
         </div>
-        <div>
-          <p className={cn('text text_type_main-default', styles.BurgerIngredientsItemName)}>{ingredient.name}</p>
-        </div>
-        {count > 0 && (
-          <Counter count={count} size="default" />
-        )}
-      </div>
-      {isModalOpen && (
-        <Modal handleClose={handleCloseModal} title="Детали ингредиента">
-          <CurrentIngredientDetails />
-        </Modal>
-      )}
+      </Link>
     </div>
   );
 }
