@@ -1,6 +1,7 @@
 import cn from 'classnames';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
+import { InView } from 'react-intersection-observer';
 import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
@@ -107,14 +108,18 @@ const BurgerIngredientsItemsGroup = React.forwardRef((
 
 function getBurgerIngredientsTabClickHandler(ref: React.RefObject<HTMLElement>, setCurrentTab: Function) {
   return (value: string) => {
-    setCurrentTab(value);
     if (ref.current === null) return;
     ref.current.scrollIntoView({behavior: 'smooth'});
   }
 }
 
 function BurgerIngredients() {
-  const [currentTab, setCurrentTab] = React.useState('1');
+  const [currentTab, setCurrentTab] = useState('1');
+  const [wisibleTabs, setWisibleTabs] = useState({
+    '1': true,
+    '2': false,
+    '3': false,
+  });
 
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
@@ -134,6 +139,18 @@ function BurgerIngredients() {
   );
 
   const ingredients = useSelector((state: State) => state.ingredients.items);
+
+  useEffect(
+    () => {
+      for (let i = 1; i <= 3; i++) {
+        const index = i.toString() as keyof typeof wisibleTabs;
+        if (wisibleTabs[index]) {
+          setCurrentTab(index);
+          break;
+        }
+      }
+    }, [wisibleTabs]
+  );
 
   const {
     bun: bunIngredients,
@@ -158,9 +175,27 @@ function BurgerIngredients() {
         </Tab>
         </div>
       <div className={cn('custom-scroll', styles.BurgerIngredientsItems)}>
-        <BurgerIngredientsItemsGroup ref={bunRef} name="Булки" ingredients={bunIngredients} />
-        <BurgerIngredientsItemsGroup ref={sauceRef} name="Соусы" ingredients={sauceIngredients} />
-        <BurgerIngredientsItemsGroup ref={mainRef} name="Начинки" ingredients={mainIngredients} />
+        <InView
+          as="div"
+          rootMargin="-320px 0px 0px 0px"
+          onChange={(inView, entry) => setWisibleTabs({...wisibleTabs, '1': inView})}
+        >
+          <BurgerIngredientsItemsGroup ref={bunRef} name="Булки" ingredients={bunIngredients} />
+        </InView>
+        <InView
+          as="div"
+          rootMargin="-320px 0px 0px 0px"
+          onChange={(inView, entry) => setWisibleTabs({...wisibleTabs, '2': inView})}
+        >
+          <BurgerIngredientsItemsGroup ref={sauceRef} name="Соусы" ingredients={sauceIngredients} />
+        </InView>
+        <InView
+          as="div"
+          rootMargin="-320px 0px 0px 0px"
+          onChange={(inView, entry) => setWisibleTabs({...wisibleTabs, '3': inView})}
+        >
+          <BurgerIngredientsItemsGroup ref={mainRef} name="Начинки" ingredients={mainIngredients} />
+        </InView>
       </div>
     </div>
   );
