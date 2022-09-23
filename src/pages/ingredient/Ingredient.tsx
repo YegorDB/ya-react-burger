@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 // @ts-ignore
 import { useParams } from 'react-router-dom';
 
-import { IngredientDetails } from '../../ingredient-details/IngredientDetails';
-import { State } from '../../../types/states';
-import { parseIngredientsById } from '../../../utils/parseIngredients';
+import { IngredientDetails } from '../../components/ingredient-details/IngredientDetails';
+import { State } from '../../types/states';
+import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './Ingredient.module.css';
 

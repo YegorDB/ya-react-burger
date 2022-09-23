@@ -7,8 +7,8 @@ import {
   Button, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { getUser, passwordReset } from '../../../services/actions';
-import { State } from '../../../types/states';
+import { getUser, passwordReset } from '../../services/actions';
+import { State } from '../../types/states';
 
 import styles from './ResetPassword.module.css';
 
@@ -106,3 +106,6 @@ export function ResetPasswordPage() {
     </main>
   );
 }
+// test-qwerty
+// qwerty@test.com
+// Ljdy&382Snej&

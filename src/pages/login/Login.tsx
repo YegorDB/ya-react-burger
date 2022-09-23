@@ -1,21 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 
 import {
   Button, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { getUser, postRegister } from '../../../services/actions';
-import { State } from '../../../types/states';
+import { getUser, postLogin } from '../../services/actions';
+import { State } from '../../types/states';
 
-import styles from './Register.module.css';
+import styles from './Login.module.css';
 
-export function RegisterPage() {
+export function LoginPage() {
+  const location = useLocation();
   const dispatch = useDispatch();
   const { user, userLoaded } = useSelector((state: State) => state.user);
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -24,10 +24,6 @@ export function RegisterPage() {
     dispatch(getUser());
   }, [dispatch]);
 
-  const changeName = useCallback(
-    e => setName(e.target.value),
-    []
-  );
   const changeEmail = useCallback(
     e => setEmail(e.target.value),
     []
@@ -36,13 +32,13 @@ export function RegisterPage() {
     e => setPassword(e.target.value),
     []
   );
-  const registerHandle = useCallback(
+  const loginHandle = useCallback(
     e => {
       e.preventDefault();
       // @ts-ignore
-      dispatch(postRegister(email, password, name));
+      dispatch(postLogin(email, password));
     },
-    [dispatch, name, email, password]
+    [dispatch, email, password]
   );
 
   if (!userLoaded) {
@@ -51,28 +47,20 @@ export function RegisterPage() {
 
   if (user) {
     return (
-      <Redirect to='/' />
+      <Redirect
+        to={ location.state?.from || '/' }
+      />
     );
   }
 
   return (
     <main>
-      <div className={ styles.Register }>
+      <div className={ styles.Login }>
         <p className="text text_type_main-medium mb-6">
-          Регистрация
+          Вход
         </p>
-        <form onSubmit={ registerHandle }>
-          <div className={ styles.RegisterInputWrapper }>
-            <Input
-              type="text"
-              placeholder="Name"
-              onChange={ changeName }
-              value={ name }
-              name="name"
-              size="default"
-            />
-          </div>
-          <div className={ styles.RegisterInputWrapper }>
+        <form onSubmit={ loginHandle }>
+          <div className={ styles.LoginInputWrapper }>
             <Input
               type="email"
               placeholder="E-mail"
@@ -82,26 +70,32 @@ export function RegisterPage() {
               size="default"
             />
           </div>
-          <div className={ styles.RegisterInputWrapper }>
+          <div className={ styles.LoginInputWrapper }>
             <PasswordInput
               onChange={ changePassword }
               value={ password }
               name="password"
             />
           </div>
-          <input type="submit" id="submit-form" className={ styles.RegisterFormSubmit }/>
+          <input type="submit" id="submit-form" className={ styles.LoginFormSubmit }/>
           <div className="mb-20">
             <label htmlFor="submit-form">
               <Button type="primary" size="medium">
-                Зарегистрироваться
+                Войти
               </Button>
             </label>
           </div>
         </form>
+        <p className="text text_type_main-default mb-4">
+          Вы - новый пользователь?
+          <Link to='/register' className="ml-2">
+            Зарегистрироваться
+          </Link>
+        </p>
         <p className="text text_type_main-default">
-          Уже зарегистрированы?
-          <Link to='/login' className="ml-2">
-            Войти
+          Забыли пароль?
+          <Link to='/forgot-password' className="ml-2">
+            Восстановить пароль
           </Link>
         </p>
       </div>

@@ -8,8 +8,8 @@ import {
   Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { getUser, postLogout, patchUser } from '../../../services/actions';
-import { State } from '../../../types/states';
+import { getUser, postLogout, patchUser } from '../../services/actions';
+import { State } from '../../types/states';
 
 import styles from './Profile.module.css';
 

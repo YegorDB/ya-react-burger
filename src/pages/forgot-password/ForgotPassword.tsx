@@ -7,9 +7,9 @@ import {
   Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { State } from '../../../types/states';
+import { State } from '../../types/states';
 
-import { getUser, forgotPassword } from '../../../services/actions';
+import { getUser, forgotPassword } from '../../services/actions';
 
 import styles from './ForgotPassword.module.css';
 

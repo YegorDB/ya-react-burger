@@ -3,13 +3,13 @@ import React from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 
 import { BurgerIngredientsItemModal } from '../burger-ingredients/BurgerIngredients';
-import { ForgotPasswordPage } from '../pages/forgot-password/ForgotPassword';
-import { IngredientPage } from '../pages/ingredient/Ingredient';
-import { LoginPage } from '../pages/login/Login';
-import { MainPage } from '../pages/main/Main';
-import { ProfilePage } from '../pages/profile/Profile';
-import { RegisterPage } from '../pages/register/Register';
-import { ResetPasswordPage } from '../pages/reset-password/ResetPassword';
+import { ForgotPasswordPage } from '../../pages/forgot-password/ForgotPassword';
+import { IngredientPage } from '../../pages/ingredient/Ingredient';
+import { LoginPage } from '../../pages/login/Login';
+import { MainPage } from '../../pages/main/Main';
+import { ProfilePage } from '../../pages/profile/Profile';
+import { RegisterPage } from '../../pages/register/Register';
+import { ResetPasswordPage } from '../../pages/reset-password/ResetPassword';
 import { ProtectedRoute } from '../protected-route/ProtectedRoute';
 
 function AppContent() {
