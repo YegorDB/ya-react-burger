@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
@@ -74,6 +74,7 @@ function BurgerConstructorMainItemsItem(props: {
 }
 
 function BurgerConstructor() {
+  const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
   const { user, userLoaded } = useSelector((state: State) => state.user);
@@ -103,7 +104,11 @@ function BurgerConstructor() {
 
   const handleOrderConfirmation = () => {
     if (!user) {
-      history.push('/login');
+      history.push({
+        pathname: '/login',
+        state: { from: location },
+      });
+      return;
     }
 
     if (!bunId) return;
