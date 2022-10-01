@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 // @ts-ignore
 import { useParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './Ingredient.module.css';
 
-export function IngredientPage() {
+export const IngredientPage: FC = () => {
   const {id: ingredientId} = useParams();
   const ingredients = useSelector((state: State) => state.ingredients.items);
 

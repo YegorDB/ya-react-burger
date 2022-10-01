@@ -1,14 +1,13 @@
 import cn from 'classnames';
+import React, { FC } from 'react';
 
-import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import { TOrderDetailsProps } from '../../types/props';
 
 import styles from './OrderDetails.module.css';
 
-function OrderDetails(props: {
-  orderId: string | null,
-}) {
-  const {orderId} = props;
-
+const OrderDetails: FC<TOrderDetailsProps> = ({ orderId }) => {
   if (!orderId) {
     return (
       <>
