@@ -1,0 +1,5 @@
+.Ingredient {
+  composes: CentralizedContent from "../Pages.module.css";
+  top: 150px;
+  transform: translate(-50%, 0);
+}

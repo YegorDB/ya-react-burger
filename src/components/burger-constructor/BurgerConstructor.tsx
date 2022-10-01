@@ -1,7 +1,9 @@
 import cn from 'classnames';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
+// @ts-ignore
+import { useHistory, useLocation } from 'react-router-dom';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
@@ -14,19 +16,13 @@ import {
   REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
   CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER,
   postOrder,
+  getUser,
 } from '../../services/actions';
 import { Ingredient } from '../../types/ingredient'
 import { State } from '../../types/states';
+import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './BurgerConstructor.module.css';
-
-function parseIngredients(ingredients: Ingredient[]) {
-  const ingredientsById: Record<string, Ingredient> = {};
-  for (const item of ingredients) {
-    ingredientsById[item._id] = item;
-  }
-  return ingredientsById;
-}
 
 function BurgerConstructorMainItemsItem(props: {
   ingredient: Ingredient,
@@ -78,7 +74,10 @@ function BurgerConstructorMainItemsItem(props: {
 }
 
 function BurgerConstructor() {
+  const location = useLocation();
+  const history = useHistory();
   const dispatch = useDispatch();
+  const { user, userLoaded } = useSelector((state: State) => state.user);
   const [isModalOpen, setModalOpen] = React.useState(false);
   const { ingredients, bunId, itemsData, orderId } = useSelector((state: State) => ({
     ingredients: state.ingredients.items,
@@ -86,6 +85,11 @@ function BurgerConstructor() {
     itemsData: state.selectedIngredients.itemsData,
     orderId: state.currentOrder.orderId,
   }));
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(getUser());
+  }, [dispatch]);
 
   const [, dropTarget] = useDrop({
       accept: 'ingredients-item',
@@ -99,6 +103,16 @@ function BurgerConstructor() {
   });
 
   const handleOrderConfirmation = () => {
+    if (!user) {
+      history.push({
+        pathname: '/login',
+        state: { from: location },
+      });
+      return;
+    }
+
+    if (!bunId) return;
+
     const otherIds = itemsData.map(i => i.id);
     const ingredientsIds = [bunId, ...otherIds, bunId];
     if (ingredientsIds.length === 0) return;
@@ -111,7 +125,7 @@ function BurgerConstructor() {
     setModalOpen(false);
   }
 
-  const ingredientsById = parseIngredients(ingredients);
+  const ingredientsById = parseIngredientsById(ingredients);
 
   const bunIngredient = bunId && ingredientsById[bunId];
   const otherIngredientsData = useMemo(() => {
@@ -132,6 +146,10 @@ function BurgerConstructor() {
     }
     return value;
   }, [bunIngredient, otherIngredientsData]);
+
+  if (!userLoaded) {
+    return null;
+  }
 
   return (
     <div ref={dropTarget} className="mt-25 pl-4 pr-4">

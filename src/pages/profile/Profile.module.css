@@ -1,0 +1,36 @@
+.Profile {
+  composes: CentralizedContent from "../Pages.module.css";
+  top: 150px;
+  transform: translate(-50%, 0);
+}
+
+.ProfileInputWrapper {
+  composes: CentralizedContentInputWrapper from "../Pages.module.css"
+}
+
+.ProfileFormSubmit {
+  composes: FormSubmit from "../Pages.module.css"
+}
+
+.ProfileMain {
+  width: 320px;
+}
+
+.ProfileMenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(calc(-100% - 60px), 0);
+  text-align: left;
+}
+
+.ProfileButtons {
+  margin: 0;
+  text-align: left;
+  display: flex;
+  gap: 20px;
+}
+
+.ProfileLogout {
+  cursor: pointer;
+}

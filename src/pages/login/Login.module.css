@@ -1,0 +1,11 @@
+.Login {
+  composes: CentralizedContent from "../Pages.module.css"
+}
+
+.LoginInputWrapper {
+  composes: CentralizedContentInputWrapper from "../Pages.module.css"
+}
+
+.LoginFormSubmit {
+  composes: FormSubmit from "../Pages.module.css"
+}

@@ -7,7 +7,7 @@ import { CurrentOrderAction } from '../../types/actions';
 import { CurrentOrderState } from '../../types/states';
 
 const initialState = {
-  orderId: '',
+  orderId: null,
 };
 
 const currentOrder = (

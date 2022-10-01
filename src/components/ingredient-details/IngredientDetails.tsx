@@ -1,14 +1,22 @@
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
 
+import { Ingredient } from '../../types/ingredient'
 import { State } from '../../types/states';
+import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './IngredientDetails.module.css';
 
-function IngredientDetails() {
-  const ingredient = useSelector((state: State) => state.currentIngredient.ingredient);
+export function IngredientDetails(props: {
+  ingredient?: Ingredient | null,
+}) {
+  const { ingredient } = props;
 
-  return ingredient && (
+  if (!ingredient) {
+    return null;
+  }
+
+  return (
     <div className={styles.IngredientDetails}>
       <img className="mb-4" src={ingredient.image_large} alt={ingredient.name} />
       <p className="mb-8 text text_type_main-medium">{ingredient.name}</p>
@@ -34,4 +42,22 @@ function IngredientDetails() {
   );
 }
 
-export default IngredientDetails
+export function CurrentIngredientDetails(props: {
+  ingredientId?: string,
+}) {
+  const { ingredientId } = props;
+
+  let { ingredient, ingredients } = useSelector((state: State) => ({
+    ingredient: state.currentIngredient.ingredient,
+    ingredients: state.ingredients.items,
+  }));
+
+  if (!ingredient && ingredientId) {
+    const parsedIngredients = parseIngredientsById(ingredients);
+    ingredient = parsedIngredients[ingredientId] || null;
+  }
+
+  return (
+    <IngredientDetails ingredient={ ingredient } />
+  );
+}

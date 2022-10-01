@@ -4,6 +4,7 @@ import {
   ADD_INGREDIENT_TO_CONSTRUCTOR,
   REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
   CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER,
+  CLEAR_CONSTRUCTOR,
 } from '../actions';
 import { SelectedIngredientsAction } from '../../types/actions';
 import { SelectedIngredientsState } from '../../types/states';
@@ -64,8 +65,10 @@ const selectedIngredients = (
         ...state,
         itemsData: itemsDataCopy,
       };
+    case CLEAR_CONSTRUCTOR:
+      return initialState;
     default:
-      return state
+      return state;
   }
 }
 

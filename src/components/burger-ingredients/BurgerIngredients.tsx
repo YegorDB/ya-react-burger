@@ -1,31 +1,47 @@
 import cn from 'classnames';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
+import { InView } from 'react-intersection-observer';
 import { useSelector, useDispatch } from 'react-redux';
+// @ts-ignore
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import Modal from '../modal/Modal';
-import IngredientDetails from '../ingredient-details/IngredientDetails';
+import { CurrentIngredientDetails } from '../ingredient-details/IngredientDetails';
 import { SET_CURRENT_INGREDIENT } from '../../services/actions';
-import { Ingredient, IngredientsByType } from '../../types/ingredient'
+import { Ingredient } from '../../types/ingredient';
 import { State } from '../../types/states';
+import { parseIngredientsByType } from '../../utils/parseIngredients';
 
 import styles from './BurgerIngredients.module.css';
 
-function parseIngredients(ingredients: Ingredient[]) {
-  const ingredientsByType: IngredientsByType = {bun: [], main: [], sauce: []};
-  for (const item of ingredients) {
-    ingredientsByType[item.type as keyof IngredientsByType].push(item);
+export function BurgerIngredientsItemModal() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { id: ingredientId } = useParams();
+
+  const handleCloseModal = () => {
+    dispatch({
+      type: SET_CURRENT_INGREDIENT,
+      ingredient: null,
+    });
+    history.goBack();
   }
-  return ingredientsByType;
+
+  return (
+    <Modal handleClose={handleCloseModal} title="Детали ингредиента">
+      <CurrentIngredientDetails ingredientId={ingredientId}/>
+    </Modal>
+  )
 }
 
 function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
   const { ingredient } = props;
 
+  const location = useLocation();
   const dispatch = useDispatch();
-  const [isModalOpen, setModalOpen] = React.useState(false);
   const { bunId, itemsData } = useSelector((state: State) => ({
     bunId: state.selectedIngredients.bunId,
     itemsData: state.selectedIngredients.itemsData,
@@ -45,37 +61,31 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
       type: SET_CURRENT_INGREDIENT,
       ingredient: ingredient,
     });
-    setModalOpen(true);
-  }
-
-  const handleCloseModal = () => {
-    dispatch({
-      type: SET_CURRENT_INGREDIENT,
-      ingredient: null,
-    });
-    setModalOpen(false);
   }
 
   return (
     <div ref={dragRef} className="hidden-overflow">
-      <div className={cn('mt-4 mb-4 ml-3 mr-3', styles.BurgerIngredientsItem)} onClick={handleOpenModal}>
-        <img className="ml-4 mr-4" src={ingredient.image} alt={ingredient.name} />
-        <div className={cn('mt-1 mb-1', styles.BurgerIngredientsItemPrise)}>
-          <p className="mr-1 text text_type_digits-default">{ingredient.price}</p>
-          <CurrencyIcon type="primary" />
+      <Link
+        to={{
+          pathname: `/ingredients/${ingredient._id}`,
+          state: { ingredientLocation: location }
+        }}
+        className="undecorated-link"
+      >
+        <div className={cn('mt-4 mb-4 ml-3 mr-3', styles.BurgerIngredientsItem)} onClick={handleOpenModal}>
+          <img className="ml-4 mr-4" src={ingredient.image} alt={ingredient.name} />
+          <div className={cn('mt-1 mb-1', styles.BurgerIngredientsItemPrise)}>
+            <p className="mr-1 text text_type_digits-default">{ingredient.price}</p>
+            <CurrencyIcon type="primary" />
+          </div>
+          <div>
+            <p className={cn('text text_type_main-default', styles.BurgerIngredientsItemName)}>{ingredient.name}</p>
+          </div>
+          {count > 0 && (
+            <Counter count={count} size="default" />
+          )}
         </div>
-        <div>
-          <p className={cn('text text_type_main-default', styles.BurgerIngredientsItemName)}>{ingredient.name}</p>
-        </div>
-        {count > 0 && (
-          <Counter count={count} size="default" />
-        )}
-      </div>
-      {isModalOpen && (
-        <Modal handleClose={handleCloseModal} title="Детали ингредиента">
-          <IngredientDetails />
-        </Modal>
-      )}
+      </Link>
     </div>
   );
 }
@@ -98,14 +108,18 @@ const BurgerIngredientsItemsGroup = React.forwardRef((
 
 function getBurgerIngredientsTabClickHandler(ref: React.RefObject<HTMLElement>, setCurrentTab: Function) {
   return (value: string) => {
-    setCurrentTab(value);
     if (ref.current === null) return;
     ref.current.scrollIntoView({behavior: 'smooth'});
   }
 }
 
 function BurgerIngredients() {
-  const [currentTab, setCurrentTab] = React.useState('1');
+  const [currentTab, setCurrentTab] = useState('1');
+  const [wisibleTabs, setWisibleTabs] = useState({
+    '1': true,
+    '2': false,
+    '3': false,
+  });
 
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
@@ -126,11 +140,23 @@ function BurgerIngredients() {
 
   const ingredients = useSelector((state: State) => state.ingredients.items);
 
+  useEffect(
+    () => {
+      for (let i = 1; i <= 3; i++) {
+        const index = i.toString() as keyof typeof wisibleTabs;
+        if (wisibleTabs[index]) {
+          setCurrentTab(index);
+          break;
+        }
+      }
+    }, [wisibleTabs]
+  );
+
   const {
     bun: bunIngredients,
     sauce: sauceIngredients,
     main: mainIngredients,
-  } = parseIngredients(ingredients);
+  } = parseIngredientsByType(ingredients);
 
   return (
     <div>
@@ -149,9 +175,27 @@ function BurgerIngredients() {
         </Tab>
         </div>
       <div className={cn('custom-scroll', styles.BurgerIngredientsItems)}>
-        <BurgerIngredientsItemsGroup ref={bunRef} name="Булки" ingredients={bunIngredients} />
-        <BurgerIngredientsItemsGroup ref={sauceRef} name="Соусы" ingredients={sauceIngredients} />
-        <BurgerIngredientsItemsGroup ref={mainRef} name="Начинки" ingredients={mainIngredients} />
+        <InView
+          as="div"
+          rootMargin="-320px 0px 0px 0px"
+          onChange={(inView, entry) => setWisibleTabs({...wisibleTabs, '1': inView})}
+        >
+          <BurgerIngredientsItemsGroup ref={bunRef} name="Булки" ingredients={bunIngredients} />
+        </InView>
+        <InView
+          as="div"
+          rootMargin="-320px 0px 0px 0px"
+          onChange={(inView, entry) => setWisibleTabs({...wisibleTabs, '2': inView})}
+        >
+          <BurgerIngredientsItemsGroup ref={sauceRef} name="Соусы" ingredients={sauceIngredients} />
+        </InView>
+        <InView
+          as="div"
+          rootMargin="-320px 0px 0px 0px"
+          onChange={(inView, entry) => setWisibleTabs({...wisibleTabs, '3': inView})}
+        >
+          <BurgerIngredientsItemsGroup ref={mainRef} name="Начинки" ingredients={mainIngredients} />
+        </InView>
       </div>
     </div>
   );

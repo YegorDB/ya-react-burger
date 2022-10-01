@@ -1,11 +1,12 @@
 import { Ingredient } from './ingredient';
+import { User } from './user';
 
 export type CurrentIngredientState = {
   ingredient: Ingredient | null,
 }
 
 export type CurrentOrderState = {
-  orderId: string,
+  orderId: string | null,
 }
 
 export type IngredientsState = {
@@ -22,9 +23,20 @@ export type SelectedIngredientsState = {
   itemsData: SelectedIngredientsItemData[],
 }
 
+export type UserState = {
+  user: User | null,
+  userLoaded: boolean,
+}
+
+export type ForgotPasswordState = {
+  forgotPasswordUsed: boolean,
+}
+
 export type State = {
   currentIngredient: CurrentIngredientState,
   currentOrder: CurrentOrderState,
   ingredients: IngredientsState,
   selectedIngredients: SelectedIngredientsState,
+  user: UserState,
+  forgotPassword: ForgotPasswordState,
 }

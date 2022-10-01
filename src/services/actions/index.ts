@@ -1,70 +1,72 @@
-import { API_ROOT } from '../../consts/api';
-import { Ingredient } from '../../types/ingredient';
-import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
+export {
+  GET_INGREDIENTS_REQUEST_PENDING,
+  GET_INGREDIENTS_REQUEST_FAILED,
+  GET_INGREDIENTS_REQUEST_SUCCESS,
+  getIngredients,
+} from './ingredients';
 
-export const ADD_INGREDIENT_TO_CONSTRUCTOR = 'ADD_INGREDIENT_TO_CONSTRUCTOR';
-export const REMOVE_INGREDIENT_FROM_CONSTRUCTOR = 'REMOVE_INGREDIENT_FROM_CONSTRUCTOR';
-export const CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER = 'CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER';
+export {
+  POST_ORDER_REQUEST_PENDING,
+  POST_ORDER_REQUEST_FAILED,
+  POST_ORDER_REQUEST_SUCCESS,
+  postOrder,
+} from './order';
 
-export const GET_INGREDIENTS_REQUEST_PENDING = 'GET_INGREDIENTS_REQUEST_PENDING';
-export const GET_INGREDIENTS_REQUEST_FAILED = 'GET_INGREDIENTS_REQUEST_FAILED';
-export const GET_INGREDIENTS_REQUEST_SUCCESS = 'GET_INGREDIENTS_REQUEST_SUCCESS';
+export {
+  POST_REGISTER_REQUEST_PENDING,
+  POST_REGISTER_REQUEST_FAILED,
+  POST_REGISTER_REQUEST_SUCCESS,
+  postRegister,
+} from './register';
+
+export {
+  POST_LOGIN_REQUEST_PENDING,
+  POST_LOGIN_REQUEST_FAILED,
+  POST_LOGIN_REQUEST_SUCCESS,
+  postLogin,
+} from './login';
+
+export {
+  POST_LOGOUT_REQUEST_PENDING,
+  POST_LOGOUT_REQUEST_FAILED,
+  POST_LOGOUT_REQUEST_SUCCESS,
+  postLogout,
+} from './logout';
+
+export {
+  POST_TOKEN_REQUEST_PENDING,
+  POST_TOKEN_REQUEST_FAILED,
+  POST_TOKEN_REQUEST_SUCCESS,
+  postRefreshToken,
+} from './refresh-token';
+
+export {
+  GET_USER_REQUEST_PENDING,
+  GET_USER_REQUEST_FAILED,
+  GET_USER_REQUEST_SUCCESS,
+  PATCH_USER_REQUEST_PENDING,
+  PATCH_USER_REQUEST_FAILED,
+  PATCH_USER_REQUEST_SUCCESS,
+  getUser,
+  patchUser,
+} from './user';
+
+export {
+  FORGOT_PASSWORD_REQUEST_PENDING,
+  FORGOT_PASSWORD_REQUEST_FAILED,
+  FORGOT_PASSWORD_REQUEST_SUCCESS,
+  PASSWORD_RESET_REQUEST_PENDING,
+  PASSWORD_RESET_REQUEST_FAILED,
+  PASSWORD_RESET_REQUEST_SUCCESS,
+  forgotPassword,
+  passwordReset,
+} from './forgot-password';
+
+export {
+  ADD_INGREDIENT_TO_CONSTRUCTOR,
+  REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
+  CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER,
+  CLEAR_CONSTRUCTOR,
+} from './selected-ingredients';
 
 export const SET_CURRENT_INGREDIENT = 'SET_CURRENT_INGREDIENT';
-
-export const POST_ORDER_REQUEST_PENDING = 'POST_ORDER_REQUEST_PENDING';
-export const POST_ORDER_REQUEST_FAILED = 'POST_ORDER_REQUEST_FAILED';
-export const POST_ORDER_REQUEST_SUCCESS = 'POST_ORDER_REQUEST_SUCCESS';
-
-export function getIngredients() {
-  return function(dispatch: Function) {
-    dispatch({
-      type: GET_INGREDIENTS_REQUEST_PENDING,
-    });
-
-    fetch(`${API_ROOT}/ingredients`)
-    .then(checkResponse)
-    .then(handleResponse<{success: boolean, data: Ingredient[]}>(res => {
-      dispatch({
-        type: GET_INGREDIENTS_REQUEST_SUCCESS,
-        items: res.data
-      });
-    }))
-    .catch(handleResponseError('Get ingredients', () => {
-      dispatch({
-        type: GET_INGREDIENTS_REQUEST_FAILED,
-      });
-    }));
-  };
-}
-
-export function postOrder(ingredientsIds: Ingredient['_id'][], setModalOpen: Function) {
-  return function(dispatch: Function) {
-    dispatch({
-      type: POST_ORDER_REQUEST_PENDING,
-    });
-
-    fetch(`${API_ROOT}/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ingredients: ingredientsIds,
-      })
-    })
-    .then(checkResponse)
-    .then(handleResponse<{success: boolean, order: {number: number}}>(res => {
-      dispatch({
-        type: POST_ORDER_REQUEST_SUCCESS,
-        orderId: res.order.number.toString()
-      });
-      setModalOpen(true);
-    }))
-    .catch(handleResponseError('Post order', () => {
-      dispatch({
-        type: POST_ORDER_REQUEST_FAILED,
-      });
-    }));
-  };
-}

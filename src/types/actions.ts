@@ -1,4 +1,5 @@
 import { Ingredient } from './ingredient';
+import { User } from './user';
 
 export type CurrentIngredientAction = {
   type: 'SET_CURRENT_INGREDIENT',
@@ -39,4 +40,33 @@ type SelectedIngredientsOrderAction = {
   to: number,
 }
 
-export type SelectedIngredientsAction = SelectedIngredientsBaseAction | SelectedIngredientsOrderAction;
+type SelectedIngredientsClearAction = {
+  type: 'CLEAR_CONSTRUCTOR',
+}
+
+export type SelectedIngredientsAction = SelectedIngredientsBaseAction | SelectedIngredientsOrderAction | SelectedIngredientsClearAction;
+
+type UserBaseAction = {
+  type: (
+    'POST_REGISTER_REQUEST_PENDING' | 'POST_REGISTER_REQUEST_FAILED' |
+    'POST_LOGIN_REQUEST_PENDING' | 'POST_LOGIN_REQUEST_FAILED' |
+    'POST_LOGOUT_REQUEST_PENDING' | 'POST_LOGOUT_REQUEST_FAILED' | 'POST_LOGOUT_REQUEST_SUCCESS' |
+    'POST_TOKEN_REQUEST_PENDING' | 'POST_TOKEN_REQUEST_FAILED' | 'POST_TOKEN_REQUEST_SUCCESS' |
+    'GET_USER_REQUEST_PENDING' | 'GET_USER_REQUEST_FAILED' |
+    'PATCH_USER_REQUEST_PENDING' | 'PATCH_USER_REQUEST_FAILED'
+  ),
+}
+
+type UserSuccessAction = {
+  type: 'POST_REGISTER_REQUEST_SUCCESS' | 'POST_LOGIN_REQUEST_SUCCESS' | 'GET_USER_REQUEST_SUCCESS' | 'PATCH_USER_REQUEST_SUCCESS',
+  user: User,
+}
+
+export type UserAction = UserBaseAction | UserSuccessAction;
+
+export type ForgotPasswordAction = {
+  type: (
+    'FORGOT_PASSWORD_REQUEST_PENDING' | 'FORGOT_PASSWORD_REQUEST_FAILED' | 'FORGOT_PASSWORD_REQUEST_SUCCESS' |
+    'PASSWORD_RESET_REQUEST_PENDING' | 'PASSWORD_RESET_REQUEST_FAILED' | 'PASSWORD_RESET_REQUEST_SUCCESS'
+  ),
+}

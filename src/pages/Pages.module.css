@@ -1,0 +1,16 @@
+.CentralizedContent {
+  position: fixed;
+  top: calc(50% + 35px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.CentralizedContentInputWrapper {
+  width: fit-content;
+  margin: 0 auto 24px;
+}
+
+.FormSubmit {
+  display: none;
+}
