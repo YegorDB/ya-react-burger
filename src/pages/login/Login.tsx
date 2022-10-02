@@ -8,14 +8,14 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { getUser, postLogin } from '../../services/actions';
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 
 import styles from './Login.module.css';
 
 export const LoginPage: FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: State) => state.user);
+  const { user, userLoaded } = useSelector((state: TState) => state.user);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 

@@ -1,6 +1,6 @@
-import { Ingredient } from './ingredient';
+import { TIngredient } from './ingredient';
 
 export type TOtherIngredientsData = {
-  ingredient: Ingredient,
+  ingredient: TIngredient,
   key: string,
 }

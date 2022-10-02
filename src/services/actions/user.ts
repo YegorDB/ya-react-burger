@@ -1,6 +1,6 @@
 import { postRefreshToken } from './refresh-token';
 import { API_ROOT } from '../../consts/api';
-import { User } from '../../types/user';
+import { TUser } from '../../types/user';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
 export const GET_USER_REQUEST_PENDING = 'GET_USER_REQUEST_PENDING';
@@ -25,7 +25,7 @@ export function getUser() {
       },
     })
     .then(checkResponse)
-    .then(handleResponse<{success: boolean, user: User}>(res => {
+    .then(handleResponse<{success: boolean, user: TUser}>(res => {
       dispatch({
         type: GET_USER_REQUEST_SUCCESS,
         user: res.user
@@ -65,7 +65,7 @@ export function patchUser(name: string, email: string, password: string) {
       })
     })
     .then(checkResponse)
-    .then(handleResponse<{success: boolean, user: User}>(res => {
+    .then(handleResponse<{success: boolean, user: TUser}>(res => {
       dispatch({
         type: PATCH_USER_REQUEST_SUCCESS,
         user: res.user

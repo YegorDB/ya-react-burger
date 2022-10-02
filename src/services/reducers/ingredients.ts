@@ -3,16 +3,16 @@ import {
   GET_INGREDIENTS_REQUEST_FAILED,
   GET_INGREDIENTS_REQUEST_SUCCESS,
 } from '../actions';
-import { IngredientsAction } from '../../types/actions';
-import { IngredientsState } from '../../types/states';
+import { TIngredientsAction } from '../../types/actions';
+import { TIngredientsState } from '../../types/states';
 
 const initialState = {
   items: [],
 };
 
 const ingredients = (
-  state: IngredientsState = initialState,
-  action: IngredientsAction
+  state: TIngredientsState = initialState,
+  action: TIngredientsAction
 ) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST_PENDING:

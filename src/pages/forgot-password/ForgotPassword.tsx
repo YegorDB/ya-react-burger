@@ -7,7 +7,7 @@ import {
   Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 
 import { getUser, forgotPassword } from '../../services/actions';
 
@@ -16,7 +16,7 @@ import styles from './ForgotPassword.module.css';
 export const ForgotPasswordPage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: State) => state.user);
+  const { user, userLoaded } = useSelector((state: TState) => state.user);
   const [email, setEmail] = useState<string>('');
 
   useEffect(() => {

@@ -4,14 +4,14 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { IngredientDetails } from '../../components/ingredient-details/IngredientDetails';
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './Ingredient.module.css';
 
 export const IngredientPage: FC = () => {
   const {id: ingredientId} = useParams();
-  const ingredients = useSelector((state: State) => state.ingredients.items);
+  const ingredients = useSelector((state: TState) => state.ingredients.items);
 
   const ingredientsById = parseIngredientsById(ingredients);
   const ingredient = ingredientsById[ingredientId];

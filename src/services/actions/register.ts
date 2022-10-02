@@ -1,5 +1,5 @@
 import { API_ROOT } from '../../consts/api';
-import { User } from '../../types/user';
+import { TUser } from '../../types/user';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
 export const POST_REGISTER_REQUEST_PENDING = 'POST_REGISTER_REQUEST_PENDING';
@@ -24,7 +24,7 @@ export function postRegister(email: string, password: string, name: string) {
       })
     })
     .then(checkResponse)
-    .then(handleResponse<{success: boolean, user: User, accessToken: string, refreshToken: string}>(res => {
+    .then(handleResponse<{success: boolean, user: TUser, accessToken: string, refreshToken: string}>(res => {
       dispatch({
         type: POST_REGISTER_REQUEST_SUCCESS,
         user: res.user,

@@ -5,7 +5,7 @@ import { Redirect, Route } from 'react-router-dom';
 
 import { getUser } from '../../services/actions';
 import { TProtectedRouteProps } from '../../types/props';
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 
 export const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, ...rest }) => {
   const [isUserLoaded, setUserLoaded] = useState<boolean>(false);
@@ -19,7 +19,7 @@ export const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, ...rest }) 
     init();
   }, []);
 
-  const user = useSelector((state: State) => state.user.user);
+  const user = useSelector((state: TState) => state.user.user);
 
   if (!isUserLoaded) {
     return null;

@@ -1,5 +1,5 @@
 import { API_ROOT } from '../../consts/api';
-import { User } from '../../types/user';
+import { TUser } from '../../types/user';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
 export const POST_LOGIN_REQUEST_PENDING = 'POST_LOGIN_REQUEST_PENDING';
@@ -23,7 +23,7 @@ export function postLogin(email: string, password: string) {
       })
     })
     .then(checkResponse)
-    .then(handleResponse<{success: boolean, user: User, accessToken: string, refreshToken: string}>(res => {
+    .then(handleResponse<{success: boolean, user: TUser, accessToken: string, refreshToken: string}>(res => {
       dispatch({
         type: POST_LOGIN_REQUEST_SUCCESS,
         user: res.user,

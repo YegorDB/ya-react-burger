@@ -18,8 +18,8 @@ import {
   PATCH_USER_REQUEST_FAILED,
   PATCH_USER_REQUEST_SUCCESS,
 } from '../actions';
-import { UserAction } from '../../types/actions';
-import { UserState } from '../../types/states';
+import { TUserAction } from '../../types/actions';
+import { TUserState } from '../../types/states';
 
 const initialState = {
   user: null,
@@ -27,8 +27,8 @@ const initialState = {
 };
 
 const user = (
-  state: UserState = initialState,
-  action: UserAction
+  state: TUserState = initialState,
+  action: TUserAction
 ) => {
   switch (action.type) {
     case POST_REGISTER_REQUEST_PENDING:

@@ -8,13 +8,13 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { getUser, postRegister } from '../../services/actions';
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 
 import styles from './Register.module.css';
 
 export const RegisterPage: FC = () => {
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: State) => state.user);
+  const { user, userLoaded } = useSelector((state: TState) => state.user);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');

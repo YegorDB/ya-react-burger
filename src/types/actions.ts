@@ -1,52 +1,52 @@
-import { Ingredient } from './ingredient';
-import { User } from './user';
+import { TIngredient } from './ingredient';
+import { TUser } from './user';
 
-export type CurrentIngredientAction = {
+export type TCurrentIngredientAction = {
   type: 'SET_CURRENT_INGREDIENT',
-  ingredient: Ingredient,
+  ingredient: TIngredient,
 }
 
-type CurrentOrderBaseAction = {
+type TCurrentOrderBaseAction = {
   type: 'POST_ORDER_REQUEST_PENDING' | 'POST_ORDER_REQUEST_FAILED',
 }
 
-type CurrentOrderSuccessAction = {
+type TCurrentOrderSuccessAction = {
   type: 'POST_ORDER_REQUEST_SUCCESS',
   orderId: string,
 }
 
-export type CurrentOrderAction = CurrentOrderBaseAction | CurrentOrderSuccessAction;
+export type TCurrentOrderAction = TCurrentOrderBaseAction | TCurrentOrderSuccessAction;
 
-type IngredientsBaseAction = {
+type TIngredientsBaseAction = {
   type: 'GET_INGREDIENTS_REQUEST_PENDING' | 'GET_INGREDIENTS_REQUEST_FAILED',
 }
 
-type IngredientsSuccessAction = {
+type TIngredientsSuccessAction = {
   type: 'GET_INGREDIENTS_REQUEST_SUCCESS',
-  items: Ingredient[],
+  items: TIngredient[],
 }
 
-export type IngredientsAction = IngredientsBaseAction | IngredientsSuccessAction;
+export type TIngredientsAction = TIngredientsBaseAction | TIngredientsSuccessAction;
 
-type SelectedIngredientsBaseAction = {
+type TSelectedIngredientsBaseAction = {
   type: 'ADD_INGREDIENT_TO_CONSTRUCTOR' | 'REMOVE_INGREDIENT_FROM_CONSTRUCTOR',
   ingredientIsABun: boolean,
-  ingredientId: Ingredient['_id'],
+  ingredientId: TIngredient['_id'],
 }
 
-type SelectedIngredientsOrderAction = {
+type TSelectedIngredientsOrderAction = {
   type: 'CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER',
   from: number,
   to: number,
 }
 
-type SelectedIngredientsClearAction = {
+type TSelectedIngredientsClearAction = {
   type: 'CLEAR_CONSTRUCTOR',
 }
 
-export type SelectedIngredientsAction = SelectedIngredientsBaseAction | SelectedIngredientsOrderAction | SelectedIngredientsClearAction;
+export type TSelectedIngredientsAction = TSelectedIngredientsBaseAction | TSelectedIngredientsOrderAction | TSelectedIngredientsClearAction;
 
-type UserBaseAction = {
+type TUserBaseAction = {
   type: (
     'POST_REGISTER_REQUEST_PENDING' | 'POST_REGISTER_REQUEST_FAILED' |
     'POST_LOGIN_REQUEST_PENDING' | 'POST_LOGIN_REQUEST_FAILED' |
@@ -57,14 +57,14 @@ type UserBaseAction = {
   ),
 }
 
-type UserSuccessAction = {
+type TUserSuccessAction = {
   type: 'POST_REGISTER_REQUEST_SUCCESS' | 'POST_LOGIN_REQUEST_SUCCESS' | 'GET_USER_REQUEST_SUCCESS' | 'PATCH_USER_REQUEST_SUCCESS',
-  user: User,
+  user: TUser,
 }
 
-export type UserAction = UserBaseAction | UserSuccessAction;
+export type TUserAction = TUserBaseAction | TUserSuccessAction;
 
-export type ForgotPasswordAction = {
+export type TForgotPasswordAction = {
   type: (
     'FORGOT_PASSWORD_REQUEST_PENDING' | 'FORGOT_PASSWORD_REQUEST_FAILED' | 'FORGOT_PASSWORD_REQUEST_SUCCESS' |
     'PASSWORD_RESET_REQUEST_PENDING' | 'PASSWORD_RESET_REQUEST_FAILED' | 'PASSWORD_RESET_REQUEST_SUCCESS'

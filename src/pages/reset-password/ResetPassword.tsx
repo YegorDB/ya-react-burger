@@ -8,14 +8,14 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { getUser, passwordReset } from '../../services/actions';
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 
 import styles from './ResetPassword.module.css';
 
 export const ResetPasswordPage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user, userLoaded, forgotPasswordUsed } = useSelector((state: State) => ({
+  const { user, userLoaded, forgotPasswordUsed } = useSelector((state: TState) => ({
     user: state.user.user,
     userLoaded: state.user.userLoaded,
     forgotPasswordUsed: state.forgotPassword.forgotPasswordUsed,

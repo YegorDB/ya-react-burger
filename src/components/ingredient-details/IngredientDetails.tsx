@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 
 import { TIngredientDetailsProps, TCurrentIngredientDetailsProps } from '../../types/props'
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './IngredientDetails.module.css';
@@ -40,7 +40,7 @@ export const IngredientDetails: FC<TIngredientDetailsProps> = ({ ingredient }) =
 }
 
 export const CurrentIngredientDetails: FC<TCurrentIngredientDetailsProps> = ({ ingredientId }) => {
-  let { ingredient, ingredients } = useSelector((state: State) => ({
+  let { ingredient, ingredients } = useSelector((state: TState) => ({
     ingredient: state.currentIngredient.ingredient,
     ingredients: state.ingredients.items,
   }));

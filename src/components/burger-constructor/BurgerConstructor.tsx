@@ -19,9 +19,9 @@ import {
   getUser,
 } from '../../services/actions';
 import { TOtherIngredientsData } from '../../types/data'
-import { Ingredient } from '../../types/ingredient'
+import { TIngredient } from '../../types/ingredient'
 import { TBurgerConstructorMainItemsItemProps } from '../../types/props';
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './BurgerConstructor.module.css';
@@ -78,7 +78,7 @@ function BurgerConstructor() {
   const history = useHistory();
   const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
-  const { user, userLoaded, ingredients, bunId, itemsData, orderId } = useSelector((state: State) => ({
+  const { user, userLoaded, ingredients, bunId, itemsData, orderId } = useSelector((state: TState) => ({
     user: state.user.user,
     userLoaded: state.user.userLoaded,
     ingredients: state.ingredients.items,
@@ -94,7 +94,7 @@ function BurgerConstructor() {
 
   const [, dropTarget] = useDrop({
       accept: 'ingredients-item',
-      drop(ingredient: Ingredient) {
+      drop(ingredient: TIngredient) {
         dispatch({
           type: ADD_INGREDIENT_TO_CONSTRUCTOR,
           ingredientIsABun: ingredient.type === 'bun',

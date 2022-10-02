@@ -1,7 +1,7 @@
 // @ts-ignore
 import { RouteProps } from 'react-router-dom';
 
-import { Ingredient } from './ingredient';
+import { TIngredient } from './ingredient';
 
 export type TAppHeaderItemProps = {
   icon: Function,
@@ -10,21 +10,21 @@ export type TAppHeaderItemProps = {
 }
 
 export type TBurgerConstructorMainItemsItemProps = {
-  ingredient: Ingredient,
+  ingredient: TIngredient,
   index: number,
 }
 
 export type TBurgerIngredientsItemProps = {
-  ingredient: Ingredient,
+  ingredient: TIngredient,
 }
 
 export type TBurgerIngredientsItemsGroupProps = {
   name: string,
-  ingredients: Ingredient[],
+  ingredients: TIngredient[],
 }
 
 export type TIngredientDetailsProps = {
-  ingredient?: Ingredient | null,
+  ingredient?: TIngredient | null,
 }
 
 export type TCurrentIngredientDetailsProps = {

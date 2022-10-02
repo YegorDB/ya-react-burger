@@ -9,7 +9,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { getUser, postLogout, patchUser } from '../../services/actions';
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 
 import styles from './Profile.module.css';
 
@@ -18,7 +18,7 @@ export const ProfilePage: FC = () => {
   const matchOrders = useRouteMatch('/profile/orders');
 
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: State) => state.user);
+  const { user, userLoaded } = useSelector((state: TState) => state.user);
   const [name, setName] = useState<string>(user ? user.name : '');
   const [login, setLogin] = useState<string>(user ? user.email : '');
   const [password, setPassword] = useState<string>('');

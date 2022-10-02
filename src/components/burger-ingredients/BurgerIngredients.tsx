@@ -13,7 +13,7 @@ import { CurrentIngredientDetails } from '../ingredient-details/IngredientDetail
 import { SET_CURRENT_INGREDIENT } from '../../services/actions';
 import { TBurgerIngredientsTabClickHandler } from '../../types/handlers';
 import { TBurgerIngredientsItemProps, TBurgerIngredientsItemsGroupProps } from '../../types/props';
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 import { parseIngredientsByType } from '../../utils/parseIngredients';
 
 import styles from './BurgerIngredients.module.css';
@@ -41,7 +41,7 @@ export const BurgerIngredientsItemModal: FC = () => {
 const BurgerIngredientsItem: FC<TBurgerIngredientsItemProps> = ({ ingredient }) => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { bunId, itemsData } = useSelector((state: State) => ({
+  const { bunId, itemsData } = useSelector((state: TState) => ({
     bunId: state.selectedIngredients.bunId,
     itemsData: state.selectedIngredients.itemsData,
   }));
@@ -139,7 +139,7 @@ const BurgerIngredients: FC = () => {
     [mainRef]
   );
 
-  const ingredients = useSelector((state: State) => state.ingredients.items);
+  const ingredients = useSelector((state: TState) => state.ingredients.items);
 
   useEffect(
     () => {
