@@ -1,6 +1,5 @@
 import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { Link, Redirect, useLocation } from 'react-router-dom';
 
 import {
@@ -8,12 +7,13 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { getUser, postLogin } from '../../services/actions';
+import { TBaseLocationState } from '../../types/router';
 import { TState } from '../../types/states';
 
 import styles from './Login.module.css';
 
 export const LoginPage: FC = () => {
-  const location = useLocation();
+  const location = useLocation<TBaseLocationState>();
   const dispatch = useDispatch();
   const { user, userLoaded } = useSelector((state: TState) => state.user);
   const [email, setEmail] = useState<string>('');

@@ -3,7 +3,6 @@ import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { InView } from 'react-intersection-observer';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -14,6 +13,7 @@ import { SET_CURRENT_INGREDIENT } from '../../services/actions';
 import { TBurgerIngredientsTabClickHandler } from '../../types/handlers';
 import { TBurgerIngredientsItemProps, TBurgerIngredientsItemsGroupProps } from '../../types/props';
 import { TState } from '../../types/states';
+import { TBurgerIngredientsItemParams } from '../../types/router';
 import { parseIngredientsByType } from '../../utils/parseIngredients';
 
 import styles from './BurgerIngredients.module.css';
@@ -21,7 +21,7 @@ import styles from './BurgerIngredients.module.css';
 export const BurgerIngredientsItemModal: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { id: ingredientId } = useParams();
+  const { id: ingredientId } = useParams<TBurgerIngredientsItemParams>();
 
   const handleCloseModal = () => {
     dispatch({

@@ -1,4 +1,3 @@
-// @ts-ignore
 import { RouteProps } from 'react-router-dom';
 
 import { TIngredient } from './ingredient';

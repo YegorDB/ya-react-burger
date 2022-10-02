@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-// @ts-ignore
 import { Redirect, Route } from 'react-router-dom';
 
 import { getUser } from '../../services/actions';

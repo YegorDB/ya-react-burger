@@ -1,7 +1,6 @@
 import cn from 'classnames';
 import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import {
@@ -129,7 +128,7 @@ export const ProfilePage: FC = () => {
         </div>
         <div className={ styles.ProfileMenu }>
           <Link to='/profile' className="undecorated-link">
-            <p className={cn('text text_type_main-medium mb-5', !matchRoot.isExact && 'text_color_inactive')}>
+            <p className={cn('text text_type_main-medium mb-5', !matchRoot?.isExact && 'text_color_inactive')}>
               Профиль
             </p>
           </Link>

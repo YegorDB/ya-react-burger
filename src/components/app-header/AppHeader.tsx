@@ -1,6 +1,5 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
-// @ts-ignore
 import { Link, useRouteMatch } from 'react-router-dom';
 
 import {
@@ -37,7 +36,7 @@ const AppHeader: FC = () => {
     <header className={styles.AppHeader}>
       <div className={styles.AppHeaderLinks}>
         <Link to='/' className="undecorated-link">
-          <AppHeaderItem icon={BurgerIcon} text="Конструктор" highlighted={matchRoot.isExact}/>
+          <AppHeaderItem icon={BurgerIcon} text="Конструктор" highlighted={matchRoot?.isExact}/>
         </Link>
         <AppHeaderItem icon={ListIcon} text="Лента заказов"/>
       </div>

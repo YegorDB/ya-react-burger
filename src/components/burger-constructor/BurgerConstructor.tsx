@@ -2,7 +2,6 @@ import cn from 'classnames';
 import React, { FC, useEffect, useMemo } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { useHistory, useLocation } from 'react-router-dom';
 
 import {

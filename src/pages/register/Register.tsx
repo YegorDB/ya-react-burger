@@ -1,6 +1,5 @@
 import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { Link, Redirect } from 'react-router-dom';
 
 import {

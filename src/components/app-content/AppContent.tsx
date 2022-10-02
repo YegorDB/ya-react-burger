@@ -1,8 +1,8 @@
 import React from 'react';
-// @ts-ignore
 import { Route, Switch, useLocation } from 'react-router-dom';
 
 import { BurgerIngredientsItemModal } from '../burger-ingredients/BurgerIngredients';
+import { ProtectedRoute } from '../protected-route/ProtectedRoute';
 import { ForgotPasswordPage } from '../../pages/forgot-password/ForgotPassword';
 import { IngredientPage } from '../../pages/ingredient/Ingredient';
 import { LoginPage } from '../../pages/login/Login';
@@ -10,10 +10,10 @@ import { MainPage } from '../../pages/main/Main';
 import { ProfilePage } from '../../pages/profile/Profile';
 import { RegisterPage } from '../../pages/register/Register';
 import { ResetPasswordPage } from '../../pages/reset-password/ResetPassword';
-import { ProtectedRoute } from '../protected-route/ProtectedRoute';
+import { TAppContentLocationState } from '../../types/router';
 
 function AppContent() {
-  const location = useLocation();
+  const location = useLocation<TAppContentLocationState>();
 
   const ingredientLocation = location.state && location.state.ingredientLocation;
 
