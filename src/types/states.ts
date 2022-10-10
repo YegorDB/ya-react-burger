@@ -1,42 +1,42 @@
-import { Ingredient } from './ingredient';
-import { User } from './user';
+import { TIngredient } from './ingredient';
+import { TUser } from './user';
 
-export type CurrentIngredientState = {
-  ingredient: Ingredient | null,
+export type TCurrentIngredientState = {
+  ingredient: TIngredient | null,
 }
 
-export type CurrentOrderState = {
+export type TCurrentOrderState = {
   orderId: string | null,
 }
 
-export type IngredientsState = {
-  items: Ingredient[],
+export type TIngredientsState = {
+  items: TIngredient[],
 }
 
-type SelectedIngredientsItemData = {
-  id: Ingredient['_id'],
+type TSelectedIngredientsItemData = {
+  id: TIngredient['_id'],
   key: string,
 }
 
-export type SelectedIngredientsState = {
-  bunId: Ingredient['_id'] | null,
-  itemsData: SelectedIngredientsItemData[],
+export type TSelectedIngredientsState = {
+  bunId: TIngredient['_id'] | null,
+  itemsData: TSelectedIngredientsItemData[],
 }
 
-export type UserState = {
-  user: User | null,
+export type TUserState = {
+  user: TUser | null,
   userLoaded: boolean,
 }
 
-export type ForgotPasswordState = {
+export type TForgotPasswordState = {
   forgotPasswordUsed: boolean,
 }
 
-export type State = {
-  currentIngredient: CurrentIngredientState,
-  currentOrder: CurrentOrderState,
-  ingredients: IngredientsState,
-  selectedIngredients: SelectedIngredientsState,
-  user: UserState,
-  forgotPassword: ForgotPasswordState,
+export type TState = {
+  currentIngredient: TCurrentIngredientState,
+  currentOrder: TCurrentOrderState,
+  ingredients: TIngredientsState,
+  selectedIngredients: TSelectedIngredientsState,
+  user: TUserState,
+  forgotPassword: TForgotPasswordState,
 }

@@ -1,14 +1,14 @@
 import { SET_CURRENT_INGREDIENT } from '../actions';
-import { CurrentIngredientAction } from '../../types/actions';
-import { CurrentIngredientState } from '../../types/states';
+import { TCurrentIngredientAction } from '../../types/actions';
+import { TCurrentIngredientState } from '../../types/states';
 
 const initialState = {
   ingredient: null,
 };
 
 const currentIngredient = (
-  state: CurrentIngredientState = initialState,
-  action: CurrentIngredientAction
+  state: TCurrentIngredientState = initialState,
+  action: TCurrentIngredientAction
 ) => {
   switch (action.type) {
     case SET_CURRENT_INGREDIENT:

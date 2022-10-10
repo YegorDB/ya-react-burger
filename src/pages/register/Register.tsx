@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { Link, Redirect } from 'react-router-dom';
 
 import {
@@ -8,35 +7,36 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { getUser, postRegister } from '../../services/actions';
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 
 import styles from './Register.module.css';
 
-export function RegisterPage() {
+export const RegisterPage: FC = () => {
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: State) => state.user);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { user, userLoaded } = useSelector((state: TState) => state.user);
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   useEffect(() => {
     // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
-  const changeName = useCallback(
+  const changeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
     e => setName(e.target.value),
     []
   );
-  const changeEmail = useCallback(
+  const changeEmail = useCallback<ChangeEventHandler<HTMLInputElement>>(
     e => setEmail(e.target.value),
     []
   );
-  const changePassword = useCallback(
+  const changePassword = useCallback<ChangeEventHandler<HTMLInputElement>>(
     e => setPassword(e.target.value),
     []
   );
-  const registerHandle = useCallback(
+
+  const registerHandle = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault();
       // @ts-ignore

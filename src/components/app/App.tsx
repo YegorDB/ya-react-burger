@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-// @ts-ignore
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import AppContent from '../app-content/AppContent';

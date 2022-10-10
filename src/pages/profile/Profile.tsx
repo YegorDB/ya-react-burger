@@ -1,7 +1,6 @@
 import cn from 'classnames';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import {
@@ -9,39 +8,39 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { getUser, postLogout, patchUser } from '../../services/actions';
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 
 import styles from './Profile.module.css';
 
-export function ProfilePage() {
+export const ProfilePage: FC = () => {
   const matchRoot = useRouteMatch('/profile');
   const matchOrders = useRouteMatch('/profile/orders');
 
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: State) => state.user);
-  const [name, setName] = useState(user ? user.name : '');
-  const [login, setLogin] = useState(user ? user.email : '');
-  const [password, setPassword] = useState('');
+  const { user, userLoaded } = useSelector((state: TState) => state.user);
+  const [name, setName] = useState<string>(user ? user.name : '');
+  const [login, setLogin] = useState<string>(user ? user.email : '');
+  const [password, setPassword] = useState<string>('');
 
   useEffect(() => {
     // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
-  const changeName = useCallback(
+  const changeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
     e => setName(e.target.value),
     []
   );
-  const changeLogin = useCallback(
+  const changeLogin = useCallback<ChangeEventHandler<HTMLInputElement>>(
     e => setLogin(e.target.value),
     []
   );
-  const changePassword = useCallback(
+  const changePassword = useCallback<ChangeEventHandler<HTMLInputElement>>(
     e => setPassword(e.target.value),
     []
   );
 
-  const changeUserData = useCallback(
+  const changeUserData = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault();
       // @ts-ignore
@@ -50,7 +49,7 @@ export function ProfilePage() {
     [dispatch, name, login, password]
   );
 
-  const resetUserData = useCallback(
+  const resetUserData = useCallback<(...args: any[]) => void>(
     e => {
       setName(user ? user.name : '');
       setLogin(user ? user.email : '');
@@ -59,7 +58,7 @@ export function ProfilePage() {
     [user]
   );
 
-  const logout = useCallback(
+  const logout = useCallback<(...args: any[]) => void>(
     // @ts-ignore
     e => dispatch(postLogout()),
     [dispatch]
@@ -129,7 +128,7 @@ export function ProfilePage() {
         </div>
         <div className={ styles.ProfileMenu }>
           <Link to='/profile' className="undecorated-link">
-            <p className={cn('text text_type_main-medium mb-5', !matchRoot.isExact && 'text_color_inactive')}>
+            <p className={cn('text text_type_main-medium mb-5', !matchRoot?.isExact && 'text_color_inactive')}>
               Профиль
             </p>
           </Link>

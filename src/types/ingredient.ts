@@ -1,4 +1,4 @@
-export type Ingredient = {
+export type TIngredient = {
   _id: string,
   name: string,
   // type: 'main' | 'bun' | 'sauce',
@@ -14,8 +14,8 @@ export type Ingredient = {
   __v: number,
 }
 
-export type IngredientsByType = {
-  main: Ingredient[],
-  bun: Ingredient[],
-  sauce: Ingredient[],
+export type TIngredientsByType = {
+  main: TIngredient[],
+  bun: TIngredient[],
+  sauce: TIngredient[],
 }

@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-// @ts-ignore
-import { Redirect, Route, RouteProps } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 
 import { getUser } from '../../services/actions';
+import { TProtectedRouteProps } from '../../types/props';
+import { TState } from '../../types/states';
 
-import { State } from '../../types/states';
-
-export function ProtectedRoute(props: RouteProps & { children: React.ReactNode }) {
-  const {children, ...rest} = props;
-
-  const [isUserLoaded, setUserLoaded] = useState(false);
+export const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, ...rest }) => {
+  const [isUserLoaded, setUserLoaded] = useState<boolean>(false);
 
   const init = async () => {
     await getUser();
@@ -21,7 +18,7 @@ export function ProtectedRoute(props: RouteProps & { children: React.ReactNode }
     init();
   }, []);
 
-  const user = useSelector((state: State) => state.user.user);
+  const user = useSelector((state: TState) => state.user.user);
 
   if (!isUserLoaded) {
     return null;

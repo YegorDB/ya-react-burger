@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -7,7 +7,7 @@ import BurgerIngredients from '../../components/burger-ingredients/BurgerIngredi
 
 import styles from './Main.module.css';
 
-export function MainPage() {
+export const MainPage: FC = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <main className={styles.Main}>

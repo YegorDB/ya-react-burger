@@ -3,16 +3,16 @@ import {
   POST_ORDER_REQUEST_FAILED,
   POST_ORDER_REQUEST_SUCCESS,
 } from '../actions';
-import { CurrentOrderAction } from '../../types/actions';
-import { CurrentOrderState } from '../../types/states';
+import { TCurrentOrderAction } from '../../types/actions';
+import { TCurrentOrderState } from '../../types/states';
 
 const initialState = {
   orderId: null,
 };
 
 const currentOrder = (
-  state: CurrentOrderState = initialState,
-  action: CurrentOrderAction
+  state: TCurrentOrderState = initialState,
+  action: TCurrentOrderAction
 ) => {
   switch (action.type) {
     case POST_ORDER_REQUEST_PENDING:

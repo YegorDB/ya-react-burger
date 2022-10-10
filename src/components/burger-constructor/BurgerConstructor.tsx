@@ -1,8 +1,7 @@
 import cn from 'classnames';
-import React, { useEffect, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { useHistory, useLocation } from 'react-router-dom';
 
 import {
@@ -18,18 +17,18 @@ import {
   postOrder,
   getUser,
 } from '../../services/actions';
-import { Ingredient } from '../../types/ingredient'
-import { State } from '../../types/states';
+import { TOtherIngredientsData } from '../../types/data'
+import { TIngredient } from '../../types/ingredient'
+import { TBurgerConstructorMainItemsItemProps } from '../../types/props';
+import { TState } from '../../types/states';
 import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './BurgerConstructor.module.css';
 
-function BurgerConstructorMainItemsItem(props: {
-  ingredient: Ingredient,
-  index: number,
-}) {
-  const { ingredient, index } = props;
-
+const BurgerConstructorMainItemsItem: FC<TBurgerConstructorMainItemsItemProps> = ({
+  ingredient,
+  index,
+}) => {
   const dispatch = useDispatch();
 
   const [, dragRef] = useDrag({
@@ -77,9 +76,10 @@ function BurgerConstructor() {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: State) => state.user);
-  const [isModalOpen, setModalOpen] = React.useState(false);
-  const { ingredients, bunId, itemsData, orderId } = useSelector((state: State) => ({
+  const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
+  const { user, userLoaded, ingredients, bunId, itemsData, orderId } = useSelector((state: TState) => ({
+    user: state.user.user,
+    userLoaded: state.user.userLoaded,
     ingredients: state.ingredients.items,
     bunId: state.selectedIngredients.bunId,
     itemsData: state.selectedIngredients.itemsData,
@@ -93,7 +93,7 @@ function BurgerConstructor() {
 
   const [, dropTarget] = useDrop({
       accept: 'ingredients-item',
-      drop(ingredient: Ingredient) {
+      drop(ingredient: TIngredient) {
         dispatch({
           type: ADD_INGREDIENT_TO_CONSTRUCTOR,
           ingredientIsABun: ingredient.type === 'bun',
@@ -128,7 +128,7 @@ function BurgerConstructor() {
   const ingredientsById = parseIngredientsById(ingredients);
 
   const bunIngredient = bunId && ingredientsById[bunId];
-  const otherIngredientsData = useMemo(() => {
+  const otherIngredientsData = useMemo<TOtherIngredientsData[]>(() => {
     return itemsData && (
       itemsData
       .filter(({id}) => id in ingredientsById)
@@ -136,7 +136,7 @@ function BurgerConstructor() {
     );
   }, [itemsData, ingredientsById]);
 
-  const totalPrice = useMemo(() => {
+  const totalPrice = useMemo<number>(() => {
     let value = bunIngredient ? bunIngredient.price * 2 : 0;
     if (otherIngredientsData) {
       value = otherIngredientsData.map(({ingredient}) => ingredient).reduce(

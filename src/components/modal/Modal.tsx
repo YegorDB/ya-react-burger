@@ -1,21 +1,20 @@
 import cn from 'classnames';
-import React from 'react';
+import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
 
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import ModalOverlay from '../modal-overlay/ModalOverlay';
+import { TModalHeaderProps, TModalProps } from '../../types/props';
 
 import styles from './Modal.module.css';
 
 const modalRoot = document.getElementById('modals');
 
-function ModalHeader(props: {
-  closeHandler: React.MouseEventHandler,
-  title?: string,
-}) {
-  const {closeHandler, title} = props;
-
+const ModalHeader: FC<TModalHeaderProps> = ({
+  closeHandler,
+  title,
+}) => {
   return (
     <div className={styles.ModalHeader}>
       <p className="mr-10 text text_type_main-large">{title}</p>
@@ -26,13 +25,11 @@ function ModalHeader(props: {
   );
 }
 
-function Modal(props: {
-  handleClose: Function,
-  children: React.ReactNode,
-  title?: string,
-}) {
-  const {handleClose, children, title} = props;
-
+const Modal: FC<TModalProps> = ({
+  handleClose,
+  children,
+  title,
+}) => {
   const closeHandler = React.useCallback(() => handleClose(), [handleClose]);
 
   React.useEffect(() => {

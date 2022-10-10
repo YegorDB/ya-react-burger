@@ -1,34 +1,33 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { Link, Redirect, useHistory } from 'react-router-dom';
 
 import {
   Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 
 import { getUser, forgotPassword } from '../../services/actions';
 
 import styles from './ForgotPassword.module.css';
 
-export function ForgotPasswordPage() {
+export const ForgotPasswordPage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: State) => state.user);
-  const [email, setEmail] = useState('');
+  const { user, userLoaded } = useSelector((state: TState) => state.user);
+  const [email, setEmail] = useState<string>('');
 
   useEffect(() => {
     // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
-  const changeEmail = useCallback(
+  const changeEmail = useCallback<ChangeEventHandler<HTMLInputElement>>(
     e => setEmail(e.target.value),
     []
   );
-  const repareHandle = useCallback(
+  const repareHandle = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault();
       // @ts-ignore

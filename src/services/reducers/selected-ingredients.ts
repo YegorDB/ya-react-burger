@@ -6,8 +6,8 @@ import {
   CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER,
   CLEAR_CONSTRUCTOR,
 } from '../actions';
-import { SelectedIngredientsAction } from '../../types/actions';
-import { SelectedIngredientsState } from '../../types/states';
+import { TSelectedIngredientsAction } from '../../types/actions';
+import { TSelectedIngredientsState } from '../../types/states';
 
 const initialState = {
   bunId: null,
@@ -15,8 +15,8 @@ const initialState = {
 };
 
 const selectedIngredients = (
-  state: SelectedIngredientsState = initialState,
-  action: SelectedIngredientsAction
+  state: TSelectedIngredientsState = initialState,
+  action: TSelectedIngredientsAction
 ) => {
   const itemsDataCopy = [...state.itemsData];
   switch (action.type) {

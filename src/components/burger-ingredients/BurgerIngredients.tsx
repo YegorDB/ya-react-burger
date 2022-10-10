@@ -1,9 +1,8 @@
 import cn from 'classnames';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { InView } from 'react-intersection-observer';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -11,16 +10,18 @@ import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger
 import Modal from '../modal/Modal';
 import { CurrentIngredientDetails } from '../ingredient-details/IngredientDetails';
 import { SET_CURRENT_INGREDIENT } from '../../services/actions';
-import { Ingredient } from '../../types/ingredient';
-import { State } from '../../types/states';
+import { TBurgerIngredientsTabClickHandler } from '../../types/handlers';
+import { TBurgerIngredientsItemProps, TBurgerIngredientsItemsGroupProps } from '../../types/props';
+import { TState } from '../../types/states';
+import { TBurgerIngredientsItemParams } from '../../types/router';
 import { parseIngredientsByType } from '../../utils/parseIngredients';
 
 import styles from './BurgerIngredients.module.css';
 
-export function BurgerIngredientsItemModal() {
+export const BurgerIngredientsItemModal: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { id: ingredientId } = useParams();
+  const { id: ingredientId } = useParams<TBurgerIngredientsItemParams>();
 
   const handleCloseModal = () => {
     dispatch({
@@ -37,12 +38,10 @@ export function BurgerIngredientsItemModal() {
   )
 }
 
-function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
-  const { ingredient } = props;
-
+const BurgerIngredientsItem: FC<TBurgerIngredientsItemProps> = ({ ingredient }) => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { bunId, itemsData } = useSelector((state: State) => ({
+  const { bunId, itemsData } = useSelector((state: TState) => ({
     bunId: state.selectedIngredients.bunId,
     itemsData: state.selectedIngredients.itemsData,
   }));
@@ -51,7 +50,7 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
     item: ingredient,
   });
 
-  const count = useMemo(() => {
+  const count = useMemo<number>(() => {
     const otherIds = itemsData.map(i => i.id);
     return [bunId, ...otherIds, bunId].filter(id => id === ingredient._id).length;;
   }, [bunId, itemsData, ingredient._id])
@@ -91,54 +90,56 @@ function BurgerIngredientsItem(props: {ingredient: Ingredient}) {
 }
 
 const BurgerIngredientsItemsGroup = React.forwardRef((
-  props: {name: string, ingredients: Ingredient[]},
+  { name, ingredients }: TBurgerIngredientsItemsGroupProps,
   ref: React.ForwardedRef<HTMLParagraphElement>,
 ) => (
   <div>
     <p ref={ref} className="text text_type_main-medium">
-      {props.name}
+      {name}
     </p>
     <div className={cn('pt-2 pb-6 pl-1 pr-1', styles.BurgerIngredientsItemsGroup)}>
-      {props.ingredients.map(ingredient => (
+      {ingredients.map(ingredient => (
         <BurgerIngredientsItem ingredient={ingredient} key={ingredient._id}/>
       ))}
     </div>
   </div>
 ));
 
-function getBurgerIngredientsTabClickHandler(ref: React.RefObject<HTMLElement>, setCurrentTab: Function) {
+function getBurgerIngredientsTabClickHandler(
+  ref: React.RefObject<HTMLElement>
+): TBurgerIngredientsTabClickHandler {
   return (value: string) => {
     if (ref.current === null) return;
     ref.current.scrollIntoView({behavior: 'smooth'});
   }
 }
 
-function BurgerIngredients() {
-  const [currentTab, setCurrentTab] = useState('1');
-  const [wisibleTabs, setWisibleTabs] = useState({
+const BurgerIngredients: FC = () => {
+  const [currentTab, setCurrentTab] = useState<string>('1');
+  const [wisibleTabs, setWisibleTabs] = useState<Record<'1' | '2' | '3', boolean>>({
     '1': true,
     '2': false,
     '3': false,
   });
 
-  const bunRef = useRef(null);
-  const sauceRef = useRef(null);
-  const mainRef = useRef(null);
+  const bunRef = useRef<HTMLParagraphElement>(null);
+  const sauceRef = useRef<HTMLParagraphElement>(null);
+  const mainRef = useRef<HTMLParagraphElement>(null);
 
-  const bunTabClickHandler = useMemo(
-    () => getBurgerIngredientsTabClickHandler(bunRef, setCurrentTab),
-    [bunRef, setCurrentTab]
+  const bunTabClickHandler = useMemo<TBurgerIngredientsTabClickHandler>(
+    () => getBurgerIngredientsTabClickHandler(bunRef),
+    [bunRef]
   );
-  const sauceTabClickHandler = useMemo(
-    () => getBurgerIngredientsTabClickHandler(sauceRef, setCurrentTab),
-    [sauceRef, setCurrentTab]
+  const sauceTabClickHandler = useMemo<TBurgerIngredientsTabClickHandler>(
+    () => getBurgerIngredientsTabClickHandler(sauceRef),
+    [sauceRef]
   );
-  const mainTabClickHandler = useMemo(
-    () => getBurgerIngredientsTabClickHandler(mainRef, setCurrentTab),
-    [mainRef, setCurrentTab]
+  const mainTabClickHandler = useMemo<TBurgerIngredientsTabClickHandler>(
+    () => getBurgerIngredientsTabClickHandler(mainRef),
+    [mainRef]
   );
 
-  const ingredients = useSelector((state: State) => state.ingredients.items);
+  const ingredients = useSelector((state: TState) => state.ingredients.items);
 
   useEffect(
     () => {

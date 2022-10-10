@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { Link, Redirect, useHistory } from 'react-router-dom';
 
 import {
@@ -8,35 +7,36 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { getUser, passwordReset } from '../../services/actions';
-import { State } from '../../types/states';
+import { TState } from '../../types/states';
 
 import styles from './ResetPassword.module.css';
 
-export function ResetPasswordPage() {
+export const ResetPasswordPage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user, userLoaded, forgotPasswordUsed } = useSelector((state: State) => ({
+  const { user, userLoaded, forgotPasswordUsed } = useSelector((state: TState) => ({
     user: state.user.user,
     userLoaded: state.user.userLoaded,
     forgotPasswordUsed: state.forgotPassword.forgotPasswordUsed,
   }));
-  const [password, setPassword] = useState('');
-  const [token, setToken] = useState('');
+  const [password, setPassword] = useState<string>('');
+  const [token, setToken] = useState<string>('');
 
   useEffect(() => {
     // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
-  const changePassword = useCallback(
+  const changePassword = useCallback<ChangeEventHandler<HTMLInputElement>>(
     e => setPassword(e.target.value),
     []
   );
-  const changeToken = useCallback(
+  const changeToken = useCallback<ChangeEventHandler<HTMLInputElement>>(
     e => setToken(e.target.value),
     []
   );
-  const resetHandle = useCallback(
+
+  const resetHandle = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault();
       // @ts-ignore

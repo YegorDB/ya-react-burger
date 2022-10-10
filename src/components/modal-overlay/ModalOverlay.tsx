@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
+
+import { TModalOverlayProps } from '../../types/props';
 
 import styles from './ModalOverlay.module.css';
 
-function ModalOverlay(props: {
-  closeHandler: React.MouseEventHandler,
-}) {
-  const {closeHandler} = props;
-
+const ModalOverlay: FC<TModalOverlayProps> = ({ closeHandler }) => {
   return (
     <div onClick={closeHandler} className={styles.ModalOverlay}></div>
   );

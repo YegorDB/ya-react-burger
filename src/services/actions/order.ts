@@ -1,14 +1,14 @@
 import { postRefreshToken } from './refresh-token';
 import { CLEAR_CONSTRUCTOR } from './selected-ingredients';
 import { API_ROOT } from '../../consts/api';
-import { Ingredient } from '../../types/ingredient';
+import { TIngredient } from '../../types/ingredient';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
 export const POST_ORDER_REQUEST_PENDING = 'POST_ORDER_REQUEST_PENDING';
 export const POST_ORDER_REQUEST_FAILED = 'POST_ORDER_REQUEST_FAILED';
 export const POST_ORDER_REQUEST_SUCCESS = 'POST_ORDER_REQUEST_SUCCESS';
 
-export function postOrder(ingredientsIds: Ingredient['_id'][], setModalOpen: Function) {
+export function postOrder(ingredientsIds: TIngredient['_id'][], setModalOpen: Function) {
   return function(dispatch: Function) {
     dispatch({
       type: POST_ORDER_REQUEST_PENDING,

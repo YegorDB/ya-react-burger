@@ -6,16 +6,16 @@ import {
   PASSWORD_RESET_REQUEST_FAILED,
   PASSWORD_RESET_REQUEST_SUCCESS,
 } from '../actions';
-import { ForgotPasswordAction } from '../../types/actions';
-import { ForgotPasswordState } from '../../types/states';
+import { TForgotPasswordAction } from '../../types/actions';
+import { TForgotPasswordState } from '../../types/states';
 
 const initialState = {
   forgotPasswordUsed: false,
 };
 
 const forgotPassword = (
-  state: ForgotPasswordState = initialState,
-  action: ForgotPasswordAction
+  state: TForgotPasswordState = initialState,
+  action: TForgotPasswordAction
 ) => {
   switch (action.type) {
     case FORGOT_PASSWORD_REQUEST_PENDING:
