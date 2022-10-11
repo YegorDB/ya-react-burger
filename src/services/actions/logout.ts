@@ -1,12 +1,13 @@
 import { API_ROOT } from '../../consts/api';
+import { AppThunk, AppDispatch } from '../../types';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
-export const POST_LOGOUT_REQUEST_PENDING = 'POST_LOGOUT_REQUEST_PENDING';
-export const POST_LOGOUT_REQUEST_FAILED = 'POST_LOGOUT_REQUEST_FAILED';
-export const POST_LOGOUT_REQUEST_SUCCESS = 'POST_LOGOUT_REQUEST_SUCCESS';
+export const POST_LOGOUT_REQUEST_PENDING: 'POST_LOGOUT_REQUEST_PENDING' = 'POST_LOGOUT_REQUEST_PENDING';
+export const POST_LOGOUT_REQUEST_FAILED: 'POST_LOGOUT_REQUEST_FAILED' = 'POST_LOGOUT_REQUEST_FAILED';
+export const POST_LOGOUT_REQUEST_SUCCESS: 'POST_LOGOUT_REQUEST_SUCCESS' = 'POST_LOGOUT_REQUEST_SUCCESS';
 
-export function postLogout() {
-  return function(dispatch: Function) {
+export const postLogout: AppThunk = () => {
+  return function(dispatch: AppDispatch) {
     dispatch({
       type: POST_LOGOUT_REQUEST_PENDING,
     });

@@ -1,12 +1,13 @@
 import { API_ROOT } from '../../consts/api';
+import { AppThunk, AppDispatch } from '../../types';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
-export const POST_TOKEN_REQUEST_PENDING = 'POST_TOKEN_REQUEST_PENDING';
-export const POST_TOKEN_REQUEST_FAILED = 'POST_TOKEN_REQUEST_FAILED';
-export const POST_TOKEN_REQUEST_SUCCESS = 'POST_TOKEN_REQUEST_SUCCESS';
+export const POST_TOKEN_REQUEST_PENDING: 'POST_TOKEN_REQUEST_PENDING' = 'POST_TOKEN_REQUEST_PENDING';
+export const POST_TOKEN_REQUEST_FAILED: 'POST_TOKEN_REQUEST_FAILED' = 'POST_TOKEN_REQUEST_FAILED';
+export const POST_TOKEN_REQUEST_SUCCESS: 'POST_TOKEN_REQUEST_SUCCESS' = 'POST_TOKEN_REQUEST_SUCCESS';
 
-export function postRefreshToken(callback: Function) {
-  return function(dispatch: Function) {
+export const postRefreshToken: AppThunk = (callback: Function) => {
+  return function(dispatch: AppDispatch) {
     dispatch({
       type: POST_TOKEN_REQUEST_PENDING,
     });
@@ -34,6 +35,7 @@ export function postRefreshToken(callback: Function) {
         type: POST_TOKEN_REQUEST_FAILED,
       });
       setTimeout(() => {
+        // @ts-ignore
         postRefreshToken(callback)(dispatch);
       }, 1000);
     }));

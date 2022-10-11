@@ -1,19 +1,18 @@
 import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import {
   Button, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import { useSelector, useDispatch } from '../../hooks';
 import { getUser, postRegister } from '../../services/actions';
-import { TState } from '../../types/states';
 
 import styles from './Register.module.css';
 
 export const RegisterPage: FC = () => {
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: TState) => state.user);
+  const { user, userLoaded } = useSelector(state => state.user);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');

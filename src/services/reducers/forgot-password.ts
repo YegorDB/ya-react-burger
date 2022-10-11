@@ -9,14 +9,14 @@ import {
 import { TForgotPasswordAction } from '../../types/actions';
 import { TForgotPasswordState } from '../../types/states';
 
-const initialState = {
+const initialState: TForgotPasswordState = {
   forgotPasswordUsed: false,
 };
 
 const forgotPassword = (
   state: TForgotPasswordState = initialState,
   action: TForgotPasswordAction
-) => {
+): TForgotPasswordState => {
   switch (action.type) {
     case FORGOT_PASSWORD_REQUEST_PENDING:
       return state

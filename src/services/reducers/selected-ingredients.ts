@@ -9,7 +9,7 @@ import {
 import { TSelectedIngredientsAction } from '../../types/actions';
 import { TSelectedIngredientsState } from '../../types/states';
 
-const initialState = {
+const initialState: TSelectedIngredientsState = {
   bunId: null,
   itemsData: [],
 };
@@ -17,7 +17,7 @@ const initialState = {
 const selectedIngredients = (
   state: TSelectedIngredientsState = initialState,
   action: TSelectedIngredientsAction
-) => {
+): TSelectedIngredientsState => {
   const itemsDataCopy = [...state.itemsData];
   switch (action.type) {
     case ADD_INGREDIENT_TO_CONSTRUCTOR:

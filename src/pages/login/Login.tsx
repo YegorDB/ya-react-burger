@@ -1,21 +1,20 @@
 import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 
 import {
   Button, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import { useSelector, useDispatch } from '../../hooks';
 import { getUser, postLogin } from '../../services/actions';
 import { TBaseLocationState } from '../../types/router';
-import { TState } from '../../types/states';
 
 import styles from './Login.module.css';
 
 export const LoginPage: FC = () => {
   const location = useLocation<TBaseLocationState>();
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: TState) => state.user);
+  const { user, userLoaded } = useSelector(state => state.user);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 

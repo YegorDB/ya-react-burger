@@ -1,14 +1,13 @@
 import cn from 'classnames';
 import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import {
   Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import { useSelector, useDispatch } from '../../hooks';
 import { getUser, postLogout, patchUser } from '../../services/actions';
-import { TState } from '../../types/states';
 
 import styles from './Profile.module.css';
 
@@ -17,7 +16,7 @@ export const ProfilePage: FC = () => {
   const matchOrders = useRouteMatch('/profile/orders');
 
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: TState) => state.user);
+  const { user, userLoaded } = useSelector(state => state.user);
   const [name, setName] = useState<string>(user ? user.name : '');
   const [login, setLogin] = useState<string>(user ? user.email : '');
   const [password, setPassword] = useState<string>('');

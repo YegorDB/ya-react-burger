@@ -3,7 +3,7 @@ import { TUser } from './user';
 
 export type TCurrentIngredientAction = {
   type: 'SET_CURRENT_INGREDIENT',
-  ingredient: TIngredient,
+  ingredient: TIngredient | null,
 }
 
 type TCurrentOrderBaseAction = {
@@ -70,3 +70,12 @@ export type TForgotPasswordAction = {
     'PASSWORD_RESET_REQUEST_PENDING' | 'PASSWORD_RESET_REQUEST_FAILED' | 'PASSWORD_RESET_REQUEST_SUCCESS'
   ),
 }
+
+export type TActions = (
+  TCurrentIngredientAction |
+  TCurrentOrderAction |
+  TIngredientsAction |
+  TSelectedIngredientsAction |
+  TUserAction |
+  TForgotPasswordAction
+);

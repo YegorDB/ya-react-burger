@@ -2,17 +2,16 @@ import cn from 'classnames';
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { InView } from 'react-intersection-observer';
-import { useSelector, useDispatch } from 'react-redux';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import Modal from '../modal/Modal';
 import { CurrentIngredientDetails } from '../ingredient-details/IngredientDetails';
+import { useSelector, useDispatch } from '../../hooks';
 import { SET_CURRENT_INGREDIENT } from '../../services/actions';
 import { TBurgerIngredientsTabClickHandler } from '../../types/handlers';
 import { TBurgerIngredientsItemProps, TBurgerIngredientsItemsGroupProps } from '../../types/props';
-import { TState } from '../../types/states';
 import { TBurgerIngredientsItemParams } from '../../types/router';
 import { parseIngredientsByType } from '../../utils/parseIngredients';
 
@@ -41,7 +40,7 @@ export const BurgerIngredientsItemModal: FC = () => {
 const BurgerIngredientsItem: FC<TBurgerIngredientsItemProps> = ({ ingredient }) => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { bunId, itemsData } = useSelector((state: TState) => ({
+  const { bunId, itemsData } = useSelector(state => ({
     bunId: state.selectedIngredients.bunId,
     itemsData: state.selectedIngredients.itemsData,
   }));
@@ -139,7 +138,7 @@ const BurgerIngredients: FC = () => {
     [mainRef]
   );
 
-  const ingredients = useSelector((state: TState) => state.ingredients.items);
+  const ingredients = useSelector(state => state.ingredients.items);
 
   useEffect(
     () => {

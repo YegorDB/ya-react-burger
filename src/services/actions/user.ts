@@ -1,20 +1,21 @@
 import { postRefreshToken } from './refresh-token';
 import { API_ROOT } from '../../consts/api';
+import { AppThunk, AppDispatch } from '../../types';
 import { TUser } from '../../types/user';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
-export const GET_USER_REQUEST_PENDING = 'GET_USER_REQUEST_PENDING';
-export const GET_USER_REQUEST_FAILED = 'GET_USER_REQUEST_FAILED';
-export const GET_USER_REQUEST_SUCCESS = 'GET_USER_REQUEST_SUCCESS';
+export const GET_USER_REQUEST_PENDING: 'GET_USER_REQUEST_PENDING' = 'GET_USER_REQUEST_PENDING';
+export const GET_USER_REQUEST_FAILED: 'GET_USER_REQUEST_FAILED' = 'GET_USER_REQUEST_FAILED';
+export const GET_USER_REQUEST_SUCCESS: 'GET_USER_REQUEST_SUCCESS' = 'GET_USER_REQUEST_SUCCESS';
 
-export const PATCH_USER_REQUEST_PENDING = 'PATCH_USER_REQUEST_PENDING';
-export const PATCH_USER_REQUEST_FAILED = 'PATCH_USER_REQUEST_FAILED';
-export const PATCH_USER_REQUEST_SUCCESS = 'PATCH_USER_REQUEST_SUCCESS';
+export const PATCH_USER_REQUEST_PENDING: 'PATCH_USER_REQUEST_PENDING' = 'PATCH_USER_REQUEST_PENDING';
+export const PATCH_USER_REQUEST_FAILED: 'PATCH_USER_REQUEST_FAILED' = 'PATCH_USER_REQUEST_FAILED';
+export const PATCH_USER_REQUEST_SUCCESS: 'PATCH_USER_REQUEST_SUCCESS' = 'PATCH_USER_REQUEST_SUCCESS';
 
 const PATH = `${API_ROOT}/auth/user`;
 
-export function getUser() {
-  return function(dispatch: Function) {
+export const getUser: AppThunk = () => {
+  return function(dispatch: AppDispatch) {
     dispatch({
       type: GET_USER_REQUEST_PENDING,
     });
@@ -35,6 +36,7 @@ export function getUser() {
       if (err.message === 'jwt expired') {
         setTimeout(() => {
           const callback = getUser();
+          // @ts-ignore
           postRefreshToken(callback)(dispatch);
         }, 1000);
       } else {
@@ -46,8 +48,8 @@ export function getUser() {
   };
 }
 
-export function patchUser(name: string, email: string, password: string) {
-  return function(dispatch: Function) {
+export const patchUser: AppThunk = (name: string, email: string, password: string) => {
+  return function(dispatch: AppDispatch) {
     dispatch({
       type: PATCH_USER_REQUEST_PENDING,
     });
@@ -75,6 +77,7 @@ export function patchUser(name: string, email: string, password: string) {
       if (err.message === 'jwt expired') {
         setTimeout(() => {
           const callback = patchUser(name, email, password);
+          // @ts-ignore
           postRefreshToken(callback)(dispatch);
         }, 1000);
       } else {

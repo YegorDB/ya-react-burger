@@ -6,14 +6,14 @@ import {
 import { TCurrentOrderAction } from '../../types/actions';
 import { TCurrentOrderState } from '../../types/states';
 
-const initialState = {
+const initialState: TCurrentOrderState = {
   orderId: null,
 };
 
 const currentOrder = (
   state: TCurrentOrderState = initialState,
   action: TCurrentOrderAction
-) => {
+): TCurrentOrderState => {
   switch (action.type) {
     case POST_ORDER_REQUEST_PENDING:
       return {

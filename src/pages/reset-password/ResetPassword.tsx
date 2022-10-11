@@ -1,20 +1,19 @@
 import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 
 import {
   Button, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
+import { useSelector, useDispatch } from '../../hooks';
 import { getUser, passwordReset } from '../../services/actions';
-import { TState } from '../../types/states';
 
 import styles from './ResetPassword.module.css';
 
 export const ResetPasswordPage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user, userLoaded, forgotPasswordUsed } = useSelector((state: TState) => ({
+  const { user, userLoaded, forgotPasswordUsed } = useSelector(state => ({
     user: state.user.user,
     userLoaded: state.user.userLoaded,
     forgotPasswordUsed: state.forgotPassword.forgotPasswordUsed,
