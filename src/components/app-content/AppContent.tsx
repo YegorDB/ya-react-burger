@@ -3,6 +3,8 @@ import { Route, Switch, useLocation } from 'react-router-dom';
 
 import { BurgerIngredientsItemModal } from '../burger-ingredients/BurgerIngredients';
 import { ProtectedRoute } from '../protected-route/ProtectedRoute';
+import { Feed } from '../../pages/feed/Feed';
+import { FeedItem } from '../../pages/feed-item/FeedItem';
 import { ForgotPasswordPage } from '../../pages/forgot-password/ForgotPassword';
 import { IngredientPage } from '../../pages/ingredient/Ingredient';
 import { LoginPage } from '../../pages/login/Login';
@@ -40,6 +42,12 @@ function AppContent() {
         </ProtectedRoute>
         <Route path="/ingredients/:id" exact={true}>
           <IngredientPage />
+        </Route>
+        <Route path="/feed" exact={true}>
+          <Feed />
+        </Route>
+        <Route path="/feed/:id" exact={true}>
+          <FeedItem />
         </Route>
         <Route>
           <div>404</div>

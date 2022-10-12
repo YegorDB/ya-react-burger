@@ -5,7 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components'
+} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { useSelector, useDispatch } from '../../hooks';
 
@@ -72,7 +72,7 @@ const BurgerConstructorMainItemsItem: FC<TBurgerConstructorMainItemsItemProps> =
   )
 }
 
-function BurgerConstructor() {
+const BurgerConstructor: FC = () => {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();

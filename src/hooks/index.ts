@@ -3,10 +3,11 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
+// import { ThunkDispatch } from 'redux-thunk';
 
-import { AppDispatch, AppThunk } from '../types';
-import { TActions } from '../types/actions';
+// import { AppDispatch, AppThunk } from '../types';
+import { AppDispatch } from '../types';
+// import { TActions } from '../types/actions';
 import { TState } from '../types/states';
 
 export const useSelector: TypedUseSelectorHook<TState> = selectorHook;

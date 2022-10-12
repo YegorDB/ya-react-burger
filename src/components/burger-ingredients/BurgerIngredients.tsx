@@ -173,7 +173,7 @@ const BurgerIngredients: FC = () => {
         <Tab value="3" active={currentTab === '3'} onClick={mainTabClickHandler}>
           Начинки
         </Tab>
-        </div>
+      </div>
       <div className={cn('custom-scroll', styles.BurgerIngredientsItems)}>
         <InView
           as="div"
