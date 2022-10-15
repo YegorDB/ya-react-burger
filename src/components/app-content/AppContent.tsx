@@ -37,6 +37,9 @@ function AppContent() {
         <Route path="/reset-password" exact={true}>
           <ResetPasswordPage />
         </Route>
+        <ProtectedRoute path="/profile/orders/:id" exact={true}>
+          <FeedItem />
+        </ProtectedRoute>
         <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>
