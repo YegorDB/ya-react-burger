@@ -3,28 +3,10 @@ import React, { FC } from 'react';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { IngredientIcon } from '../../components/ingredient-icon/IngredientIcon';
+import { FeedItemIngredient } from '../../components/feed-item-ingredient/FeedItemIngredient';
+import { FeedItemStatus } from '../../components/feed-item-status/FeedItemStatus';
 
 import styles from './FeedItem.module.css';
-
-type FeedItemIngredient = {
-  name: string,
-  price: number,
-  count: number,
-}
-
-const FeedItemIngredient: FC<FeedItemIngredient> = ({ name, price, count}) => {
-  return (
-    <div className={styles.FeedItemIngredient}>
-      <IngredientIcon />
-      <div className="ml-5">{ name }</div>
-      <div className={styles.FeedItemPrice}>
-        <p className="mr-2 text text_type_digits-default">{count} x {price}</p>
-        <CurrencyIcon type="primary"/>
-      </div>
-    </div>
-  );
-}
 
 const FeedItemIngredients: FC = () => {
   const ingredientsData = [
@@ -66,24 +48,6 @@ const FeedItemIngredients: FC = () => {
         <FeedItemIngredient {...data} key={data.name} />
       ))}
     </div>
-  );
-}
-
-type TFeedItemStatusProps = {
-  mode: 'done' | 'inProgress' | 'canceled',
-}
-
-const FeedItemStatus: FC<TFeedItemStatusProps> = ({ mode }) => {
-  const textByMode = {
-    done: 'Выполнен',
-    inProgress: 'Исполняется',
-    canceled: 'Отменен',
-  }
-
-  return (
-    <p className={ cn('mb-6 text text_type_main-default', styles[`FeedStatus-${mode}`]) }>
-      { textByMode[mode] }
-    </p>
   );
 }
 

@@ -52,3 +52,28 @@ export type TOrderDetailsProps = {
 export type TProtectedRouteProps = RouteProps & {
   children: React.ReactNode,
 }
+
+type TFeedItemStatus = 'done' | 'inProgress' | 'canceled';
+
+export type TFeedItemStatusProps = {
+  mode: TFeedItemStatus,
+}
+
+export type TFeedItemIngredientProps = {
+  name: string,
+  price: number,
+  count: number,
+}
+
+export type TFeedItemIconsProps = {
+  icons: string[],
+}
+
+export type TFeedItemProps = {
+  id: string,
+  name: string,
+  price: number,
+  date: string,
+  icons: string[],
+  status?: TFeedItemStatus,
+}

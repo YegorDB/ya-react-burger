@@ -16,6 +16,17 @@
   width: 320px;
 }
 
+.ProfileOrders {
+  width: 720px;
+  margin-right: -400px;
+}
+
+.ProfileOrdersHistory {
+  height: calc(100vh - 180px);
+  overflow: auto;
+  text-align: left;
+}
+
 .ProfileMenu {
   position: absolute;
   top: 0;

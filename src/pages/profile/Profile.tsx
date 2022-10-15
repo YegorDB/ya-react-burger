@@ -6,10 +6,66 @@ import {
   Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
+import { FeedItem } from '../../components/feed-item/FeedItem';
 import { useSelector, useDispatch } from '../../hooks';
 import { getUser, postLogout, patchUser } from '../../services/actions';
 
 import styles from './Profile.module.css';
+
+const ProfileOrdersHistory: FC = () => {
+  const itemsData = [
+    {
+      id: '000001',
+      name: 'Name 1',
+      price: 1,
+      date: '0000-00-00',
+      icons: ['1', '2', '3', '4', '5'],
+    },
+    {
+      id: '000002',
+      name: 'Name 2',
+      price: 2,
+      date: '0000-00-00',
+      icons: ['1', '2', '3', '4', '5'],
+    },
+    {
+      id: '000003',
+      name: 'Name 3',
+      price: 3,
+      date: '0000-00-00',
+      icons: ['1', '2', '3', '4', '5'],
+    },
+    {
+      id: '000004',
+      name: 'Name 4',
+      price: 4,
+      date: '0000-00-00',
+      icons: ['1', '2', '3', '4', '5'],
+    },
+    {
+      id: '000005',
+      name: 'Name 5',
+      price: 5,
+      date: '0000-00-00',
+      icons: ['1', '2', '3', '4', '5'],
+    },
+    {
+      id: '000006',
+      name: 'Name 6',
+      price: 6,
+      date: '0000-00-00',
+      icons: ['1', '2', '3', '4', '5'],
+    },
+  ];
+
+  return (
+    <div className={cn('custom-scroll', styles.ProfileOrdersHistory)}>
+      {itemsData.map(data => (
+        <FeedItem {...data} key={data.id} status="done" />
+      ))}
+    </div>
+  );
+}
 
 export const ProfilePage: FC = () => {
   const matchRoot = useRouteMatch('/profile');
@@ -70,9 +126,9 @@ export const ProfilePage: FC = () => {
   return (
     <main>
       <div className={ styles.Profile }>
-        <div className={ styles.ProfileMain }>
-          <Switch>
-            <Route path="/profile" exact={true}>
+        <Switch>
+          <Route path="/profile" exact={true}>
+            <div className={ styles.ProfileMain }>
               <form onSubmit={ changeUserData }>
                 <div className={ styles.ProfileInputWrapper }>
                   <Input
@@ -119,12 +175,15 @@ export const ProfilePage: FC = () => {
                   </Button>
                 </div>
               </form>
-            </Route>
-            <Route path="/profile/orders">
-              ORDERS
-            </Route>
-          </Switch>
-        </div>
+            </div>
+          </Route>
+          <Route path="/profile/orders">
+            <div className={ styles.ProfileOrders }>
+              <ProfileOrdersHistory />
+            </div>
+          </Route>
+        </Switch>
+
         <div className={ styles.ProfileMenu }>
           <Link to='/profile' className="undecorated-link">
             <p className={cn('text text_type_main-medium mb-5', !matchRoot?.isExact && 'text_color_inactive')}>
