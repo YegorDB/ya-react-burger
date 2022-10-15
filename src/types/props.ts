@@ -65,11 +65,11 @@ export type TFeedItemIngredientProps = {
   count: number,
 }
 
-export type TFeedItemIconsProps = {
+export type TFeedItemShortIconsProps = {
   icons: string[],
 }
 
-export type TFeedItemProps = {
+export type TFeedItemShortProps = {
   id: string,
   name: string,
   price: number,

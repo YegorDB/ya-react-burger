@@ -3,23 +3,3 @@
   text-align: left;
   width: 600px;
 }
-
-.FeedItemId {
-  text-align: center;
-}
-
-.FeedItemBottom {
-  position: relative;
-}
-
-.FeedItemPrice {
-  position: absolute;
-  top: 0;
-  right: 20px;
-  display: flex;
-}
-
-.FeedItemIngredients {
-  max-height: calc(100vh - 350px);
-  overflow: auto;
-}

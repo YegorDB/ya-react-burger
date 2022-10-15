@@ -6,7 +6,7 @@ import {
   Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { FeedItem } from '../../components/feed-item/FeedItem';
+import { FeedItemShort } from '../../components/feed-item-short/FeedItemShort';
 import { useSelector, useDispatch } from '../../hooks';
 import { getUser, postLogout, patchUser } from '../../services/actions';
 
@@ -61,7 +61,7 @@ const ProfileOrdersHistory: FC = () => {
   return (
     <div className={cn('custom-scroll', styles.ProfileOrdersHistory)}>
       {itemsData.map(data => (
-        <FeedItem {...data} key={data.id} status="done" />
+        <FeedItemShort {...data} key={data.id} status="done" />
       ))}
     </div>
   );

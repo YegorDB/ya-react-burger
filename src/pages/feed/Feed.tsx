@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
 
-import { FeedItem } from '../../components/feed-item/FeedItem';
+import { FeedItemShort } from '../../components/feed-item-short/FeedItemShort';
 
 import styles from './Feed.module.css';
 
@@ -55,7 +55,7 @@ const FeedItems: FC = () => {
   return (
     <div className={cn('custom-scroll', styles.FeedItems)}>
       {itemsData.map(data => (
-        <FeedItem {...data} key={data.id} />
+        <FeedItemShort {...data} key={data.id} />
       ))}
     </div>
   );
