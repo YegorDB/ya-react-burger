@@ -3,6 +3,8 @@ import React, { FC } from 'react';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
+import { IngredientIcon } from '../../components/ingredient-icon/IngredientIcon';
+
 import styles from './Feed.module.css';
 
 type TFeedItemIconsProps = {
@@ -17,11 +19,14 @@ type TFeedItemProps = {
   icons: string[],
 }
 
+
 const FeedItemIcons: FC<TFeedItemIconsProps> = ({icons}) => {
   return (
     <div className={styles.FeedItemIcons}>
       {icons.map((icon, i) => (
-        <div style={{zIndex: 100 - i}} className={styles.FeedItemIcon} key={icon} />
+        <div style={{zIndex: 100 - i}} key={icon} className={styles.FeedItemIconWrapper}>
+          <IngredientIcon />
+        </div>
       ))}
     </div>
   );

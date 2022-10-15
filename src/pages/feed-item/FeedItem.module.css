@@ -1,0 +1,44 @@
+.FeedItem {
+  composes: CentralizedContent from "../Pages.module.css";
+  text-align: left;
+  width: 600px;
+  /* background-color: yellow; */
+}
+
+.FeedItemId {
+  text-align: center;
+}
+
+.FeedStatus-done {
+  color: #029d9c;
+}
+
+.FeedStatus-inProgress {
+  color: inherit;
+}
+
+.FeedStatus-canceled {
+  color: red;
+}
+
+.FeedItemBottom {
+  position: relative;
+}
+
+.FeedItemPrice {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  display: flex;
+}
+
+.FeedItemIngredients {
+  max-height: calc(100vh - 350px);
+  overflow: auto;
+}
+
+.FeedItemIngredient {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
