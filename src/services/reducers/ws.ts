@@ -6,7 +6,7 @@ import {
   WS_CONNECTION_CLOSED,
 } from '../actions';
 import type { TWSAction } from '../../types/actions';
-import type { Feed } from '../../types/feed';
+import type { TFeed } from '../../types/feed';
 import type { TFeedWSState } from '../../types/states';
 
 const initialState: TFeedWSState = {
@@ -42,7 +42,7 @@ export const feedWS = (
         wsConnected: false
       };
     case WS_GET_MESSAGE:
-      const data = JSON.parse(action.payload) as Feed;
+      const data = JSON.parse(action.payload) as TFeed;
 
       if (!data.success) {
         console.log('Unsuccess ws get message');

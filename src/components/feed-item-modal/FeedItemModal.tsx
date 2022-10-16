@@ -1,23 +1,34 @@
 import React, { FC } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import Modal from '../modal/Modal';
 import { FeedItem } from '../feed-item/FeedItem';
-import { TFeedItemParams } from '../../types/router';
+import { useSelector, useDispatch } from '../../hooks';
+import { SET_CURRENT_FEED_ORDER } from '../../services/actions';
+
+import styles from './FeedItemModal.module.css';
 
 export const FeedItemModal: FC = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
-  const { id: feedItemId } = useParams<TFeedItemParams>();
+
+  const { feedOrder } = useSelector(state => state.currentFeedOrder);
 
   const handleCloseModal = () => {
+    dispatch({
+      type: SET_CURRENT_FEED_ORDER,
+      feedOrder: null,
+    });
     history.goBack();
   }
 
   return (
-    <Modal handleClose={handleCloseModal} title={`#${feedItemId}`}>
-      <div style={{width: 600}}>
-        <FeedItem />
-      </div>
+    <Modal handleClose={handleCloseModal} title={`#${feedOrder?.number}`}>
+      {feedOrder && (
+        <div className={styles.FeedItemModal}>
+          <FeedItem feedOrder={feedOrder} />
+        </div>
+      )}
     </Modal>
   );
 }

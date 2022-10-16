@@ -7,8 +7,9 @@ import styles from './FeedItemStatus.module.css';
 
 export const FeedItemStatus: FC<TFeedItemStatusProps> = ({ mode }) => {
   const textByMode = {
+    created: 'Создан',
     done: 'Выполнен',
-    inProgress: 'Исполняется',
+    pending: 'Исполняется',
     canceled: 'Отменен',
   }
 

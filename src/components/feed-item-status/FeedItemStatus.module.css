@@ -1,8 +1,8 @@
 .FeedStatus-done {
   color: #029d9c;
 }
-  
-.FeedStatus-inProgress {
+
+.FeedStatus-created, .FeedStatus-pending {
   color: inherit;
 }
 

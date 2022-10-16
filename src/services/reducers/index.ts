@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 
+import currentFeedOrder from './current-feed-order';
 import currentIngredient from './current-ingredient';
 import currentOrder from './current-order';
 import forgotPassword from './forgot-password';
@@ -9,6 +10,7 @@ import user from './user';
 import { feedWS } from './ws';
 
 const rootReducer = combineReducers({
+    currentFeedOrder,
     currentIngredient,
     currentOrder,
     forgotPassword,

@@ -1,3 +1,4 @@
+import { TFeedOrder } from './feed';
 import { TIngredient } from './ingredient';
 import { TUser } from './user';
 
@@ -16,6 +17,11 @@ type TCurrentOrderSuccessAction = {
 }
 
 export type TCurrentOrderAction = TCurrentOrderBaseAction | TCurrentOrderSuccessAction;
+
+export type TCurrentFeedOrderAction = {
+  type: 'SET_CURRENT_FEED_ORDER',
+  feedOrder: TFeedOrder | null,
+}
 
 type TIngredientsBaseAction = {
   type: 'GET_INGREDIENTS_REQUEST_PENDING' | 'GET_INGREDIENTS_REQUEST_FAILED',
@@ -90,6 +96,7 @@ export type TWSAction = TWSWithEventAction | TWSConnectionStartAction | TWSGetMe
 export type TActions = (
   TCurrentIngredientAction |
   TCurrentOrderAction |
+  TCurrentFeedOrderAction |
   TIngredientsAction |
   TSelectedIngredientsAction |
   TUserAction |

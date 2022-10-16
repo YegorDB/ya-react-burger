@@ -1,15 +1,15 @@
-export type FeedOrder = {
+export type TFeedOrder = {
   ingredients: string[],
   _id: string,
-  status: 'created' | 'pending' | 'done',
+  status: 'created' | 'pending' | 'done' | 'canceled',
   number: number,
   createdAt: string,
   updatedAt: string,
 }
 
-export type Feed = {
+export type TFeed = {
   success: boolean,
-  orders: FeedOrder[],
+  orders: TFeedOrder[],
   total: number,
   totalToday: number
 }

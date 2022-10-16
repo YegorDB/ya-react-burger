@@ -22,14 +22,14 @@ const FeedItemShortIcons: FC<TFeedItemShortIconsProps> = ({icons}) => {
   );
 }
 
-export const FeedItemShort: FC<TFeedItemShortProps> = ({ id, name, price, date, icons, status }) => {
+export const FeedItemShort: FC<TFeedItemShortProps> = ({ number, name, price, date, icons, status }) => {
   const dateValue = (new Date(date)).toLocaleString();
 
   return (
     <div className={styles.FeedItemShort}>
       <div>
         <div className={styles.FeedItemShortRow}>
-          <p className="mb-4 text text_type_digits-default">#{ id }</p>
+          <p className="mb-4 text text_type_digits-default">#{ number }</p>
           <p className={cn('text text_type_main-default text_color_inactive', styles.FeedItemShortDate)}>{ dateValue }</p>
         </div>
         <p className="mb-4 text text_type_main-medium">{ name }</p>

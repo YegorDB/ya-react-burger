@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { FeedItemShort } from '../../components/feed-item-short/FeedItemShort';
 import { useSelector, useDispatch } from '../../hooks';
-import { WS_CONNECTION_START } from '../../services/actions';
+import { WS_CONNECTION_START, SET_CURRENT_FEED_ORDER } from '../../services/actions';
 import { TFeedInfoMainItemProps } from '../../types/props';
 import { parseIngredientsById } from '../../utils/parseIngredients';
 
@@ -33,7 +33,8 @@ const FeedItems: FC = () => {
   const itemsData = useMemo(
     () => orders.map(i => {
       return {
-        id: i.number.toString(),
+        id: i._id,
+        number: i.number,
         name: 'Name',
         price: (
           i.ingredients
@@ -42,25 +43,36 @@ const FeedItems: FC = () => {
         ),
         date: i.updatedAt,
         icons: i.ingredients.map(id => parsedIngredients[id].image_mobile),
+        order: i,
       };
     }),
-    [orders]
+    [orders, parsedIngredients]
   );
 
   return (
     <div className={cn('custom-scroll', styles.FeedItems)}>
-      {itemsData.map(data => (
-        <Link
-          to={{
-            pathname: `/feed/${data.id}`,
-            state: { feedItemLocation: location }
-          }}
-          key={data.id}
-          className="undecorated-link"
-        >
-          <FeedItemShort {...data} />
-        </Link>
-      ))}
+      {itemsData.map(data => {
+        const handleOpenModal = () => {
+          dispatch({
+            type: SET_CURRENT_FEED_ORDER,
+            feedOrder: data.order,
+          });
+        }
+
+        return (
+          <Link
+            to={{
+              pathname: `/feed/${data.id}`,
+              state: { feedItemLocation: location }
+            }}
+            key={data.id}
+            className="undecorated-link"
+            onClick={handleOpenModal}
+          >
+            <FeedItemShort {...data} />
+          </Link>
+        );
+      })}
     </div>
   );
 }

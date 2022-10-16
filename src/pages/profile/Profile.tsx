@@ -18,6 +18,7 @@ const ProfileOrdersHistory: FC = () => {
   const itemsData = [
     {
       id: '000001',
+      number: 1,
       name: 'Name 1',
       price: 1,
       date: '0000-00-00',
@@ -25,6 +26,7 @@ const ProfileOrdersHistory: FC = () => {
     },
     {
       id: '000002',
+      number: 2,
       name: 'Name 2',
       price: 2,
       date: '0000-00-00',
@@ -32,6 +34,7 @@ const ProfileOrdersHistory: FC = () => {
     },
     {
       id: '000003',
+      number: 3,
       name: 'Name 3',
       price: 3,
       date: '0000-00-00',
@@ -39,6 +42,7 @@ const ProfileOrdersHistory: FC = () => {
     },
     {
       id: '000004',
+      number: 4,
       name: 'Name 4',
       price: 4,
       date: '0000-00-00',
@@ -46,6 +50,7 @@ const ProfileOrdersHistory: FC = () => {
     },
     {
       id: '000005',
+      number: 5,
       name: 'Name 5',
       price: 5,
       date: '0000-00-00',
@@ -53,6 +58,7 @@ const ProfileOrdersHistory: FC = () => {
     },
     {
       id: '000006',
+      number: 6,
       name: 'Name 6',
       price: 6,
       date: '0000-00-00',

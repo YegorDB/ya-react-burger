@@ -1,4 +1,4 @@
-import { FeedOrder } from './feed';
+import { TFeedOrder } from './feed';
 import { TIngredient } from './ingredient';
 import { TUser } from './user';
 
@@ -8,6 +8,10 @@ export type TCurrentIngredientState = {
 
 export type TCurrentOrderState = {
   orderId: string | null,
+}
+
+export type TCurrentFeedOrderState = {
+  feedOrder: TFeedOrder | null,
 }
 
 export type TIngredientsState = {
@@ -35,7 +39,7 @@ export type TForgotPasswordState = {
 
 export type TFeedWSState = {
   wsConnected: boolean;
-  orders: FeedOrder[],
+  orders: TFeedOrder[],
   total: number,
   totalToday: number,
   error?: Event;
@@ -44,6 +48,7 @@ export type TFeedWSState = {
 export type TState = {
   currentIngredient: TCurrentIngredientState,
   currentOrder: TCurrentOrderState,
+  currentFeedOrder: TCurrentFeedOrderState,
   ingredients: TIngredientsState,
   selectedIngredients: TSelectedIngredientsState,
   user: TUserState,
