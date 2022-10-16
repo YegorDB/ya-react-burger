@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 
 import { BurgerIngredientsItemModal } from '../burger-ingredients/BurgerIngredients';
+import { FeedItemModal } from '../feed-item-modal/FeedItemModal';
 import { ProtectedRoute } from '../protected-route/ProtectedRoute';
 import { Feed } from '../../pages/feed/Feed';
 import { FeedItem } from '../../pages/feed-item/FeedItem';
@@ -18,10 +19,12 @@ function AppContent() {
   const location = useLocation<TAppContentLocationState>();
 
   const ingredientLocation = location.state && location.state.ingredientLocation;
+  const feedItemLocation = location.state && location.state.feedItemLocation;
+  const profileOrderLocation = location.state && location.state.profileOrderLocation;
 
   return (
     <>
-      <Switch location={ingredientLocation || location}>
+      <Switch location={ingredientLocation || feedItemLocation || profileOrderLocation || location}>
         <Route path="/" exact={true}>
           <MainPage />
         </Route>
@@ -60,6 +63,18 @@ function AppContent() {
       {ingredientLocation && (
         <Route path="/ingredients/:id" >
           <BurgerIngredientsItemModal />
+        </Route>
+      )}
+
+      {feedItemLocation && (
+        <Route path="/feed/:id" >
+          <FeedItemModal />
+        </Route>
+      )}
+
+      {profileOrderLocation && (
+        <Route path="/profile/orders/:id" >
+          <FeedItemModal />
         </Route>
       )}
     </>

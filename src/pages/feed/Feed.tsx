@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import { FeedItemShort } from '../../components/feed-item-short/FeedItemShort';
 
@@ -7,6 +8,8 @@ import styles from './Feed.module.css';
 
 
 const FeedItems: FC = () => {
+  const location = useLocation();
+
   const itemsData = [
     {
       id: '000001',
@@ -55,7 +58,16 @@ const FeedItems: FC = () => {
   return (
     <div className={cn('custom-scroll', styles.FeedItems)}>
       {itemsData.map(data => (
-        <FeedItemShort {...data} key={data.id} />
+        <Link
+          to={{
+            pathname: `/feed/${data.id}`,
+            state: { feedItemLocation: location }
+          }}
+          key={data.id}
+          className="undecorated-link"
+        >
+          <FeedItemShort {...data} />
+        </Link>
       ))}
     </div>
   );

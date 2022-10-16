@@ -77,3 +77,6 @@ export type TFeedItemShortProps = {
   icons: string[],
   status?: TFeedItemStatus,
 }
+
+export type TFeedItemComponentProps = {
+}

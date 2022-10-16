@@ -3,8 +3,9 @@ import React, { FC } from 'react';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { FeedItemIngredient } from '..//feed-item-ingredient/FeedItemIngredient';
-import { FeedItemStatus } from '..//feed-item-status/FeedItemStatus';
+import { FeedItemIngredient } from '../feed-item-ingredient/FeedItemIngredient';
+import { FeedItemStatus } from '../feed-item-status/FeedItemStatus';
+import { TFeedItemComponentProps } from '../../types/props';
 
 import styles from './FeedItem.module.css';
 
@@ -51,13 +52,11 @@ const FeedItemIngredients: FC = () => {
   );
 }
 
-export const FeedItem: FC = () => {
-  const id = '0123456';
+export const FeedItem: FC<TFeedItemComponentProps> = () => {
   const status = 'done';
 
   return (
     <>
-      <p className={cn('mb-6 text text_type_digits-default', styles.FeedItemId)}>#{ id }</p>
       <p className="mb-2 text text_type_main-medium">
         Name
       </p>

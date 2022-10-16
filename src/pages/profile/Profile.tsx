@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
-import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Link, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 
 import {
   Button, Input,
@@ -13,6 +13,8 @@ import { getUser, postLogout, patchUser } from '../../services/actions';
 import styles from './Profile.module.css';
 
 const ProfileOrdersHistory: FC = () => {
+  const location = useLocation();
+
   const itemsData = [
     {
       id: '000001',
@@ -61,7 +63,16 @@ const ProfileOrdersHistory: FC = () => {
   return (
     <div className={cn('custom-scroll', styles.ProfileOrdersHistory)}>
       {itemsData.map(data => (
-        <FeedItemShort {...data} key={data.id} status="done" />
+        <Link
+          to={{
+            pathname: `/profile/orders/${data.id}`,
+            state: { profileOrderLocation: location }
+          }}
+          key={data.id}
+          className="undecorated-link"
+        >
+          <FeedItemShort {...data} status="done" />
+        </Link>
       ))}
     </div>
   );
