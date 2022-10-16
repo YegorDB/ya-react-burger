@@ -71,11 +71,28 @@ export type TForgotPasswordAction = {
   ),
 }
 
+type TWSWithEventAction = {
+  type: 'WS_CONNECTION_SUCCESS' | 'WS_CONNECTION_ERROR' | 'WS_CONNECTION_CLOSED',
+  payload: Event,
+}
+
+type TWSConnectionStartAction = {
+  type: 'WS_CONNECTION_START',
+}
+
+type TWSGetMessageAction = {
+  type: 'WS_GET_MESSAGE',
+  payload: string,
+}
+
+export type TWSAction = TWSWithEventAction | TWSConnectionStartAction | TWSGetMessageAction;
+
 export type TActions = (
   TCurrentIngredientAction |
   TCurrentOrderAction |
   TIngredientsAction |
   TSelectedIngredientsAction |
   TUserAction |
-  TForgotPasswordAction
+  TForgotPasswordAction |
+  TWSAction
 );

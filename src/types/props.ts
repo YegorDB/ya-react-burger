@@ -80,3 +80,9 @@ export type TFeedItemShortProps = {
 
 export type TFeedItemComponentProps = {
 }
+
+export type TFeedInfoMainItemProps = {
+  title: string,
+  orderIds: number[],
+  highlighted?: boolean,
+}

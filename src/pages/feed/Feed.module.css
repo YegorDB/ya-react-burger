@@ -24,6 +24,11 @@
   flex: 1;
 }
 
+.FeedInfoMainItemList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 .FeedInfoMainItemHighlighted {
   color: #029d9c;
 }

@@ -14,8 +14,8 @@ const FeedItemShortIcons: FC<TFeedItemShortIconsProps> = ({icons}) => {
   return (
     <div className={styles.FeedItemShortIcons}>
       {icons.map((icon, i) => (
-        <div style={{zIndex: 100 - i}} key={icon} className={styles.FeedItemShortIconWrapper}>
-          <IngredientIcon />
+        <div style={{zIndex: 100 - i}} key={`${icon}-${i}`} className={styles.FeedItemShortIconWrapper}>
+          <IngredientIcon icon={icon} />
         </div>
       ))}
     </div>
@@ -23,12 +23,14 @@ const FeedItemShortIcons: FC<TFeedItemShortIconsProps> = ({icons}) => {
 }
 
 export const FeedItemShort: FC<TFeedItemShortProps> = ({ id, name, price, date, icons, status }) => {
+  const dateValue = (new Date(date)).toLocaleString();
+
   return (
     <div className={styles.FeedItemShort}>
       <div>
         <div className={styles.FeedItemShortRow}>
           <p className="mb-4 text text_type_digits-default">#{ id }</p>
-          <p className={cn('text text_type_main-default text_color_inactive', styles.FeedItemShortDate)}>{ date }</p>
+          <p className={cn('text text_type_main-default text_color_inactive', styles.FeedItemShortDate)}>{ dateValue }</p>
         </div>
         <p className="mb-4 text text_type_main-medium">{ name }</p>
         {status && <FeedItemStatus mode={ status } />}

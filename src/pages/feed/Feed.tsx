@@ -1,59 +1,51 @@
 import cn from 'classnames';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { FeedItemShort } from '../../components/feed-item-short/FeedItemShort';
+import { useSelector, useDispatch } from '../../hooks';
+import { WS_CONNECTION_START } from '../../services/actions';
+import { TFeedInfoMainItemProps } from '../../types/props';
+import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './Feed.module.css';
 
 
 const FeedItems: FC = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
 
-  const itemsData = [
-    {
-      id: '000001',
-      name: 'Name 1',
-      price: 1,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-    {
-      id: '000002',
-      name: 'Name 2',
-      price: 2,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-    {
-      id: '000003',
-      name: 'Name 3',
-      price: 3,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-    {
-      id: '000004',
-      name: 'Name 4',
-      price: 4,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-    {
-      id: '000005',
-      name: 'Name 5',
-      price: 5,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-    {
-      id: '000006',
-      name: 'Name 6',
-      price: 6,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-  ];
+  useEffect(() => {
+    // @ts-ignore
+    dispatch({type: WS_CONNECTION_START});
+  }, [dispatch]);
+
+  const { orders, ingredients } = useSelector(state => ({
+    orders: state.feedWS.orders,
+    ingredients: state.ingredients.items,
+  }));
+
+  const parsedIngredients = useMemo(
+    () => parseIngredientsById(ingredients),
+    [ingredients]
+  )
+
+  const itemsData = useMemo(
+    () => orders.map(i => {
+      return {
+        id: i.number.toString(),
+        name: 'Name',
+        price: (
+          i.ingredients
+          .map(id => parsedIngredients[id].price)
+          .reduce((prev, curr) => prev + curr)
+        ),
+        date: i.updatedAt,
+        icons: i.ingredients.map(id => parsedIngredients[id].image_mobile),
+      };
+    }),
+    [orders]
+  );
 
   return (
     <div className={cn('custom-scroll', styles.FeedItems)}>
@@ -73,48 +65,57 @@ const FeedItems: FC = () => {
   );
 }
 
-type TFeedInfoMainItemProps = {
-  title: string,
-  orderIds: string[],
-  highlighted?: boolean,
-}
-
 const FeedInfoMainItem: FC<TFeedInfoMainItemProps> = ({title, orderIds, highlighted}) => {
   return (
     <div className={styles.FeedInfoMainItem}>
       <p className="mb-4 text text_type_main-medium">{ title }</p>
-      {orderIds.map(id => (
-        <p
-          className={cn(
-            'mb-1 text text_type_digits-default',
-            {[styles.FeedInfoMainItemHighlighted]: highlighted}
-          )}
-          key={ id }
-        >
-          { id }
-        </p>
-      ))}
+      <div className={styles.FeedInfoMainItemList}>
+        {orderIds.map(id => (
+          <p
+            className={cn(
+              'mb-1 text text_type_digits-default',
+              {[styles.FeedInfoMainItemHighlighted]: highlighted}
+            )}
+            key={ id }
+          >
+            { id }
+          </p>
+        ))}
+      </div>
     </div>
   );
 }
 
 const FeedInfoMain: FC = () => {
+  const { orders } = useSelector(state => state.feedWS);
+
+  const pendingOrders = useMemo(
+    () => orders.filter(i => i.status === 'pending').map(i => i.number).slice(0, 10),
+    [orders]
+  );
+  const doneOrders = useMemo(
+    () => orders.filter(i => i.status === 'done').map(i => i.number).slice(0, 10),
+    [orders]
+  );
+
   return (
     <div className={styles.FeedInfoMain}>
-      <FeedInfoMainItem title="Готовы:" orderIds={['000001', '000002', '000003', '000004', '000005']} highlighted />
-      <FeedInfoMainItem title="В работе:" orderIds={['000006', '000007', '000008']}/>
+      <FeedInfoMainItem title="Готовы:" orderIds={doneOrders} highlighted />
+      <FeedInfoMainItem title="В работе:" orderIds={pendingOrders}/>
     </div>
   );
 }
 
 const FeedInfo: FC = () => {
+  const { total, totalToday } = useSelector(state => state.feedWS);
+
   return (
     <div className="mt-25 pl-4 pr-4">
       <FeedInfoMain />
       <p className="mt-8 text text_type_main-medium">Выполнено за все время</p>
-      <p className="text text_type_digits-large">12345</p>
+      <p className="text text_type_digits-large">{total}</p>
       <p className="mt-8 text text_type_main-medium">Выполнено за сегодня</p>
-      <p className="text text_type_digits-large">123</p>
+      <p className="text text_type_digits-large">{totalToday}</p>
     </div>
   );
 }

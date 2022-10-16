@@ -2,8 +2,12 @@ import React, { FC } from 'react';
 
 import styles from './IngredientIcon.module.css';
 
-export const IngredientIcon: FC = () => {
+type TIngredientIconProps = {
+  icon?: string,
+}
+
+export const IngredientIcon: FC<TIngredientIconProps> = ({ icon }) => {
   return (
-    <div className={styles.IngredientIcon} />
+    <div style={{backgroundImage: `url(${icon})`}} className={styles.IngredientIcon} />
   );
 }
