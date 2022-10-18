@@ -19,7 +19,6 @@ export const LoginPage: FC = () => {
   const [password, setPassword] = useState<string>('');
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
@@ -34,7 +33,6 @@ export const LoginPage: FC = () => {
   const loginHandle = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault();
-      // @ts-ignore
       dispatch(postLogin(email, password));
     },
     [dispatch, email, password]

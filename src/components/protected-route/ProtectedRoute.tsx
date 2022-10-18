@@ -26,7 +26,6 @@ export const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, ...rest }) 
   return (
     <Route
       {...rest}
-      // @ts-ignore
       render={({ location }) =>
         user ? (
           children

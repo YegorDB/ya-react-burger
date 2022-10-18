@@ -17,7 +17,6 @@ const FeedItems: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // @ts-ignore
     dispatch({type: WS_CONNECTION_FEED_START});
   }, [dispatch]);
 

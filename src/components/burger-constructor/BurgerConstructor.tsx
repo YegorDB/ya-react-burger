@@ -87,7 +87,6 @@ const BurgerConstructor: FC = () => {
   }));
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
@@ -117,7 +116,6 @@ const BurgerConstructor: FC = () => {
     const ingredientsIds = [bunId, ...otherIds, bunId];
     if (ingredientsIds.length === 0) return;
 
-    // @ts-ignore
     dispatch(postOrder(ingredientsIds, setModalOpen));
   }
 

@@ -22,7 +22,6 @@ export const ResetPasswordPage: FC = () => {
   const [token, setToken] = useState<string>('');
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
@@ -38,7 +37,6 @@ export const ResetPasswordPage: FC = () => {
   const resetHandle = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault();
-      // @ts-ignore
       dispatch(passwordReset(password, token, () => {
         history.push('/login');
       }));

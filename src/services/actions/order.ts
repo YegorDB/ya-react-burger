@@ -41,7 +41,6 @@ export const postOrder: AppThunk = (ingredientsIds: TIngredient['_id'][], setMod
       if (err.message === 'jwt expired') {
         setTimeout(() => {
           const callback = postOrder(ingredientsIds, setModalOpen);
-          // @ts-ignore
           postRefreshToken(callback)(dispatch);
         }, 1000);
       } else {

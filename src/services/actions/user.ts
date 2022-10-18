@@ -36,7 +36,6 @@ export const getUser: AppThunk = () => {
       if (err.message === 'jwt expired') {
         setTimeout(() => {
           const callback = getUser();
-          // @ts-ignore
           postRefreshToken(callback)(dispatch);
         }, 1000);
       } else {
@@ -77,7 +76,6 @@ export const patchUser: AppThunk = (name: string, email: string, password: strin
       if (err.message === 'jwt expired') {
         setTimeout(() => {
           const callback = patchUser(name, email, password);
-          // @ts-ignore
           postRefreshToken(callback)(dispatch);
         }, 1000);
       } else {

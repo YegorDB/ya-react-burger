@@ -18,7 +18,6 @@ export const RegisterPage: FC = () => {
   const [password, setPassword] = useState<string>('');
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
@@ -38,7 +37,6 @@ export const RegisterPage: FC = () => {
   const registerHandle = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault();
-      // @ts-ignore
       dispatch(postRegister(email, password, name));
     },
     [dispatch, name, email, password]

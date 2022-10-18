@@ -11,7 +11,6 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(()=> {
-    // @ts-ignore
     dispatch(getIngredients());
   }, [dispatch]);
 

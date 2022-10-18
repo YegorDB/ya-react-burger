@@ -22,7 +22,6 @@ const ProfileOrdersHistory: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // @ts-ignore
     dispatch({type: WS_CONNECTION_PROFILE_ORDERS_START});
   }, [dispatch]);
 
@@ -86,7 +85,6 @@ export const ProfilePage: FC = () => {
   const [password, setPassword] = useState<string>('');
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
@@ -106,7 +104,6 @@ export const ProfilePage: FC = () => {
   const changeUserData = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault();
-      // @ts-ignore
       dispatch(patchUser(name, login, password));
     },
     [dispatch, name, login, password]
@@ -122,7 +119,6 @@ export const ProfilePage: FC = () => {
   );
 
   const logout = useCallback<(...args: any[]) => void>(
-    // @ts-ignore
     e => dispatch(postLogout()),
     [dispatch]
   );

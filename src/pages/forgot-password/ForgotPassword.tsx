@@ -17,7 +17,6 @@ export const ForgotPasswordPage: FC = () => {
   const [email, setEmail] = useState<string>('');
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
@@ -28,7 +27,6 @@ export const ForgotPasswordPage: FC = () => {
   const repareHandle = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault();
-      // @ts-ignore
       dispatch(forgotPassword(email, () => {
         history.push('/reset-password');
       }));
