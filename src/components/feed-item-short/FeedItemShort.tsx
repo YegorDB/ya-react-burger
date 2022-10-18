@@ -13,7 +13,7 @@ import styles from './FeedItemShort.module.css';
 const FeedItemShortIcons: FC<TFeedItemShortIconsProps> = ({icons}) => {
   return (
     <div className={styles.FeedItemShortIcons}>
-      {icons.map((icon, i) => (
+      {icons.slice(0, 6).map((icon, i) => (
         <div style={{zIndex: 100 - i}} key={`${icon}-${i}`} className={styles.FeedItemShortIconWrapper}>
           <IngredientIcon icon={icon} />
         </div>

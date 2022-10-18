@@ -45,6 +45,12 @@ export type TFeedWSState = {
   error?: Event;
 }
 
+export type TProfileOrdersWSState = {
+  wsConnected: boolean;
+  orders: TFeedOrder[],
+  error?: Event;
+}
+
 export type TState = {
   currentIngredient: TCurrentIngredientState,
   currentOrder: TCurrentOrderState,
@@ -54,4 +60,5 @@ export type TState = {
   user: TUserState,
   forgotPassword: TForgotPasswordState,
   feedWS: TFeedWSState,
+  profileOrdersWS: TProfileOrdersWSState,
 }

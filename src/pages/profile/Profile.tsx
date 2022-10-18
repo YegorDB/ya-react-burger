@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
+import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 
 import {
@@ -8,78 +8,69 @@ import {
 
 import { FeedItemShort } from '../../components/feed-item-short/FeedItemShort';
 import { useSelector, useDispatch } from '../../hooks';
-import { getUser, postLogout, patchUser } from '../../services/actions';
+import {
+  WS_CONNECTION_PROFILE_ORDERS_START, SET_CURRENT_FEED_ORDER,
+  getUser, postLogout, patchUser
+} from '../../services/actions';
+import { createFeedItemShortProps } from '../../utils/feed';
+import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './Profile.module.css';
 
 const ProfileOrdersHistory: FC = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
 
-  const itemsData = [
-    {
-      id: '000001',
-      number: 1,
-      name: 'Name 1',
-      price: 1,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-    {
-      id: '000002',
-      number: 2,
-      name: 'Name 2',
-      price: 2,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-    {
-      id: '000003',
-      number: 3,
-      name: 'Name 3',
-      price: 3,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-    {
-      id: '000004',
-      number: 4,
-      name: 'Name 4',
-      price: 4,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-    {
-      id: '000005',
-      number: 5,
-      name: 'Name 5',
-      price: 5,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-    {
-      id: '000006',
-      number: 6,
-      name: 'Name 6',
-      price: 6,
-      date: '0000-00-00',
-      icons: ['1', '2', '3', '4', '5'],
-    },
-  ];
+  useEffect(() => {
+    // @ts-ignore
+    dispatch({type: WS_CONNECTION_PROFILE_ORDERS_START});
+  }, [dispatch]);
+
+  const { orders, ingredients } = useSelector(state => ({
+    orders: state.profileOrdersWS.orders,
+    ingredients: state.ingredients.items,
+  }));
+
+  const parsedIngredients = useMemo(
+    () => parseIngredientsById(ingredients),
+    [ingredients]
+  )
+
+  const itemsData = useMemo(
+    () => orders.map(i => {
+      return {
+        ...createFeedItemShortProps(i, parsedIngredients),
+        status: i.status,
+        order: i,
+      };
+    }),
+    [orders, parsedIngredients]
+  );
 
   return (
     <div className={cn('custom-scroll', styles.ProfileOrdersHistory)}>
-      {itemsData.map(data => (
-        <Link
-          to={{
-            pathname: `/profile/orders/${data.id}`,
-            state: { profileOrderLocation: location }
-          }}
-          key={data.id}
-          className="undecorated-link"
-        >
-          <FeedItemShort {...data} status="done" />
-        </Link>
-      ))}
+      {itemsData.map(data => {
+        const handleOpenModal = () => {
+          dispatch({
+            type: SET_CURRENT_FEED_ORDER,
+            feedOrder: data.order,
+          });
+        }
+
+        return (
+          <Link
+            to={{
+              pathname: `/profile/orders/${data.id}`,
+              state: { profileOrderLocation: location }
+            }}
+            key={data.id}
+            className="undecorated-link"
+            onClick={handleOpenModal}
+          >
+            <FeedItemShort {...data} />
+          </Link>
+        );
+      })}
     </div>
   );
 }

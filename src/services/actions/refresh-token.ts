@@ -1,3 +1,4 @@
+import { WS_CONNECTION_PROFILE_ORDERS_START } from './ws';
 import { API_ROOT } from '../../consts/api';
 import { AppThunk, AppDispatch } from '../../types';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
@@ -29,6 +30,7 @@ export const postRefreshToken: AppThunk = (callback: Function) => {
       localStorage.setItem('accessToken', res.accessToken);
       localStorage.setItem('refreshToken', res.refreshToken);
       callback(dispatch);
+      dispatch({type: WS_CONNECTION_PROFILE_ORDERS_START});
     }))
     .catch(handleResponseError('Post token', () => {
       dispatch({

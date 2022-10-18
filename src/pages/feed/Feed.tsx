@@ -4,8 +4,9 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { FeedItemShort } from '../../components/feed-item-short/FeedItemShort';
 import { useSelector, useDispatch } from '../../hooks';
-import { WS_CONNECTION_START, SET_CURRENT_FEED_ORDER } from '../../services/actions';
+import { WS_CONNECTION_FEED_START, SET_CURRENT_FEED_ORDER } from '../../services/actions';
 import { TFeedInfoMainItemProps } from '../../types/props';
+import { createFeedItemShortProps } from '../../utils/feed';
 import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './Feed.module.css';
@@ -17,7 +18,7 @@ const FeedItems: FC = () => {
 
   useEffect(() => {
     // @ts-ignore
-    dispatch({type: WS_CONNECTION_START});
+    dispatch({type: WS_CONNECTION_FEED_START});
   }, [dispatch]);
 
   const { orders, ingredients } = useSelector(state => ({
@@ -33,16 +34,7 @@ const FeedItems: FC = () => {
   const itemsData = useMemo(
     () => orders.map(i => {
       return {
-        id: i._id,
-        number: i.number,
-        name: 'Name',
-        price: (
-          i.ingredients
-          .map(id => parsedIngredients[id].price)
-          .reduce((prev, curr) => prev + curr)
-        ),
-        date: i.updatedAt,
-        icons: i.ingredients.map(id => parsedIngredients[id].image_mobile),
+        ...createFeedItemShortProps(i, parsedIngredients),
         order: i,
       };
     }),

@@ -5,9 +5,27 @@ import thunk from 'redux-thunk';
 import { compose, createStore, applyMiddleware } from 'redux';
 
 import './index.css';
+
 import App from './components/app/App';
-import rootReducer from './services/reducers';
 import { socketMiddleware } from './middlewares/socketMiddleware';
+import rootReducer from './services/reducers';
+import type { TWSActionTypes } from './types/actions';
+
+const feedWSActionTypes: TWSActionTypes = {
+  wsInit: 'WS_CONNECTION_FEED_START',
+  onOpen: 'WS_CONNECTION_FEED_SUCCESS',
+  onClose: 'WS_CONNECTION_FEED_CLOSED',
+  onError: 'WS_CONNECTION_FEED_ERROR',
+  onMessage: 'WS_GET_MESSAGE_FEED',
+}
+
+const profileOrdersWSActionTypes: TWSActionTypes = {
+  wsInit: 'WS_CONNECTION_PROFILE_ORDERS_START',
+  onOpen: 'WS_CONNECTION_PROFILE_ORDERS_SUCCESS',
+  onClose: 'WS_CONNECTION_PROFILE_ORDERS_CLOSED',
+  onError: 'WS_CONNECTION_PROFILE_ORDERS_ERROR',
+  onMessage: 'WS_GET_MESSAGE_PROFILE_ORDERS',
+}
 
 const composeEnhancers =
   // @ts-ignore
@@ -17,7 +35,8 @@ const composeEnhancers =
     : compose;
 const enhancer = composeEnhancers(
   applyMiddleware(thunk),
-  applyMiddleware(socketMiddleware('wss://norma.nomoreparties.space/orders/all')),
+  applyMiddleware(socketMiddleware('wss://norma.nomoreparties.space/orders/all', feedWSActionTypes)),
+  applyMiddleware(socketMiddleware('wss://norma.nomoreparties.space/orders', profileOrdersWSActionTypes, true)),
 );
 const store = createStore(rootReducer, enhancer);
 

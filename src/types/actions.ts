@@ -77,21 +77,47 @@ export type TForgotPasswordAction = {
   ),
 }
 
-type TWSWithEventAction = {
-  type: 'WS_CONNECTION_SUCCESS' | 'WS_CONNECTION_ERROR' | 'WS_CONNECTION_CLOSED',
+type TFeedWSWithEventAction = {
+  type: 'WS_CONNECTION_FEED_SUCCESS' | 'WS_CONNECTION_FEED_ERROR' | 'WS_CONNECTION_FEED_CLOSED',
   payload: Event,
 }
 
-type TWSConnectionStartAction = {
-  type: 'WS_CONNECTION_START',
+type TFeedWSConnectionStartAction = {
+  type: 'WS_CONNECTION_FEED_START',
 }
 
-type TWSGetMessageAction = {
-  type: 'WS_GET_MESSAGE',
+type TFeedWSGetMessageAction = {
+  type: 'WS_GET_MESSAGE_FEED',
   payload: string,
 }
 
-export type TWSAction = TWSWithEventAction | TWSConnectionStartAction | TWSGetMessageAction;
+export type TFeedWSAction = TFeedWSWithEventAction | TFeedWSConnectionStartAction | TFeedWSGetMessageAction;
+
+type TProfileOrdersWSWithEventAction = {
+  type: 'WS_CONNECTION_PROFILE_ORDERS_SUCCESS' | 'WS_CONNECTION_PROFILE_ORDERS_ERROR' | 'WS_CONNECTION_PROFILE_ORDERS_CLOSED',
+  payload: Event,
+}
+
+type TProfileOrdersWSConnectionStartAction = {
+  type: 'WS_CONNECTION_PROFILE_ORDERS_START',
+}
+
+type TProfileOrdersWSGetMessageAction = {
+  type: 'WS_GET_MESSAGE_PROFILE_ORDERS',
+  payload: string,
+}
+
+export type TProfileOrdersWSAction = TProfileOrdersWSWithEventAction | TProfileOrdersWSConnectionStartAction | TProfileOrdersWSGetMessageAction;
+
+export type TWSActions = TFeedWSAction | TProfileOrdersWSAction;
+
+export type TWSActionTypes = {
+  wsInit: 'WS_CONNECTION_FEED_START' | 'WS_CONNECTION_PROFILE_ORDERS_START',
+  onOpen: 'WS_CONNECTION_FEED_SUCCESS' | 'WS_CONNECTION_PROFILE_ORDERS_SUCCESS',
+  onClose: 'WS_CONNECTION_FEED_CLOSED' | 'WS_CONNECTION_PROFILE_ORDERS_CLOSED',
+  onError: 'WS_CONNECTION_FEED_ERROR' | 'WS_CONNECTION_PROFILE_ORDERS_ERROR',
+  onMessage: 'WS_GET_MESSAGE_FEED' | 'WS_GET_MESSAGE_PROFILE_ORDERS',
+}
 
 export type TActions = (
   TCurrentIngredientAction |
@@ -101,5 +127,6 @@ export type TActions = (
   TSelectedIngredientsAction |
   TUserAction |
   TForgotPasswordAction |
-  TWSAction
+  TFeedWSAction |
+  TProfileOrdersWSAction
 );

@@ -7,7 +7,7 @@ import forgotPassword from './forgot-password';
 import ingredients from './ingredients';
 import selectedIngredients from './selected-ingredients';
 import user from './user';
-import { feedWS } from './ws';
+import { feedWS, profileOrdersWS } from './ws';
 
 const rootReducer = combineReducers({
     currentFeedOrder,
@@ -18,6 +18,7 @@ const rootReducer = combineReducers({
     selectedIngredients,
     user,
     feedWS,
+    profileOrdersWS,
 })
 
 export default rootReducer;
