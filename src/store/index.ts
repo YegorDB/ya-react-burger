@@ -2,23 +2,35 @@ import thunk from 'redux-thunk';
 import { compose, createStore, applyMiddleware } from 'redux';
 
 import { socketMiddleware } from '../middlewares/socketMiddleware';
+import {
+  WS_CONNECTION_FEED_SUCCESS,
+  WS_CONNECTION_FEED_ERROR,
+  WS_CONNECTION_FEED_CLOSED,
+  WS_CONNECTION_FEED_START,
+  WS_GET_MESSAGE_FEED,
+  WS_CONNECTION_PROFILE_ORDERS_SUCCESS,
+  WS_CONNECTION_PROFILE_ORDERS_ERROR,
+  WS_CONNECTION_PROFILE_ORDERS_CLOSED,
+  WS_CONNECTION_PROFILE_ORDERS_START,
+  WS_GET_MESSAGE_PROFILE_ORDERS,
+} from '../services/actions';
 import rootReducer from '../services/reducers';
 import type { TWSActionTypes } from '../types/actions';
 
 const feedWSActionTypes: TWSActionTypes = {
-  wsInit: 'WS_CONNECTION_FEED_START',
-  onOpen: 'WS_CONNECTION_FEED_SUCCESS',
-  onClose: 'WS_CONNECTION_FEED_CLOSED',
-  onError: 'WS_CONNECTION_FEED_ERROR',
-  onMessage: 'WS_GET_MESSAGE_FEED',
+  wsInit: WS_CONNECTION_FEED_START,
+  onOpen: WS_CONNECTION_FEED_SUCCESS,
+  onClose: WS_CONNECTION_FEED_CLOSED,
+  onError: WS_CONNECTION_FEED_ERROR,
+  onMessage: WS_GET_MESSAGE_FEED,
 }
 
 const profileOrdersWSActionTypes: TWSActionTypes = {
-  wsInit: 'WS_CONNECTION_PROFILE_ORDERS_START',
-  onOpen: 'WS_CONNECTION_PROFILE_ORDERS_SUCCESS',
-  onClose: 'WS_CONNECTION_PROFILE_ORDERS_CLOSED',
-  onError: 'WS_CONNECTION_PROFILE_ORDERS_ERROR',
-  onMessage: 'WS_GET_MESSAGE_PROFILE_ORDERS',
+  wsInit: WS_CONNECTION_PROFILE_ORDERS_START,
+  onOpen: WS_CONNECTION_PROFILE_ORDERS_SUCCESS,
+  onClose: WS_CONNECTION_PROFILE_ORDERS_CLOSED,
+  onError: WS_CONNECTION_PROFILE_ORDERS_ERROR,
+  onMessage: WS_GET_MESSAGE_PROFILE_ORDERS,
 }
 
 const composeEnhancers =
