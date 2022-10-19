@@ -9,7 +9,7 @@ export function createFeedItemShortProps(
   return {
     id: order._id,
     number: order.number,
-    name: 'Name',
+    name: order.name,
     price: (
       order.ingredients
       .map(id => parsedIngredients[id].price)

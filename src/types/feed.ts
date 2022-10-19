@@ -3,6 +3,7 @@ export type TFeedOrder = {
   _id: string,
   status: 'created' | 'pending' | 'done' | 'canceled',
   number: number,
+  name: string,
   createdAt: string,
   updatedAt: string,
 }
