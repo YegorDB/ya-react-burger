@@ -43,11 +43,13 @@ import {
   WS_CONNECTION_FEED_ERROR,
   WS_CONNECTION_FEED_CLOSED,
   WS_CONNECTION_FEED_START,
+  WS_CONNECTION_FEED_END,
   WS_GET_MESSAGE_FEED,
   WS_CONNECTION_PROFILE_ORDERS_SUCCESS,
   WS_CONNECTION_PROFILE_ORDERS_ERROR,
   WS_CONNECTION_PROFILE_ORDERS_CLOSED,
   WS_CONNECTION_PROFILE_ORDERS_START,
+  WS_CONNECTION_PROFILE_ORDERS_END,
   WS_GET_MESSAGE_PROFILE_ORDERS,
 } from '../services/actions';
 
@@ -131,8 +133,8 @@ type TFeedWSWithEventAction = {
   payload: Event,
 }
 
-type TFeedWSConnectionStartAction = {
-  type: typeof WS_CONNECTION_FEED_START,
+type TFeedWSConnectionSwitchAction = {
+  type: typeof WS_CONNECTION_FEED_START | typeof WS_CONNECTION_FEED_END,
 }
 
 type TFeedWSGetMessageAction = {
@@ -140,15 +142,15 @@ type TFeedWSGetMessageAction = {
   payload: string,
 }
 
-export type TFeedWSAction = TFeedWSWithEventAction | TFeedWSConnectionStartAction | TFeedWSGetMessageAction;
+export type TFeedWSAction = TFeedWSWithEventAction | TFeedWSConnectionSwitchAction | TFeedWSGetMessageAction;
 
 type TProfileOrdersWSWithEventAction = {
   type: typeof WS_CONNECTION_PROFILE_ORDERS_SUCCESS | typeof WS_CONNECTION_PROFILE_ORDERS_ERROR | typeof WS_CONNECTION_PROFILE_ORDERS_CLOSED,
   payload: Event,
 }
 
-type TProfileOrdersWSConnectionStartAction = {
-  type: typeof WS_CONNECTION_PROFILE_ORDERS_START,
+type TProfileOrdersWSConnectionSwitchAction = {
+  type: typeof WS_CONNECTION_PROFILE_ORDERS_START | typeof WS_CONNECTION_PROFILE_ORDERS_END,
 }
 
 type TProfileOrdersWSGetMessageAction = {
@@ -156,12 +158,13 @@ type TProfileOrdersWSGetMessageAction = {
   payload: string,
 }
 
-export type TProfileOrdersWSAction = TProfileOrdersWSWithEventAction | TProfileOrdersWSConnectionStartAction | TProfileOrdersWSGetMessageAction;
+export type TProfileOrdersWSAction = TProfileOrdersWSWithEventAction | TProfileOrdersWSConnectionSwitchAction | TProfileOrdersWSGetMessageAction;
 
 export type TWSActions = TFeedWSAction | TProfileOrdersWSAction;
 
 export type TWSActionTypes = {
   wsInit: typeof WS_CONNECTION_FEED_START | typeof WS_CONNECTION_PROFILE_ORDERS_START,
+  wsEnd: typeof WS_CONNECTION_FEED_END | typeof WS_CONNECTION_PROFILE_ORDERS_END,
   onOpen: typeof WS_CONNECTION_FEED_SUCCESS | typeof WS_CONNECTION_PROFILE_ORDERS_SUCCESS,
   onClose: typeof WS_CONNECTION_FEED_CLOSED | typeof WS_CONNECTION_PROFILE_ORDERS_CLOSED,
   onError: typeof WS_CONNECTION_FEED_ERROR | typeof WS_CONNECTION_PROFILE_ORDERS_ERROR,

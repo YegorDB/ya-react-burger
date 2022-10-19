@@ -16,11 +16,12 @@ export const socketMiddleware = (
       const { dispatch, getState } = store;
       const { type } = action;
 
-      if (type === wsActionTypes.wsInit) {
-        if (socket) {
-          socket.close();
-        }
+      if ((type === wsActionTypes.wsInit || type === wsActionTypes.wsEnd) && socket) {
+        socket.close();
+        socket = null;
+      }
 
+      if (type === wsActionTypes.wsInit) {
         if (authRequired) {
           const { user } = getState();
           if (user.userLoaded) {
@@ -38,6 +39,7 @@ export const socketMiddleware = (
           socket = new WebSocket(wsUrl);
         }
       }
+
       if (socket) {
         socket.onopen = event => {
           dispatch({ type: wsActionTypes.onOpen, payload: event });

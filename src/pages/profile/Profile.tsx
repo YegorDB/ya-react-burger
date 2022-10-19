@@ -9,7 +9,7 @@ import {
 import { FeedItemShort } from '../../components/feed-item-short/FeedItemShort';
 import { useSelector, useDispatch } from '../../hooks';
 import {
-  WS_CONNECTION_PROFILE_ORDERS_START, SET_CURRENT_FEED_ORDER,
+  WS_CONNECTION_PROFILE_ORDERS_START, WS_CONNECTION_PROFILE_ORDERS_END, SET_CURRENT_FEED_ORDER,
   getUser, postLogout, patchUser
 } from '../../services/actions';
 import { createFeedItemShortProps } from '../../utils/feed';
@@ -23,6 +23,7 @@ const ProfileOrdersHistory: FC = () => {
 
   useEffect(() => {
     dispatch({type: WS_CONNECTION_PROFILE_ORDERS_START});
+    return () => {dispatch({type: WS_CONNECTION_PROFILE_ORDERS_END})};
   }, [dispatch]);
 
   const { orders, ingredients } = useSelector(state => ({
