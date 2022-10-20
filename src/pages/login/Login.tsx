@@ -43,18 +43,10 @@ export const LoginPage: FC = () => {
   }
 
   if (user) {
-    // @ts-ignore
-    const profileOrderId = location.state?.from.state?.profileOrderId;
-    const to = profileOrderId ? {
-      pathname: `/profile/orders/${profileOrderId}`,
-      state: {
-        profileOrderLocation: location.state?.from,
-        profileOrderId: profileOrderId,
-      }
-    } : (location.state?.from || '/')
-
     return (
-      <Redirect to={to} />
+      <Redirect
+        to={ location.state?.from || '/' }
+      />
     );
   }
 

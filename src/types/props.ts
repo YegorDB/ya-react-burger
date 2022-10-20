@@ -1,3 +1,4 @@
+import { Location } from 'history';
 import { RouteProps } from 'react-router-dom';
 
 import { TFeedOrder } from './feed';
@@ -52,6 +53,7 @@ export type TOrderDetailsProps = {
 
 export type TProtectedRouteProps = RouteProps & {
   children: React.ReactNode,
+  fromOverride?: Location,
 }
 
 export type TFeedItemStatusProps = {

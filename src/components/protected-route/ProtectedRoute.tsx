@@ -5,16 +5,21 @@ import { useSelector } from '../../hooks';
 import { getUser } from '../../services/actions';
 import { TProtectedRouteProps } from '../../types/props';
 
-export const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, ...rest }) => {
+export const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, fromOverride, ...rest }) => {
   const [isUserLoaded, setUserLoaded] = useState<boolean>(false);
 
-  const init = async () => {
-    await getUser();
-    setUserLoaded(true);
-  };
-
   useEffect(() => {
+    let cleanup = false;
+
+    const init = async () => {
+      await getUser();
+      if (!cleanup) {
+        setUserLoaded(true);
+      }
+    };
+
     init();
+    return () => { cleanup = true; };
   }, []);
 
   const user = useSelector(state => state.user.user);
@@ -32,7 +37,7 @@ export const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, ...rest }) 
         ) : (
           <Redirect to={{
             pathname: '/login',
-            state: { from: location }
+            state: { from: fromOverride || location }
           }}  />
         )
       }

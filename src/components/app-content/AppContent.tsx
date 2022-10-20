@@ -23,14 +23,14 @@ function AppContent() {
   const feedItemLocation = location.state && location.state.feedItemLocation;
   const profileOrderLocation = location.state && location.state.profileOrderLocation;
 
-  if (profileOrderLocation) {
-    profileOrderLocation.state = {
-      profileOrderId: location.state && location.state.profileOrderId
-    };
-  }
-
   return (
     <>
+      {profileOrderLocation && (
+        <ProtectedRoute path="/profile/orders/:id" fromOverride={location} >
+          <FeedItemModal />
+        </ProtectedRoute>
+      )}
+
       <Switch location={ingredientLocation || feedItemLocation || profileOrderLocation || location}>
         <Route path="/" exact={true}>
           <MainPage />
@@ -75,12 +75,6 @@ function AppContent() {
 
       {feedItemLocation && (
         <Route path="/feed/:id" >
-          <FeedItemModal />
-        </Route>
-      )}
-
-      {profileOrderLocation && (
-        <Route path="/profile/orders/:id" >
           <FeedItemModal />
         </Route>
       )}
