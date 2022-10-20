@@ -61,7 +61,10 @@ const ProfileOrdersHistory: FC = () => {
           <Link
             to={{
               pathname: `/profile/orders/${data.id}`,
-              state: { profileOrderLocation: location }
+              state: {
+                profileOrderLocation: location,
+                profileOrderId: data.id,
+              }
             }}
             key={data.id}
             className="undecorated-link"

@@ -11,6 +11,7 @@ import { IngredientPage } from '../../pages/ingredient/Ingredient';
 import { LoginPage } from '../../pages/login/Login';
 import { MainPage } from '../../pages/main/Main';
 import { ProfilePage } from '../../pages/profile/Profile';
+import { ProfileOrdersItem } from '../../pages/profile-orders-item/ProfileOrdersItem';
 import { RegisterPage } from '../../pages/register/Register';
 import { ResetPasswordPage } from '../../pages/reset-password/ResetPassword';
 import { TAppContentLocationState } from '../../types/router';
@@ -21,6 +22,12 @@ function AppContent() {
   const ingredientLocation = location.state && location.state.ingredientLocation;
   const feedItemLocation = location.state && location.state.feedItemLocation;
   const profileOrderLocation = location.state && location.state.profileOrderLocation;
+
+  if (profileOrderLocation) {
+    profileOrderLocation.state = {
+      profileOrderId: location.state && location.state.profileOrderId
+    };
+  }
 
   return (
     <>
@@ -41,7 +48,7 @@ function AppContent() {
           <ResetPasswordPage />
         </Route>
         <ProtectedRoute path="/profile/orders/:id" exact={true}>
-          <FeedItem />
+          <ProfileOrdersItem />
         </ProtectedRoute>
         <ProtectedRoute path="/profile">
           <ProfilePage />

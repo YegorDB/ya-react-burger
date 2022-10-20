@@ -12,7 +12,6 @@ const currentFeedOrder = (
 ): TCurrentFeedOrderState => {
   switch (action.type) {
     case SET_CURRENT_FEED_ORDER:
-      console.log('KEKEKE', action.feedOrder);
       return {
         ...state,
         feedOrder: action.feedOrder,
