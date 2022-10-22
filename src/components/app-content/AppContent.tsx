@@ -2,12 +2,16 @@ import React from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 
 import { BurgerIngredientsItemModal } from '../burger-ingredients/BurgerIngredients';
+import { FeedItemModal } from '../feed-item-modal/FeedItemModal';
 import { ProtectedRoute } from '../protected-route/ProtectedRoute';
+import { Feed } from '../../pages/feed/Feed';
+import { FeedItem } from '../../pages/feed-item/FeedItem';
 import { ForgotPasswordPage } from '../../pages/forgot-password/ForgotPassword';
 import { IngredientPage } from '../../pages/ingredient/Ingredient';
 import { LoginPage } from '../../pages/login/Login';
 import { MainPage } from '../../pages/main/Main';
 import { ProfilePage } from '../../pages/profile/Profile';
+import { ProfileOrdersItem } from '../../pages/profile-orders-item/ProfileOrdersItem';
 import { RegisterPage } from '../../pages/register/Register';
 import { ResetPasswordPage } from '../../pages/reset-password/ResetPassword';
 import { TAppContentLocationState } from '../../types/router';
@@ -16,10 +20,18 @@ function AppContent() {
   const location = useLocation<TAppContentLocationState>();
 
   const ingredientLocation = location.state && location.state.ingredientLocation;
+  const feedItemLocation = location.state && location.state.feedItemLocation;
+  const profileOrderLocation = location.state && location.state.profileOrderLocation;
 
   return (
     <>
-      <Switch location={ingredientLocation || location}>
+      {profileOrderLocation && (
+        <ProtectedRoute path="/profile/orders/:id" fromOverride={location} >
+          <FeedItemModal />
+        </ProtectedRoute>
+      )}
+
+      <Switch location={ingredientLocation || feedItemLocation || profileOrderLocation || location}>
         <Route path="/" exact={true}>
           <MainPage />
         </Route>
@@ -35,11 +47,20 @@ function AppContent() {
         <Route path="/reset-password" exact={true}>
           <ResetPasswordPage />
         </Route>
+        <ProtectedRoute path="/profile/orders/:id" exact={true}>
+          <ProfileOrdersItem />
+        </ProtectedRoute>
         <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>
         <Route path="/ingredients/:id" exact={true}>
           <IngredientPage />
+        </Route>
+        <Route path="/feed" exact={true}>
+          <Feed />
+        </Route>
+        <Route path="/feed/:id" exact={true}>
+          <FeedItem />
         </Route>
         <Route>
           <div>404</div>
@@ -49,6 +70,12 @@ function AppContent() {
       {ingredientLocation && (
         <Route path="/ingredients/:id" >
           <BurgerIngredientsItemModal />
+        </Route>
+      )}
+
+      {feedItemLocation && (
+        <Route path="/feed/:id" >
+          <FeedItemModal />
         </Route>
       )}
     </>

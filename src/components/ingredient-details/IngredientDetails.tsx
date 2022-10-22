@@ -1,9 +1,8 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
 
 import { TIngredientDetailsProps, TCurrentIngredientDetailsProps } from '../../types/props'
-import { TState } from '../../types/states';
+import { useSelector } from '../../hooks';
 import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './IngredientDetails.module.css';
@@ -40,7 +39,7 @@ export const IngredientDetails: FC<TIngredientDetailsProps> = ({ ingredient }) =
 }
 
 export const CurrentIngredientDetails: FC<TCurrentIngredientDetailsProps> = ({ ingredientId }) => {
-  let { ingredient, ingredients } = useSelector((state: TState) => ({
+  let { ingredient, ingredients } = useSelector(state => ({
     ingredient: state.currentIngredient.ingredient,
     ingredients: state.ingredients.items,
   }));

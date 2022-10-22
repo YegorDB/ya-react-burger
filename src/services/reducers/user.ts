@@ -21,7 +21,7 @@ import {
 import { TUserAction } from '../../types/actions';
 import { TUserState } from '../../types/states';
 
-const initialState = {
+const initialState: TUserState = {
   user: null,
   userLoaded: false,
 };
@@ -29,7 +29,7 @@ const initialState = {
 const user = (
   state: TUserState = initialState,
   action: TUserAction
-) => {
+): TUserState => {
   switch (action.type) {
     case POST_REGISTER_REQUEST_PENDING:
       return {

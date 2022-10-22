@@ -1,24 +1,28 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 
+import { useSelector } from '../../hooks';
 import { getUser } from '../../services/actions';
 import { TProtectedRouteProps } from '../../types/props';
-import { TState } from '../../types/states';
 
-export const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, ...rest }) => {
+export const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, fromOverride, ...rest }) => {
   const [isUserLoaded, setUserLoaded] = useState<boolean>(false);
 
-  const init = async () => {
-    await getUser();
-    setUserLoaded(true);
-  };
-
   useEffect(() => {
+    let cleanup = false;
+
+    const init = async () => {
+      await getUser();
+      if (!cleanup) {
+        setUserLoaded(true);
+      }
+    };
+
     init();
+    return () => { cleanup = true; };
   }, []);
 
-  const user = useSelector((state: TState) => state.user.user);
+  const user = useSelector(state => state.user.user);
 
   if (!isUserLoaded) {
     return null;
@@ -27,14 +31,13 @@ export const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, ...rest }) 
   return (
     <Route
       {...rest}
-      // @ts-ignore
       render={({ location }) =>
         user ? (
           children
         ) : (
           <Redirect to={{
             pathname: '/login',
-            state: { from: location }
+            state: { from: fromOverride || location }
           }}  />
         )
       }

@@ -6,8 +6,17 @@ export type TBaseLocationState = {
 
 export type TAppContentLocationState = {
   ingredientLocation: Location,
+  feedItemLocation: Location,
+  profileOrderLocation: Location,
+  profileOrderId: string,
 }
 
-export type TBurgerIngredientsItemParams = {
+type ParamsWithId = {
   id: string,
 }
+
+export type TBurgerIngredientsItemParams = ParamsWithId;
+
+export type TFeedItemParams = ParamsWithId;
+
+export type TProfileOrderItemParams = ParamsWithId;

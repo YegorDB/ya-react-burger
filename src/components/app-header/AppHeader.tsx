@@ -30,6 +30,7 @@ const AppHeaderItem: FC<TAppHeaderItemProps> = ({
 
 const AppHeader: FC = () => {
   const matchRoot = useRouteMatch('/');
+  const matchFeed = useRouteMatch('/feed');
   const matchProfile = useRouteMatch('/profile');
 
   return (
@@ -38,7 +39,9 @@ const AppHeader: FC = () => {
         <Link to='/' className="undecorated-link">
           <AppHeaderItem icon={BurgerIcon} text="Конструктор" highlighted={matchRoot?.isExact}/>
         </Link>
-        <AppHeaderItem icon={ListIcon} text="Лента заказов"/>
+        <Link to='/feed' className="undecorated-link">
+          <AppHeaderItem icon={ListIcon} text="Лента заказов" highlighted={!!matchFeed}/>
+        </Link>
       </div>
       <div className="pt-4">
         <Link to='/' className="undecorated-link">

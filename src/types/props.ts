@@ -1,5 +1,7 @@
+import { Location } from 'history';
 import { RouteProps } from 'react-router-dom';
 
+import { TFeedOrder } from './feed';
 import { TIngredient } from './ingredient';
 
 export type TAppHeaderItemProps = {
@@ -51,4 +53,44 @@ export type TOrderDetailsProps = {
 
 export type TProtectedRouteProps = RouteProps & {
   children: React.ReactNode,
+  fromOverride?: Location,
+}
+
+export type TFeedItemStatusProps = {
+  mode: TFeedOrder['status'],
+}
+
+export type TFeedItemIngredientProps = {
+  icon: string;
+  name: string,
+  price: number,
+  count: number,
+}
+
+export type TFeedItemShortIconsProps = {
+  icons: string[],
+}
+
+export type TFeedItemShortProps = {
+  id: string,
+  number: number,
+  name: string,
+  price: number,
+  date: string,
+  icons: string[],
+  status?: TFeedOrder['status'],
+}
+
+export type TFeedItemComponentProps = {
+  feedOrder?: TFeedOrder,
+}
+
+export type TFeedInfoMainItemProps = {
+  title: string,
+  orderIds: number[],
+  highlighted?: boolean,
+}
+
+export type TFeedItemIngredientsProps = {
+  ingredients: TIngredient[],
 }

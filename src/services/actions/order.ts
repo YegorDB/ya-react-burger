@@ -1,15 +1,16 @@
 import { postRefreshToken } from './refresh-token';
 import { CLEAR_CONSTRUCTOR } from './selected-ingredients';
 import { API_ROOT } from '../../consts/api';
+import { AppThunk, AppDispatch } from '../../types';
 import { TIngredient } from '../../types/ingredient';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
-export const POST_ORDER_REQUEST_PENDING = 'POST_ORDER_REQUEST_PENDING';
-export const POST_ORDER_REQUEST_FAILED = 'POST_ORDER_REQUEST_FAILED';
-export const POST_ORDER_REQUEST_SUCCESS = 'POST_ORDER_REQUEST_SUCCESS';
+export const POST_ORDER_REQUEST_PENDING: 'POST_ORDER_REQUEST_PENDING' = 'POST_ORDER_REQUEST_PENDING';
+export const POST_ORDER_REQUEST_FAILED: 'POST_ORDER_REQUEST_FAILED' = 'POST_ORDER_REQUEST_FAILED';
+export const POST_ORDER_REQUEST_SUCCESS: 'POST_ORDER_REQUEST_SUCCESS' = 'POST_ORDER_REQUEST_SUCCESS';
 
-export function postOrder(ingredientsIds: TIngredient['_id'][], setModalOpen: Function) {
-  return function(dispatch: Function) {
+export const postOrder: AppThunk = (ingredientsIds: TIngredient['_id'][], setModalOpen: Function) => {
+  return function(dispatch: AppDispatch) {
     dispatch({
       type: POST_ORDER_REQUEST_PENDING,
     });

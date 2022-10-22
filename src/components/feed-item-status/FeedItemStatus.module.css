@@ -1,0 +1,11 @@
+.FeedStatus-done {
+  color: #029d9c;
+}
+
+.FeedStatus-created, .FeedStatus-pending {
+  color: inherit;
+}
+
+.FeedStatus-canceled {
+  color: red;
+}

@@ -1,0 +1,9 @@
+.FeedItem {
+  composes: CentralizedContent from "../Pages.module.css";
+  text-align: left;
+  width: 600px;
+}
+
+.FeedItemId {
+  text-align: center;
+}

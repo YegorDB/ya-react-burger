@@ -1,29 +1,91 @@
 import cn from 'classnames';
-import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
+import React, { FC, ChangeEventHandler, FormEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
+import { Link, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 
 import {
   Button, Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { getUser, postLogout, patchUser } from '../../services/actions';
-import { TState } from '../../types/states';
+import { FeedItemShort } from '../../components/feed-item-short/FeedItemShort';
+import { useSelector, useDispatch } from '../../hooks';
+import {
+  WS_CONNECTION_PROFILE_ORDERS_START, WS_CONNECTION_PROFILE_ORDERS_END, SET_CURRENT_FEED_ORDER,
+  getUser, postLogout, patchUser
+} from '../../services/actions';
+import { createFeedItemShortProps } from '../../utils/feed';
+import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './Profile.module.css';
+
+const ProfileOrdersHistory: FC = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({type: WS_CONNECTION_PROFILE_ORDERS_START});
+    return () => {dispatch({type: WS_CONNECTION_PROFILE_ORDERS_END})};
+  }, [dispatch]);
+
+  const { orders, ingredients } = useSelector(state => ({
+    orders: state.profileOrdersWS.orders,
+    ingredients: state.ingredients.items,
+  }));
+
+  const parsedIngredients = useMemo(
+    () => parseIngredientsById(ingredients),
+    [ingredients]
+  )
+
+  const itemsData = useMemo(
+    () => orders.map(i => {
+      return {
+        ...createFeedItemShortProps(i, parsedIngredients),
+        status: i.status,
+        order: i,
+      };
+    }),
+    [orders, parsedIngredients]
+  );
+
+  return (
+    <div className={cn('custom-scroll', styles.ProfileOrdersHistory)}>
+      {itemsData.map(data => {
+        const handleOpenModal = () => {
+          dispatch({
+            type: SET_CURRENT_FEED_ORDER,
+            feedOrder: data.order,
+          });
+        }
+
+        return (
+          <Link
+            to={{
+              pathname: `/profile/orders/${data.id}`,
+              state: {profileOrderLocation: location}
+            }}
+            key={data.id}
+            className="undecorated-link"
+            onClick={handleOpenModal}
+          >
+            <FeedItemShort {...data} />
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
 
 export const ProfilePage: FC = () => {
   const matchRoot = useRouteMatch('/profile');
   const matchOrders = useRouteMatch('/profile/orders');
 
   const dispatch = useDispatch();
-  const { user, userLoaded } = useSelector((state: TState) => state.user);
+  const { user, userLoaded } = useSelector(state => state.user);
   const [name, setName] = useState<string>(user ? user.name : '');
   const [login, setLogin] = useState<string>(user ? user.email : '');
   const [password, setPassword] = useState<string>('');
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
@@ -43,7 +105,6 @@ export const ProfilePage: FC = () => {
   const changeUserData = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault();
-      // @ts-ignore
       dispatch(patchUser(name, login, password));
     },
     [dispatch, name, login, password]
@@ -59,7 +120,6 @@ export const ProfilePage: FC = () => {
   );
 
   const logout = useCallback<(...args: any[]) => void>(
-    // @ts-ignore
     e => dispatch(postLogout()),
     [dispatch]
   );
@@ -71,9 +131,9 @@ export const ProfilePage: FC = () => {
   return (
     <main>
       <div className={ styles.Profile }>
-        <div className={ styles.ProfileMain }>
-          <Switch>
-            <Route path="/profile" exact={true}>
+        <Switch>
+          <Route path="/profile" exact={true}>
+            <div className={ styles.ProfileMain }>
               <form onSubmit={ changeUserData }>
                 <div className={ styles.ProfileInputWrapper }>
                   <Input
@@ -120,12 +180,15 @@ export const ProfilePage: FC = () => {
                   </Button>
                 </div>
               </form>
-            </Route>
-            <Route path="/profile/orders">
-              ORDERS
-            </Route>
-          </Switch>
-        </div>
+            </div>
+          </Route>
+          <Route path="/profile/orders">
+            <div className={ styles.ProfileOrders }>
+              <ProfileOrdersHistory />
+            </div>
+          </Route>
+        </Switch>
+
         <div className={ styles.ProfileMenu }>
           <Link to='/profile' className="undecorated-link">
             <p className={cn('text text_type_main-medium mb-5', !matchRoot?.isExact && 'text_color_inactive')}>

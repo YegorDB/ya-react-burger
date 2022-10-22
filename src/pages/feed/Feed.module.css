@@ -1,0 +1,34 @@
+.Feed {
+  padding: 0 5%;
+  display: flex;
+  gap: 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.FeedHalf {
+  flex: 1;
+}
+
+.FeedItems {
+  height: calc(100vh - 180px);
+  overflow: auto;
+}
+
+.FeedInfoMain {
+  display: flex;
+  height: 200px;
+}
+
+.FeedInfoMainItem {
+  flex: 1;
+}
+
+.FeedInfoMainItemList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.FeedInfoMainItemHighlighted {
+  color: #029d9c;
+}

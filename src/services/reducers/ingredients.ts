@@ -6,14 +6,14 @@ import {
 import { TIngredientsAction } from '../../types/actions';
 import { TIngredientsState } from '../../types/states';
 
-const initialState = {
+const initialState: TIngredientsState = {
   items: [],
 };
 
 const ingredients = (
   state: TIngredientsState = initialState,
   action: TIngredientsAction
-) => {
+): TIngredientsState => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST_PENDING:
       return {

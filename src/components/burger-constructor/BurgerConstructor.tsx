@@ -1,12 +1,13 @@
 import cn from 'classnames';
 import React, { FC, useEffect, useMemo } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import {
   Button, ConstructorElement, CurrencyIcon, DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components'
+} from '@ya.praktikum/react-developer-burger-ui-components';
+
+import { useSelector, useDispatch } from '../../hooks';
 
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
@@ -20,7 +21,6 @@ import {
 import { TOtherIngredientsData } from '../../types/data'
 import { TIngredient } from '../../types/ingredient'
 import { TBurgerConstructorMainItemsItemProps } from '../../types/props';
-import { TState } from '../../types/states';
 import { parseIngredientsById } from '../../utils/parseIngredients';
 
 import styles from './BurgerConstructor.module.css';
@@ -72,12 +72,12 @@ const BurgerConstructorMainItemsItem: FC<TBurgerConstructorMainItemsItemProps> =
   )
 }
 
-function BurgerConstructor() {
+const BurgerConstructor: FC = () => {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
-  const { user, userLoaded, ingredients, bunId, itemsData, orderId } = useSelector((state: TState) => ({
+  const { user, userLoaded, ingredients, bunId, itemsData, orderId } = useSelector(state => ({
     user: state.user.user,
     userLoaded: state.user.userLoaded,
     ingredients: state.ingredients.items,
@@ -87,7 +87,6 @@ function BurgerConstructor() {
   }));
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getUser());
   }, [dispatch]);
 
@@ -117,7 +116,6 @@ function BurgerConstructor() {
     const ingredientsIds = [bunId, ...otherIds, bunId];
     if (ingredientsIds.length === 0) return;
 
-    // @ts-ignore
     dispatch(postOrder(ingredientsIds, setModalOpen));
   }
 

@@ -1,13 +1,14 @@
 import { API_ROOT } from '../../consts/api';
+import { AppThunk, AppDispatch } from '../../types';
 import { TUser } from '../../types/user';
 import { checkResponse, handleResponse, handleResponseError } from '../../utils/fetch';
 
-export const POST_LOGIN_REQUEST_PENDING = 'POST_LOGIN_REQUEST_PENDING';
-export const POST_LOGIN_REQUEST_FAILED = 'POST_LOGIN_REQUEST_FAILED';
-export const POST_LOGIN_REQUEST_SUCCESS = 'POST_LOGIN_REQUEST_SUCCESS';
+export const POST_LOGIN_REQUEST_PENDING: 'POST_LOGIN_REQUEST_PENDING' = 'POST_LOGIN_REQUEST_PENDING';
+export const POST_LOGIN_REQUEST_FAILED: 'POST_LOGIN_REQUEST_FAILED' = 'POST_LOGIN_REQUEST_FAILED';
+export const POST_LOGIN_REQUEST_SUCCESS: 'POST_LOGIN_REQUEST_SUCCESS' = 'POST_LOGIN_REQUEST_SUCCESS';
 
-export function postLogin(email: string, password: string) {
-  return function(dispatch: Function) {
+export const postLogin: AppThunk = (email: string, password: string) => {
+  return function(dispatch: AppDispatch) {
     dispatch({
       type: POST_LOGIN_REQUEST_PENDING,
     });
