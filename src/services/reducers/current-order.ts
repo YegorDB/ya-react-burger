@@ -6,7 +6,7 @@ import {
 import { TCurrentOrderAction } from '../../types/actions';
 import { TCurrentOrderState } from '../../types/states';
 
-const initialState: TCurrentOrderState = {
+export const initialState: TCurrentOrderState = {
   orderId: null,
 };
 

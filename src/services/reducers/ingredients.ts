@@ -6,7 +6,7 @@ import {
 import { TIngredientsAction } from '../../types/actions';
 import { TIngredientsState } from '../../types/states';
 
-const initialState: TIngredientsState = {
+export const initialState: TIngredientsState = {
   items: [],
 };
 

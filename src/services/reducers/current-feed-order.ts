@@ -2,7 +2,7 @@ import { SET_CURRENT_FEED_ORDER } from '../actions';
 import { TCurrentFeedOrderAction } from '../../types/actions';
 import { TCurrentFeedOrderState } from '../../types/states';
 
-const initialState: TCurrentFeedOrderState = {
+export const initialState: TCurrentFeedOrderState = {
   feedOrder: null,
 };
 
