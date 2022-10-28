@@ -7,10 +7,11 @@ import {
   PASSWORD_RESET_REQUEST_FAILED,
   PASSWORD_RESET_REQUEST_SUCCESS,
 } from '../actions';
+import { TForgotPasswordAction } from '../../types/actions';
 
 describe('Forgot password reducer', () => {
   it('should return the initial state', () => {
-    expect(forgotPassword(undefined, {})).toEqual(initialState);
+    expect(forgotPassword(undefined, {} as TForgotPasswordAction)).toEqual(initialState);
   });
 
   it('should return forgot password pending', () => {

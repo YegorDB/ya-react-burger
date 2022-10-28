@@ -4,10 +4,11 @@ import {
   GET_INGREDIENTS_REQUEST_FAILED,
   GET_INGREDIENTS_REQUEST_SUCCESS,
 } from '../actions';
+import { TIngredientsAction } from '../../types/actions';
 
 describe('Ingredients reducer', () => {
   it('should return the initial state', () => {
-    expect(ingredients(undefined, {})).toEqual(initialState);
+    expect(ingredients(undefined, {} as TIngredientsAction)).toEqual(initialState);
   });
 
   it('should return ingredients pending', () => {

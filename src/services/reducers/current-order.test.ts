@@ -4,10 +4,11 @@ import {
   POST_ORDER_REQUEST_FAILED,
   POST_ORDER_REQUEST_SUCCESS,
 } from '../actions';
+import { TCurrentOrderAction } from '../../types/actions';
 
 describe('Current order reducer', () => {
   it('should return the initial state', () => {
-    expect(currentOrder(undefined, {})).toEqual(initialState);
+    expect(currentOrder(undefined, {} as TCurrentOrderAction)).toEqual(initialState);
   });
 
   it('should return current order pending', () => {

@@ -1,9 +1,10 @@
 import currentIngredient, { initialState } from './current-ingredient';
 import { SET_CURRENT_INGREDIENT } from '../actions';
+import { TCurrentIngredientAction } from '../../types/actions';
 
 describe('Current ingredient reducer', () => {
   it('should return the initial state', () => {
-    expect(currentIngredient(undefined, {})).toEqual(initialState);
+    expect(currentIngredient(undefined, {} as TCurrentIngredientAction)).toEqual(initialState);
   });
 
   it('should return current ingredient', () => {

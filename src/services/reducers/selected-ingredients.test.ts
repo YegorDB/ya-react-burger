@@ -8,11 +8,12 @@ import {
   CHANGE_CONSTRUCTOR_INGREDIENTS_ORDER,
   CLEAR_CONSTRUCTOR,
 } from '../actions';
+import { TSelectedIngredientsAction } from '../../types/actions';
 
 
 describe('Selected ingredients reducer', () => {
   it('should return the initial state', () => {
-    expect(selectedIngredients(undefined, {})).toEqual(initialState);
+    expect(selectedIngredients(undefined, {} as TSelectedIngredientsAction)).toEqual(initialState);
   });
 
   it('should add bun ingredient to constructor', () => {
@@ -48,6 +49,7 @@ describe('Selected ingredients reducer', () => {
       ingredientId: itemData.id
     };
 
+    // @ts-ignore
     uuid.mockImplementation(() => itemData.key);
 
     expect(selectedIngredients(state, action)).toEqual({

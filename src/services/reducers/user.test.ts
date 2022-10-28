@@ -19,10 +19,11 @@ import {
   PATCH_USER_REQUEST_FAILED,
   PATCH_USER_REQUEST_SUCCESS,
 } from '../actions';
+import { TUserAction } from '../../types/actions';
 
 describe('User reducer', () => {
   it('should return the initial state', () => {
-    expect(user(undefined, {})).toEqual(initialState);
+    expect(user(undefined, {} as TUserAction)).toEqual(initialState);
   });
 
   it('should return register pending', () => {

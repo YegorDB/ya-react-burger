@@ -11,10 +11,11 @@ import {
   WS_CONNECTION_PROFILE_ORDERS_ERROR,
   WS_CONNECTION_PROFILE_ORDERS_CLOSED,
 } from '../actions';
+import type { TFeedWSAction, TProfileOrdersWSAction } from '../../types/actions';
 
 describe('Feed ws reducer', () => {
   it('should return the initial state', () => {
-    expect(feedWS(undefined, {})).toEqual(feedInitialState);
+    expect(feedWS(undefined, {} as TFeedWSAction)).toEqual(feedInitialState);
   });
 
   it('should return connection start', () => {
@@ -114,7 +115,7 @@ describe('Feed ws reducer', () => {
 
 describe('Profile orders ws reducer', () => {
   it('should return the initial state', () => {
-    expect(profileOrdersWS(undefined, {})).toEqual(profileOrdersInitialState);
+    expect(profileOrdersWS(undefined, {} as TProfileOrdersWSAction)).toEqual(profileOrdersInitialState);
   });
 
   it('should return connection start', () => {
