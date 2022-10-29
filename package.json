@@ -30,6 +30,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -53,6 +55,8 @@
   },
   "devDependencies": {
     "cypress": "^7.7.0",
+    "gh-pages": "^4.0.0",
     "jest-watch-typeahead": "^0.6.5"
-  }
+  },
+  "homepage": "/ya-react-burger/"
 }

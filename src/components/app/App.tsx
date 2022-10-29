@@ -15,7 +15,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <Router>
+    <Router basename="/ya-react-burger">
       <AppHeader />
       <AppContent />
     </Router>
