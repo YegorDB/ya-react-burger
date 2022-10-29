@@ -39,6 +39,14 @@ describe('Burger constructor', () => {
     cy.get('[class*=BurgerIngredients_BurgerIngredientsItemsGroup__]').eq(2).children().first().as('mainIngredient');
     cy.get('[class*=BurgerConstructorDropTarget]').first().as('burgerConstructor');
 
+    cy.get('@bunIngredient').click()
+    cy.get('[class*=Modal_Modal__]').should('have.length', 1);
+    cy.contains('Детали ингредиента');
+    cy.get('[class*=IngredientDetails_IngredientDetails__]').should('have.length', 1);
+    cy.get('[class*=IngredientDetails_IngredientDetailsData__]').should('have.length', 1);
+    cy.get('[class*=Modal_ModalHeaderClose__]').eq(0).click()
+    cy.get('[class*=Modal_Modal__]').should('have.length', 0);
+
     const dataTransfer = new DataTransfer;
 
     cy.get('@bunIngredient').trigger('dragstart', { dataTransfer });
@@ -75,7 +83,14 @@ describe('Burger constructor', () => {
     //
     // cy.get('button').contains('Оформить заказ').click();
 
+    cy.get('[class*=Modal_Modal__]').should('have.length', 1);
+
     cy.contains('Оформление заказа началось.');
+
     cy.contains('123456');
+    cy.contains('идентификатор заказа');
+
+    cy.get('[class*=Modal_ModalHeaderClose__]').eq(0).click()
+    cy.get('[class*=Modal_Modal__]').should('have.length', 0);
   });
 });
