@@ -75,7 +75,7 @@ export const FeedItem: FC<TFeedItemComponentProps> = ({ feedOrder }) => {
   return (
     <>
       <p className="mb-2 text text_type_main-medium">
-        Name
+        { feedOrder.name }
       </p>
       <FeedItemStatus mode={ feedOrder.status } />
       <p className="mb-2 text text_type_main-medium">
