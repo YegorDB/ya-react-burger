@@ -169,11 +169,10 @@ const BurgerConstructor: FC = () => {
           className={cn('custom-scroll', styles.BurgerConstructorMainItems)}
         >
           {otherIngredientsData.map(({ingredient, key}, index) => (
-            <div className="BurgerConstructorDropTargetItem">
+            <div key={key} className="BurgerConstructorDropTargetItem">
               <BurgerConstructorMainItemsItem
                 ingredient={ingredient}
                 index={index}
-                key={key}
               />
             </div>
           ))}
