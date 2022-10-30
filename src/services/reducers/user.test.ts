@@ -21,6 +21,11 @@ import {
 } from '../actions';
 import { TUserAction } from '../../types/actions';
 
+const userData = {
+  email: 'email',
+  name: 'name',
+};
+
 describe('User reducer', () => {
   it('should return the initial state', () => {
     expect(user(undefined, {} as TUserAction)).toEqual(initialState);
@@ -45,10 +50,7 @@ describe('User reducer', () => {
   it('should return register success', () => {
     const action = {
       type: POST_REGISTER_REQUEST_SUCCESS,
-      user: {
-        email: 'email',
-        name: 'name',
-      },
+      user: userData,
     };
 
     expect(user(undefined, action)).toEqual({
@@ -76,10 +78,7 @@ describe('User reducer', () => {
   it('should return login success', () => {
     const action = {
       type: POST_LOGIN_REQUEST_SUCCESS,
-      user: {
-        email: 'email',
-        name: 'name',
-      },
+      user: userData,
     };
 
     expect(user(undefined, action)).toEqual({
@@ -158,10 +157,7 @@ describe('User reducer', () => {
   it('should return token success', () => {
     const action = {
       type: GET_USER_REQUEST_SUCCESS,
-      user: {
-        email: 'email',
-        name: 'name',
-      },
+      user: userData,
     };
 
     expect(user(undefined, action)).toEqual({
@@ -189,10 +185,7 @@ describe('User reducer', () => {
   it('should return patch success', () => {
     const action = {
       type: PATCH_USER_REQUEST_SUCCESS,
-      user: {
-        email: 'email',
-        name: 'name',
-      },
+      user: userData,
     };
 
     expect(user(undefined, action)).toEqual({

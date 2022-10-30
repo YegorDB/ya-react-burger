@@ -11,6 +11,23 @@ import {
 import { TSelectedIngredientsAction } from '../../types/actions';
 
 
+const bunId = '123';
+const itemsData = [
+  {
+    id: '124',
+    key: 'key124',
+  },
+  {
+    id: '125',
+    key: 'key125',
+  },
+  {
+    id: '126',
+    key: 'key126',
+  },
+];
+
+
 describe('Selected ingredients reducer', () => {
   it('should return the initial state', () => {
     expect(selectedIngredients(undefined, {} as TSelectedIngredientsAction)).toEqual(initialState);
@@ -20,43 +37,36 @@ describe('Selected ingredients reducer', () => {
     const action = {
       type: ADD_INGREDIENT_TO_CONSTRUCTOR,
       ingredientIsABun: true,
-      ingredientId: '123'
+      ingredientId: bunId
     };
 
     expect(selectedIngredients(undefined, action)).toEqual({
-      bunId: '123',
+      bunId: bunId,
       itemsData: [],
     });
   });
 
   it('should add no bun ingredient to constructor', () => {
-    const itemData = {
-      id: '125',
-      key: 'key125',
-    };
     const state = {
-      bunId: '123',
+      bunId: bunId,
       itemsData: [
-        {
-          id: '124',
-          key: 'key124',
-        },
+        itemsData[0],
       ],
     };
     const action = {
       type: ADD_INGREDIENT_TO_CONSTRUCTOR,
       ingredientIsABun: false,
-      ingredientId: itemData.id
+      ingredientId: itemsData[1].id
     };
 
     // @ts-ignore
-    uuid.mockImplementation(() => itemData.key);
+    uuid.mockImplementation(() => itemsData[1].key);
 
     expect(selectedIngredients(state, action)).toEqual({
       ...state,
       itemsData: [
         ...state.itemsData,
-        itemData,
+        itemsData[1],
       ],
     });
   });
@@ -65,7 +75,7 @@ describe('Selected ingredients reducer', () => {
     const action = {
       type: REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
       ingredientIsABun: true,
-      ingredientId: '123'
+      ingredientId: bunId
     };
 
     expect(selectedIngredients(undefined, action)).toEqual(initialState);
@@ -75,7 +85,7 @@ describe('Selected ingredients reducer', () => {
     const action = {
       type: REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
       ingredientIsABun: false,
-      ingredientId: '123'
+      ingredientId: bunId
     };
 
     expect(selectedIngredients(undefined, action)).toEqual(initialState);
@@ -83,12 +93,9 @@ describe('Selected ingredients reducer', () => {
 
   it('should remove not bun ingredient from constructor', () => {
     const state = {
-      bunId: '123',
+      bunId: bunId,
       itemsData: [
-        {
-          id: '124',
-          key: 'key124',
-        },
+        itemsData[0],
       ],
     };
 
@@ -99,28 +106,15 @@ describe('Selected ingredients reducer', () => {
     };
 
     expect(selectedIngredients(state, action)).toEqual({
-      bunId: '123',
+      bunId: bunId,
       itemsData: [],
     });
   });
 
   it('should change incredients order', () => {
     const state = {
-      bunId: '123',
-      itemsData: [
-        {
-          id: '124',
-          key: 'key124',
-        },
-        {
-          id: '125',
-          key: 'key125',
-        },
-        {
-          id: '126',
-          key: 'key126',
-        },
-      ],
+      bunId: bunId,
+      itemsData: itemsData,
     };
 
     const action = {
@@ -130,41 +124,19 @@ describe('Selected ingredients reducer', () => {
     };
 
     expect(selectedIngredients(state, action)).toEqual({
-      bunId: '123',
+      bunId: bunId,
       itemsData: [
-        {
-          id: '125',
-          key: 'key125',
-        },
-        {
-          id: '126',
-          key: 'key126',
-        },
-        {
-          id: '124',
-          key: 'key124',
-        },
+        itemsData[1],
+        itemsData[2],
+        itemsData[0],
       ],
     });
   });
 
   it('should change incredients order 2', () => {
     const state = {
-      bunId: '123',
-      itemsData: [
-        {
-          id: '124',
-          key: 'key124',
-        },
-        {
-          id: '125',
-          key: 'key125',
-        },
-        {
-          id: '126',
-          key: 'key126',
-        },
-      ],
+      bunId: bunId,
+      itemsData: itemsData,
     };
 
     const action = {
@@ -174,41 +146,19 @@ describe('Selected ingredients reducer', () => {
     };
 
     expect(selectedIngredients(state, action)).toEqual({
-      bunId: '123',
+      bunId: bunId,
       itemsData: [
-        {
-          id: '125',
-          key: 'key125',
-        },
-        {
-          id: '124',
-          key: 'key124',
-        },
-        {
-          id: '126',
-          key: 'key126',
-        },
+        itemsData[1],
+        itemsData[0],
+        itemsData[2],
       ],
     });
   });
 
   it('should clear constructor', () => {
     const state = {
-      bunId: '123',
-      itemsData: [
-        {
-          id: '124',
-          key: 'key124',
-        },
-        {
-          id: '125',
-          key: 'key125',
-        },
-        {
-          id: '126',
-          key: 'key126',
-        },
-      ],
+      bunId: bunId,
+      itemsData: itemsData,
     };
 
     const action = {

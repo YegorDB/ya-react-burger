@@ -13,6 +13,27 @@ import {
 } from '../actions';
 import type { TFeedWSAction, TProfileOrdersWSAction } from '../../types/actions';
 
+const ordersData = [
+  {
+    ingredients: [],
+    _id: '123',
+    status: 'done',
+    number: 123,
+    name: 'order',
+    createdAt: '2022-01-01T00:00:00',
+    updatedAt: '2022-01-01T00:00:00',
+  },
+  {
+    ingredients: [],
+    _id: '1234',
+    status: 'done',
+    number: 1234,
+    name: 'order2',
+    createdAt: '2022-01-01T00:00:00',
+    updatedAt: '2022-01-01T00:00:00',
+  },
+];
+
 describe('Feed ws reducer', () => {
   it('should return the initial state', () => {
     expect(feedWS(undefined, {} as TFeedWSAction)).toEqual(feedInitialState);
@@ -76,26 +97,7 @@ describe('Feed ws reducer', () => {
   it('should return success message', () => {
     const data = {
       success: true,
-      orders: [
-        {
-          ingredients: [],
-          _id: '123',
-          status: 'done',
-          number: 123,
-          name: 'order',
-          createdAt: '2022-01-01T00:00:00',
-          updatedAt: '2022-01-01T00:00:00',
-        },
-        {
-          ingredients: [],
-          _id: '1234',
-          status: 'done',
-          number: 1234,
-          name: 'order2',
-          createdAt: '2022-01-01T00:00:00',
-          updatedAt: '2022-01-01T00:00:00',
-        },
-      ],
+      orders: ordersData,
       total: 123,
       totalToday: 12,
     };
@@ -174,26 +176,7 @@ describe('Profile orders ws reducer', () => {
   it('should return success message', () => {
     const data = {
       success: true,
-      orders: [
-        {
-          ingredients: [],
-          _id: '123',
-          status: 'done',
-          number: 123,
-          name: 'order',
-          createdAt: '2022-01-01T00:00:00',
-          updatedAt: '2022-01-01T00:00:00',
-        },
-        {
-          ingredients: [],
-          _id: '1234',
-          status: 'done',
-          number: 1234,
-          name: 'order2',
-          createdAt: '2022-01-01T00:00:00',
-          updatedAt: '2022-01-01T00:00:00',
-        },
-      ],
+      orders: ordersData,
     };
     const action = {
       type: WS_GET_MESSAGE_PROFILE_ORDERS,
