@@ -23,7 +23,7 @@ describe('Burger constructor', () => {
       });
     });
 
-    cy.visit('http://172.17.0.1:3000');
+    cy.visit('');
 
     cy.contains('Соберите бургер');
     cy.get('[class*=BurgerIngredients_BurgerIngredientsItemsGroup__]').should('have.length', 3);
