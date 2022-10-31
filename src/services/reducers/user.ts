@@ -21,7 +21,7 @@ import {
 import { TUserAction } from '../../types/actions';
 import { TUserState } from '../../types/states';
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   user: null,
   userLoaded: false,
 };

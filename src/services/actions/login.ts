@@ -13,7 +13,7 @@ export const postLogin: AppThunk = (email: string, password: string) => {
       type: POST_LOGIN_REQUEST_PENDING,
     });
 
-    fetch(`${API_ROOT}/auth/login `, {
+    fetch(`${API_ROOT}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

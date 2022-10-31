@@ -130,7 +130,7 @@ export type TForgotPasswordAction = {
 
 type TFeedWSWithEventAction = {
   type: typeof WS_CONNECTION_FEED_SUCCESS | typeof WS_CONNECTION_FEED_ERROR | typeof WS_CONNECTION_FEED_CLOSED,
-  payload: Event,
+  payload?: Event,
 }
 
 type TFeedWSConnectionSwitchAction = {
@@ -146,7 +146,7 @@ export type TFeedWSAction = TFeedWSWithEventAction | TFeedWSConnectionSwitchActi
 
 type TProfileOrdersWSWithEventAction = {
   type: typeof WS_CONNECTION_PROFILE_ORDERS_SUCCESS | typeof WS_CONNECTION_PROFILE_ORDERS_ERROR | typeof WS_CONNECTION_PROFILE_ORDERS_CLOSED,
-  payload: Event,
+  payload?: Event,
 }
 
 type TProfileOrdersWSConnectionSwitchAction = {

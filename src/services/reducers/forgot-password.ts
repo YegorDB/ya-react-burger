@@ -9,7 +9,7 @@ import {
 import { TForgotPasswordAction } from '../../types/actions';
 import { TForgotPasswordState } from '../../types/states';
 
-const initialState: TForgotPasswordState = {
+export const initialState: TForgotPasswordState = {
   forgotPasswordUsed: false,
 };
 

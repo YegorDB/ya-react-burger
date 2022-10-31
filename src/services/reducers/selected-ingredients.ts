@@ -9,7 +9,7 @@ import {
 import { TSelectedIngredientsAction } from '../../types/actions';
 import { TSelectedIngredientsState } from '../../types/states';
 
-const initialState: TSelectedIngredientsState = {
+export const initialState: TSelectedIngredientsState = {
   bunId: null,
   itemsData: [],
 };

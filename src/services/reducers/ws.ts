@@ -14,14 +14,14 @@ import type { TFeedWSAction, TProfileOrdersWSAction } from '../../types/actions'
 import type { TFeed } from '../../types/feed';
 import type { TFeedWSState, TProfileOrdersWSState } from '../../types/states';
 
-const feedInitialState: TFeedWSState = {
+export const feedInitialState: TFeedWSState = {
   wsConnected: false,
   orders: [],
   total: 0,
   totalToday: 0,
 };
 
-const profileOrdersInitialState: TProfileOrdersWSState = {
+export const profileOrdersInitialState: TProfileOrdersWSState = {
   wsConnected: false,
   orders: [],
 };

@@ -2,7 +2,7 @@ import { SET_CURRENT_INGREDIENT } from '../actions';
 import { TCurrentIngredientAction } from '../../types/actions';
 import { TCurrentIngredientState } from '../../types/states';
 
-const initialState: TCurrentIngredientState = {
+export const initialState: TCurrentIngredientState = {
   ingredient: null,
 };
 
